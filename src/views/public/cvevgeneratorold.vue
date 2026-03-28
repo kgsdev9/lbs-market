@@ -96,7 +96,7 @@
 
             <!-- ── PHOTO UPLOAD ── -->
             <div class="f">
-              <label>Photo de profil</label>
+              <label>Photo de profil Taille recommandée (592 x 592)</label>
               <div class="photo-upload-area">
                 <div class="photo-preview-wrap">
                   <div class="photo-preview" :class="{'has-photo': cv.photo}">
@@ -139,10 +139,7 @@
                   <span class="photo-hint">JPG, PNG · Max 5 Mo</span>
                 </div>
               </div>
-              <div class="photo-url-row">
-                <span class="photo-url-or">ou URL directe</span>
-                <input v-model="cv.photoUrl" class="inp inp-sm" placeholder="https://..." @input="cv.photo = cv.photoUrl"/>
-              </div>
+              
             </div>
           </div>
 
@@ -190,6 +187,7 @@
                 <div class="f"><label>Fin</label><input v-model="e.endDate" class="inp" placeholder="Présent"/></div>
               </div>
               <div class="f"><label>Description</label><textarea v-model="e.description" class="inp ta-sm" rows="3" placeholder="Missions et réalisations..."></textarea></div>
+
             </div>
           </div>
 
@@ -1645,7 +1643,34 @@ export default {
     nextStep()   { if (this.currentStep < this.steps.length-1) this.currentStep++ },
     prevStep()   { if (this.currentStep > 0) this.currentStep-- },
     goToStep(i)  { this.currentStep = i },
-    addExp()     { this.cv.experiences.push({position:'',company:'',startDate:'',endDate:'',description:''}) },
+    // addExp()     { this.cv.experiences.push({position:'',company:'',startDate:'',endDate:'',description:''}) },
+    addExp() {
+  this.cv.experiences.push({
+    position:'', company:'', startDate:'', endDate:'',
+    description:'',
+    bullets: ['']   // ← AJOUTER
+  })
+  },
+
+
+  addBullet(exp, index) {
+  exp.bullets.splice(index + 1, 0, '')
+  this.$nextTick(() => {
+    const inputs = this.$el.querySelectorAll('.bullet-inp')
+    if (inputs[index + 1]) inputs[index + 1].focus()
+  })
+},
+onBulletBackspace(exp, index, event) {
+  if (index > 0 && exp.bullets[index] === '') {
+    event.preventDefault()
+    exp.bullets.splice(index, 1)
+    this.$nextTick(() => {
+      const inputs = this.$el.querySelectorAll('.bullet-inp')
+      if (inputs[index - 1]) inputs[index - 1].focus()
+    })
+  }
+},
+
     aod(t)       { return this.selectedTpl===t.id ? this.accentColor : t.defaultAccent },
 
     // ══ Drag & Drop ══
@@ -1734,13 +1759,25 @@ export default {
         summary:        data.summary       || '',
         photo:          data.photo         || '',
         photoUrl:       data.photo         || '',
+        // experiences: (data.experiences||[]).map(e=>({
+        //   position:    e.position    || '',
+        //   company:     e.company     || '',
+        //   startDate:   e.startDate   || '',
+        //   endDate:     e.endDate     || '',
+        //   description: e.description || '',
+        // })),
+
         experiences: (data.experiences||[]).map(e=>({
-          position:    e.position    || '',
-          company:     e.company     || '',
-          startDate:   e.startDate   || '',
-          endDate:     e.endDate     || '',
-          description: e.description || '',
-        })),
+  position:    e.position    || '',
+  company:     e.company     || '',
+  startDate:   e.startDate   || '',
+  endDate:     e.endDate     || '',
+  description: e.description || '',
+  // Migration : si bullets existe, on l'utilise, sinon on split la description
+  bullets: e.bullets?.length
+    ? e.bullets
+    : (e.description ? e.description.split('\n').filter(Boolean) : ['']),
+})),
         education: (data.education||[]).map(e=>({
           degree:     e.degree     || '',
           school:     e.school     || '',
