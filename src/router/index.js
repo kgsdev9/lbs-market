@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from '@ionic/vue-router'
 import { useAuthStore } from '@/stores/auth'
 import PublicLayout from '@/components/layout/PublicLayout.vue'
 
@@ -39,6 +39,14 @@ const routes = [
         component: () => import('@/views/public/Cvgeneratorview.vue'),
         meta: { requiresAuth: true, title: 'Générateur de CV' }
       },
+
+      {
+        path: '/cv-mobile',
+        name: 'cv-mobile',
+        component: () => import('@/views/public/Cvmobileview.vue') ,
+        meta: { layout: 'blank' } 
+      },
+
 
       // ── Dashboard (protégé) ──
       { path: 'dashboard', name: 'dash-home', component: () => import('@/views/dashboard/DashHomeView.vue'), meta: { requiresAuth: true, title: 'Dashboard' } },
@@ -93,12 +101,6 @@ router.beforeEach((to, from, next) => {
 
   if ((to.name === 'login' || to.name === 'register') && auth.isLoggedIn) {
     return next({ name: 'dash-home' })
-  }
-
-  if (to.meta.title) {
-    document.title = `${to.meta.title} | LBS Market`
-  } else {
-    document.title = 'LBS Market — Votre Marché du Savoir Numérique'
   }
 
   next()

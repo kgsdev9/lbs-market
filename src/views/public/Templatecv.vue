@@ -92,7 +92,7 @@
     <!-- ══════════════════════════════════════════
          2. MINIMAL
     ══════════════════════════════════════════ -->
-    <div v-if="selectedTpl==='minimal'" class="cv-min">
+    <!-- <div v-if="selectedTpl==='minimal'" class="cv-min">
       <div class="cm-top">
         <div class="cm-top-left">
           <img v-if="cv.photo" :src="cv.photo" class="cm-photo" @error="e=>e.target.style.display='none'"/>
@@ -137,7 +137,143 @@
       <div v-if="cv.projects.some(p=>p.name)" class="cm-sec"><div class="cm-sec-t">PROJETS</div>
         <div v-for="p in cv.projects.filter(p=>p.name)" :key="p.name" class="cm-entry"><div class="cm-el"><div class="cm-date" style="font-size:10px">{{ p.tech }}</div></div><div class="cm-er"><div class="cm-pos">{{ p.name }}</div><p v-if="p.description" class="cm-desc">{{ p.description }}</p></div></div>
       </div>
+    </div> -->
+
+    <div v-if="selectedTpl==='minimal'" class="cv-min">
+ 
+  <!-- ── TOP : photo + nom + contacts ── -->
+  <div class="cm-top">
+    <div class="cm-top-left">
+      <img v-if="cv.photo" :src="cv.photo" class="cm-photo" @error="e=>e.target.style.display='none'"/>
+      <div class="cm-top-text">
+        <h1 class="cm-name">{{ cv.firstName||'Prénom' }} <span :style="{color:accentColor}">{{ cv.lastName||'Nom' }}</span></h1>
+        <p class="cm-job">{{ cv.title }}</p>
+        <p v-if="cv.dateNaissance" class="cm-dob">{{ formatDate(cv.dateNaissance) }}</p>
+      </div>
     </div>
+    <div class="cm-contacts">
+      <span v-if="cv.email">{{ cv.email }}</span>
+      <span v-if="cv.phone">{{ cv.phone }}</span>
+      <span v-if="cv.city">{{ cv.city }}{{ cv.country ? ', ' + cv.country : '' }}</span>
+      <span v-if="cv.website">{{ cv.website }}</span>
+    </div>
+  </div>
+ 
+  <!-- ── LIGNE ACCENT ── -->
+  <div class="cm-div" :style="{background:accentColor}"></div>
+ 
+  <!-- ── RÉSUMÉ ── -->
+  <p v-if="cv.summary" class="cm-summary">{{ cv.summary }}</p>
+ 
+  <!-- ── EXPÉRIENCES ── -->
+  <div v-if="cv.experiences.some(e=>e.position)" class="cm-sec">
+    <div class="cm-sec-t" :style="{borderBottomColor:accentColor}">EXPÉRIENCES</div>
+    <div v-for="e in cv.experiences.filter(e=>e.position)" :key="e.position" class="cm-entry">
+      <div class="cm-el">
+        <div class="cm-date">{{ e.startDate }}<br/>{{ e.endDate }}</div>
+      </div>
+      <div class="cm-er">
+        <div class="cm-pos">{{ e.position }}</div>
+        <div class="cm-co">{{ e.company }}</div>
+        <div v-if="hasBullets(e)" class="cm-bullets">
+          <div v-for="(b,bi) in getBullets(e)" :key="bi" class="cm-bullet-line">
+            <span class="cm-bullet-dot" :style="{background:accentColor}"></span>
+            <span class="cm-bullet-text">{{ b }}</span>
+          </div>
+        </div>
+        <p v-else-if="e.description" class="cm-desc">{{ e.description }}</p>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── FORMATION ── -->
+  <div v-if="cv.education.some(e=>e.degree)" class="cm-sec">
+    <div class="cm-sec-t" :style="{borderBottomColor:accentColor}">FORMATION</div>
+    <div v-for="e in cv.education.filter(e=>e.degree)" :key="e.degree" class="cm-entry">
+      <div class="cm-el">
+        <div class="cm-date">{{ e.anneeDebut && e.anneeFin ? e.anneeDebut+'–'+e.anneeFin : e.year }}</div>
+      </div>
+      <div class="cm-er">
+        <div class="cm-pos">{{ e.degree }}</div>
+        <div class="cm-co">{{ e.school }}</div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── COMPÉTENCES ── -->
+  <div v-if="cv.skills.some(s=>s.name)" class="cm-sec">
+    <div class="cm-sec-t" :style="{borderBottomColor:accentColor}">COMPÉTENCES</div>
+    <div class="cm-tags">
+      <span v-for="s in cv.skills.filter(s=>s.name)" :key="s.name" class="cm-tag" :style="{borderColor:accentColor,color:accentColor}">{{ s.name }}</span>
+    </div>
+  </div>
+ 
+  <!-- ── LANGUES ── -->
+  <div v-if="cv.languages.some(l=>l.name)" class="cm-sec">
+    <div class="cm-sec-t" :style="{borderBottomColor:accentColor}">LANGUES</div>
+    <div class="cm-lang-grid">
+      <div v-for="l in cv.languages.filter(l=>l.name)" :key="l.name" class="cm-lang-item">
+        <div class="cm-lang-top">
+          <span class="cm-lang-name">{{ l.name }}</span>
+          <span class="cm-lang-lvl" :style="{color:accentColor}">{{ l.level }}</span>
+        </div>
+        <div class="cm-lang-bar-bg">
+          <div class="cm-lang-bar-fill" :style="{
+            background:accentColor,
+            width: l.level==='Notions'?'20%'
+                 : l.level==='Débutant'?'30%'
+                 : l.level==='Intermédiaire'?'55%'
+                 : l.level==='Avancé'?'75%'
+                 : l.level==='Courant'?'85%'
+                 : l.level==='Bilingue'||l.level==='Natif'?'100%'
+                 : '60%'
+          }"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── APTITUDES ── -->
+  <div v-if="cv.aptitudes.some(a=>a.name)" class="cm-sec">
+    <div class="cm-sec-t" :style="{borderBottomColor:accentColor}">APTITUDES</div>
+    <div class="cm-aptitudes-grid">
+      <div v-for="a in cv.aptitudes.filter(a=>a.name)" :key="a.name" class="cm-aptitude-item">
+        <div class="cm-apt-top">
+          <span class="cm-apt-name">{{ a.name }}</span>
+        </div>
+        <div class="cm-lang-bar-bg">
+          <div class="cm-lang-bar-fill" :style="{
+            background:'#f59e0b',
+            width: (a.level*25)+'%'
+          }"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── CENTRES D'INTÉRÊT ── -->
+  <div v-if="cv.centresInteret.some(c=>c.name)" class="cm-sec">
+    <div class="cm-sec-t" :style="{borderBottomColor:accentColor}">CENTRES D'INTÉRÊT</div>
+    <div class="cm-tags">
+      <span v-for="c in cv.centresInteret.filter(c=>c.name)" :key="c.name" class="cm-tag" :style="{borderColor:'#9ca3af',color:'#6b7280'}">{{ c.name }}</span>
+    </div>
+  </div>
+ 
+  <!-- ── PROJETS ── -->
+  <div v-if="cv.projects.some(p=>p.name)" class="cm-sec">
+    <div class="cm-sec-t" :style="{borderBottomColor:accentColor}">PROJETS</div>
+    <div v-for="p in cv.projects.filter(p=>p.name)" :key="p.name" class="cm-entry">
+      <div class="cm-el">
+        <div class="cm-date" style="font-size:10px">{{ p.tech }}</div>
+      </div>
+      <div class="cm-er">
+        <div class="cm-pos">{{ p.name }}</div>
+        <p v-if="p.description" class="cm-desc">{{ p.description }}</p>
+      </div>
+    </div>
+  </div>
+ 
+</div>
 
     <!-- ══════════════════════════════════════════
          3. MODERNE
@@ -1087,6 +1223,428 @@
       </div>
     </div>
 
+    <!-- 15 education -->
+
+    <!-- ══════════════════════════════════════════
+     2. BLOC TEMPLATE (dans <div id="cv-render">)
+══════════════════════════════════════════ -->
+ 
+<div v-if="selectedTpl==='executive'" class="cv-executive">
+ 
+  <!-- HEADER -->
+  <div class="ex-hd" style="background:#2d3f50">
+    <div class="ex-photo-wrap" v-if="cv.photo">
+      <img :src="cv.photo" class="ex-photo" @error="e=>e.target.style.display='none'"/>
+    </div>
+    <div class="ex-hd-text">
+      <h1 class="ex-name">
+        <span class="ex-name-first" :style="{color:accentColor}">{{ cv.firstName||'Prénom' }}</span>
+        <span class="ex-name-last"> {{ cv.lastName||'Nom' }}</span>
+      </h1>
+      <p class="ex-title">{{ cv.title||'Votre titre' }}</p>
+      <div v-if="cv.dateNaissance" class="ex-dob">Né(e) le {{ formatDate(cv.dateNaissance) }}</div>
+    </div>
+  </div>
+ 
+  <!-- BARRE ACCENT -->
+  <div class="ex-accent-bar" :style="{background:accentColor}"></div>
+ 
+  <!-- BODY : gauche + droite -->
+  <div class="ex-body">
+ 
+    <!-- ── COLONNE GAUCHE ── -->
+    <div class="ex-left">
+ 
+      <!-- CONTACT -->
+      <div class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Contact</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+ 
+        <div v-if="cv.phone" class="ex-contact-item">
+          <div class="ex-ci-icon" :style="{background:accentColor}">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          </div>
+          <span>{{ cv.phone }}</span>
+        </div>
+ 
+        <div v-if="cv.email" class="ex-contact-item">
+          <div class="ex-ci-icon" :style="{background:accentColor}">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <span>{{ cv.email }}</span>
+        </div>
+ 
+        <div v-if="cv.website" class="ex-contact-item">
+          <div class="ex-ci-icon" :style="{background:accentColor}">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 110-4 2 2 0 010 4z"/></svg>
+          </div>
+          <span>{{ cv.website }}</span>
+        </div>
+ 
+        <div v-if="cv.city" class="ex-contact-item">
+          <div class="ex-ci-icon" :style="{background:accentColor}">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          </div>
+          <span>{{ cv.city }}{{ cv.country ? ', ' + cv.country : '' }}</span>
+        </div>
+      </div>
+ 
+      <!-- COMPÉTENCES -->
+      <div v-if="cv.skills.some(s=>s.name)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Compétences</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+        <div v-for="s in cv.skills.filter(s=>s.name)" :key="s.name" class="ex-skill-item">
+          <div class="ex-skill-bullet" :style="{background:'#2d3f50'}"></div>
+          <span>{{ s.name }}</span>
+        </div>
+      </div>
+ 
+      <!-- LANGUES -->
+      <div v-if="cv.languages.some(l=>l.name)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Langues</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+        <div v-for="l in cv.languages.filter(l=>l.name)" :key="l.name" class="ex-lang">
+          <span>{{ l.name }}</span>
+          <span class="ex-lang-lvl">{{ l.level }}</span>
+        </div>
+      </div>
+ 
+      <!-- APTITUDES -->
+      <div v-if="cv.aptitudes.some(a=>a.name)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Aptitudes</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+        <div v-for="a in cv.aptitudes.filter(a=>a.name)" :key="a.name" class="ex-skill-item">
+          <div class="ex-skill-bullet" :style="{background:'#f59e0b'}"></div>
+          <span>{{ a.name }}</span>
+        </div>
+      </div>
+ 
+      <!-- CENTRES D'INTÉRÊT -->
+      <div v-if="cv.centresInteret.some(c=>c.name)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Intérêts</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+        <div class="ex-interests">
+          <span
+            v-for="c in cv.centresInteret.filter(c=>c.name)"
+            :key="c.name"
+            class="ex-interest-tag"
+            :style="{borderColor:accentColor,color:accentColor}"
+          >{{ c.name }}</span>
+        </div>
+      </div>
+ 
+      <!-- RÉFÉRENCES -->
+      <div v-if="cv.references && cv.references.some(r=>r.name)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Références</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+        <div v-for="r in cv.references.filter(r=>r.name)" :key="r.name" class="ex-ref-block">
+          <div class="ex-ref-name">{{ r.name }}</div>
+          <div v-if="r.role" class="ex-ref-meta">Fonction : {{ r.role }}</div>
+          <div v-if="r.company" class="ex-ref-meta">Entreprise : {{ r.company }}</div>
+          <div v-if="r.phone" class="ex-ref-meta">{{ r.phone }}</div>
+        </div>
+      </div>
+ 
+    </div><!-- /ex-left -->
+ 
+    <!-- ── COLONNE DROITE ── -->
+    <div class="ex-right">
+ 
+      <!-- PROFIL -->
+      <div v-if="cv.summary" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Profil</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+        <p class="ex-profile-txt">{{ cv.summary }}</p>
+      </div>
+ 
+      <!-- EXPÉRIENCES -->
+      <div v-if="cv.experiences.some(e=>e.position)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Expériences</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+ 
+        <div
+          v-for="e in cv.experiences.filter(e=>e.position)"
+          :key="e.position"
+          class="ex-entry"
+        >
+          <div class="ex-entry-left">
+            <div class="ex-entry-company" style="color:#2d3f50">{{ e.company }}</div>
+            <div class="ex-entry-date">
+              {{ e.startDate }}{{ e.endDate ? ' - ' + e.endDate : '' }}
+            </div>
+          </div>
+          <div class="ex-entry-right">
+            <div class="ex-entry-pos">{{ e.position }}</div>
+            <div v-if="hasBullets(e)" class="ex-bullets">
+              <div v-for="(b,bi) in getBullets(e)" :key="bi" class="ex-bullet-line">
+                <span class="ex-bullet-dot" :style="{background:accentColor}"></span>
+                <span class="ex-bullet-text">{{ b }}</span>
+              </div>
+            </div>
+            <p v-else-if="e.description" class="ex-desc">{{ e.description }}</p>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- FORMATION -->
+      <div v-if="cv.education.some(e=>e.degree)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Formation</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+ 
+        <div
+          v-for="e in cv.education.filter(e=>e.degree)"
+          :key="e.degree"
+          class="ex-entry"
+        >
+          <div class="ex-entry-left">
+            <div class="ex-entry-company" style="color:#2d3f50">{{ e.school }}</div>
+            <div class="ex-entry-date">
+              {{ e.anneeDebut && e.anneeFin ? e.anneeDebut + ' - ' + e.anneeFin : e.year }}
+            </div>
+          </div>
+          <div class="ex-entry-right">
+            <div class="ex-entry-pos">{{ e.degree }}</div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- PROJETS -->
+      <div v-if="cv.projects.some(p=>p.name)" class="ex-sec">
+        <div class="ex-sec-t" :style="{color:accentColor}">Projets</div>
+        <div class="ex-sec-line" :style="{background:accentColor}"></div>
+ 
+        <div
+          v-for="p in cv.projects.filter(p=>p.name)"
+          :key="p.name"
+          class="ex-entry"
+        >
+          <div class="ex-entry-left">
+            <div v-if="p.tech" class="ex-entry-date" style="font-size:10px">{{ p.tech }}</div>
+          </div>
+          <div class="ex-entry-right">
+            <div class="ex-entry-pos">{{ p.name }}</div>
+            <p v-if="p.description" class="ex-desc">{{ p.description }}</p>
+          </div>
+        </div>
+      </div>
+ 
+    </div><!-- /ex-right -->
+ 
+  </div><!-- /ex-body -->
+</div>
+<!-- fin education -->
+
+<!-- cv valdimir  -->
+ <div v-if="selectedTpl==='vladimir'" class="cv-vlad">
+ 
+  <!-- ══ LAYOUT : sidebar gauche + main droite ══ -->
+  <div class="vl-layout">
+ 
+    <!-- ─── SIDEBAR GAUCHE ─── -->
+    <div class="vl-sidebar">
+ 
+      <!-- Header sidebar : photo + nom + titre -->
+      <div class="vl-sidebar-top" style="background:#2b2b2b">
+        <div class="vl-photo-ring-wrap">
+          <div class="vl-photo-ring" :style="{borderColor:accentColor}">
+            <img v-if="cv.photo" :src="cv.photo" class="vl-photo" @error="e=>e.target.style.display='none'"/>
+            <div v-else class="vl-photo-init" :style="{color:accentColor}">
+              {{ (cv.firstName||'?')[0] }}{{ (cv.lastName||'')[0] }}
+            </div>
+          </div>
+        </div>
+        <div class="vl-sidebar-name-block">
+          <h1 class="vl-name">
+            <span class="vl-name-first">{{ cv.firstName||'Prénom' }}</span>
+            <span class="vl-name-last" :style="{color:accentColor}"> {{ cv.lastName||'Nom' }}</span>
+          </h1>
+          <div class="vl-title-line">
+            <span class="vl-job-title">{{ cv.title||'Votre titre' }}</span>
+            <span v-if="cv.yearsExp" class="vl-years-exp">{{ cv.yearsExp }} ans d'expérience</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Infos personnelles -->
+      <div class="vl-sidebar-body">
+        <div class="vl-info-block">
+          <div v-if="cv.age||cv.nationality" class="vl-info-item">
+            <div class="vl-info-icon" :style="{color:accentColor}">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+            </div>
+            <span>{{ cv.age ? cv.age + ' ans' : '' }}{{ cv.age && cv.nationality ? ' - ' : '' }}{{ cv.nationality||'' }}</span>
+          </div>
+          <div v-if="cv.situation" class="vl-info-item">
+            <div class="vl-info-icon" :style="{color:accentColor}">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+            <span>{{ cv.situation }}</span>
+          </div>
+          <div v-if="cv.city" class="vl-info-item">
+            <div class="vl-info-icon" :style="{color:accentColor}">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <span>{{ cv.city }}{{ cv.country ? ' - ' + cv.country : '' }}</span>
+          </div>
+          <div v-if="cv.email" class="vl-info-item">
+            <div class="vl-info-icon" :style="{color:accentColor}">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </div>
+            <span>{{ cv.email }}</span>
+          </div>
+          <div v-if="cv.phone" class="vl-info-item">
+            <div class="vl-info-icon" :style="{color:accentColor}">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+            </div>
+            <span>{{ cv.phone }}</span>
+          </div>
+          <div v-if="cv.permis" class="vl-info-item">
+            <div class="vl-info-icon" :style="{color:accentColor}">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.04 3H5.81l1.04-3zM19 17H5v-5h14v5z"/></svg>
+            </div>
+            <span>{{ cv.permis }}</span>
+          </div>
+          <div v-if="cv.website" class="vl-info-item">
+            <div class="vl-info-icon" :style="{color:accentColor}">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.9 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+            </div>
+            <span>{{ cv.website }}</span>
+          </div>
+        </div>
+ 
+        <!-- COMPÉTENCES -->
+        <div v-if="cv.skills.some(s=>s.name)" class="vl-sec">
+          <div class="vl-sec-header">
+            <div class="vl-sec-t">Compétences</div>
+            <div class="vl-sec-icon" :style="{background:accentColor}">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+          </div>
+          <div class="vl-skills-list">
+            <div v-for="s in cv.skills.filter(s=>s.name)" :key="s.name" class="vl-skill-line">
+              - {{ s.name }}
+            </div>
+          </div>
+        </div>
+ 
+        <!-- APTITUDES -->
+        <div v-if="cv.aptitudes.some(a=>a.name)" class="vl-sec">
+          <div class="vl-aptitudes-title">Aptitudes</div>
+          <div class="vl-skills-list">
+            <div v-for="a in cv.aptitudes.filter(a=>a.name)" :key="a.name" class="vl-skill-line">
+              - {{ a.name }}
+            </div>
+          </div>
+        </div>
+ 
+        <!-- LANGUES -->
+        <div v-if="cv.languages.some(l=>l.name)" class="vl-sec">
+          <div class="vl-sec-header">
+            <div class="vl-sec-t">Langues</div>
+            <div class="vl-sec-icon" :style="{background:accentColor}">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="#fff"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>
+            </div>
+          </div>
+          <div v-for="l in cv.languages.filter(l=>l.name)" :key="l.name" class="vl-lang-item">
+            <div class="vl-lang-name">{{ l.name }}</div>
+            <div class="vl-lang-bar-wrap">
+              <div class="vl-lang-bar-bg">
+                <div class="vl-lang-bar-fill" :style="{
+                  width: l.level==='Débutant'?'25%': l.level==='Intermédiaire'?'50%': l.level==='Avancé'?'75%':'90%',
+                  background:accentColor
+                }"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- HOBBIES / CENTRES D'INTÉRÊT -->
+        <div v-if="cv.centresInteret.some(c=>c.name)" class="vl-sec">
+          <div class="vl-sec-header">
+            <div class="vl-sec-t">Hobbies</div>
+            <div class="vl-sec-icon" :style="{background:accentColor}">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+            </div>
+          </div>
+          <div class="vl-hobbies-grid">
+            <div v-for="c in cv.centresInteret.filter(c=>c.name)" :key="c.name" class="vl-hobby-tag">
+              {{ c.name }}
+            </div>
+          </div>
+        </div>
+ 
+      </div><!-- /vl-sidebar-body -->
+    </div><!-- /vl-sidebar -->
+ 
+    <!-- ─── CONTENU PRINCIPAL ─── -->
+    <div class="vl-main">
+ 
+      <!-- PRÉSENTATION -->
+      <div v-if="cv.summary" class="vl-msec">
+        <div class="vl-msec-title" :style="{color:accentColor}">Présentation</div>
+        <div class="vl-msec-line" :style="{background:accentColor}"></div>
+        <p class="vl-summary-txt">{{ cv.summary }}</p>
+      </div>
+ 
+      <!-- EXPÉRIENCES PROFESSIONNELLES -->
+      <div v-if="cv.experiences.some(e=>e.position)" class="vl-msec">
+        <div class="vl-msec-title" :style="{color:accentColor}">Expériences professionnelles</div>
+        <div class="vl-msec-line" :style="{background:accentColor}"></div>
+ 
+        <div v-for="e in cv.experiences.filter(e=>e.position)" :key="e.position" class="vl-exp-entry">
+          <div class="vl-exp-date">
+            {{ e.startDate }}{{ e.endDate ? ' - ' + e.endDate : ' à ce jour' }}
+          </div>
+          <div class="vl-exp-pos">{{ e.position }}</div>
+          <div class="vl-exp-company" :style="{color:accentColor}">{{ e.company }}</div>
+          <div v-if="hasBullets(e)" class="vl-exp-bullets">
+            <div v-for="(b,bi) in getBullets(e)" :key="bi" class="vl-exp-bullet-line">
+              - {{ b }}
+            </div>
+          </div>
+          <p v-else-if="e.description" class="vl-exp-desc">{{ e.description }}</p>
+        </div>
+      </div>
+ 
+      <!-- FORMATIONS & DIPLÔMES -->
+      <div v-if="cv.education.some(e=>e.degree)" class="vl-msec">
+        <div class="vl-msec-title" :style="{color:accentColor}">Formations &amp; Diplômes</div>
+        <div class="vl-msec-line" :style="{background:accentColor}"></div>
+ 
+        <div v-for="e in cv.education.filter(e=>e.degree)" :key="e.degree" class="vl-edu-entry">
+          <div class="vl-edu-date">
+            {{ e.anneeDebut && e.anneeFin ? e.anneeDebut + ' - ' + e.anneeFin : e.year }}
+            <span v-if="e.mention" class="vl-edu-mention"> | {{ e.mention }}</span>
+          </div>
+          <div class="vl-edu-degree">{{ e.degree }}</div>
+          <div class="vl-edu-school">{{ e.school }}</div>
+        </div>
+      </div>
+ 
+      <!-- INFORMATIQUE / PROJETS -->
+      <div v-if="cv.projects.some(p=>p.name)" class="vl-msec">
+        <div class="vl-msec-title" :style="{color:accentColor}">Informatique</div>
+        <div class="vl-msec-line" :style="{background:accentColor}"></div>
+        <div v-for="p in cv.projects.filter(p=>p.name)" :key="p.name" class="vl-proj-line">
+          - <strong>{{ p.name }}</strong><span v-if="p.description"> : {{ p.description }}</span>
+        </div>
+      </div>
+ 
+      <!-- QUALITÉS / APTITUDES (version main si pas de sidebar) -->
+      <div v-if="cv.aptitudes.some(a=>a.name) && false" class="vl-msec">
+        <div class="vl-msec-title" :style="{color:accentColor}">Aptitudes</div>
+        <div class="vl-msec-line" :style="{background:accentColor}"></div>
+        <div v-for="a in cv.aptitudes.filter(a=>a.name)" :key="a.name" class="vl-proj-line">
+          - {{ a.name }}
+        </div>
+      </div>
+ 
+    </div><!-- /vl-main -->
+  </div><!-- /vl-layout -->
+</div>
+
+<!-- fin cv valdmir -->
+
 
     <!-- ── RENDU (dans <template> de TemplateCv.vue) ── -->
 <div v-if="selectedTpl==='neondark'" class="cv-neondark">
@@ -1410,6 +1968,25 @@ export default {
 .cm-tags{display:flex;flex-wrap:wrap;gap:5px}
 .cm-tag{padding:3px 11px;border:1.5px solid;border-radius:99px;font-size:11.5px;font-weight:600}
 .cm-bullet-text{color:#555}
+/* Langues */
+.cm-lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
+.cm-lang-item{margin-bottom:4px}
+.cm-lang-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.cm-lang-name{font-size:12px;font-weight:600;color:#374151}
+.cm-lang-lvl{font-size:10px;font-weight:700}
+.cm-lang-bar-bg{height:4px;background:#e5e7eb;border-radius:99px;overflow:hidden}
+.cm-lang-bar-fill{height:100%;border-radius:99px}
+
+/* Aptitudes */
+.cm-aptitudes-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
+.cm-aptitude-item{margin-bottom:4px}
+.cm-apt-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.cm-apt-name{font-size:12px;font-weight:600;color:#374151}
+
+/* Bullets (si pas déjà présent) */
+.cm-bullets{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+.cm-bullet-line{display:flex;align-items:flex-start;gap:6px}
+.cm-bullet-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
 
 /* ─────── 3. MODERNE ─────── */
 .cv-mod{display:grid;grid-template-columns:210px 1fr;min-height:1123px}
@@ -1947,7 +2524,162 @@ export default {
 .nd-proj-name{font-size:12.5px;font-weight:700;color:#f1f5f9}
 .nd-proj-tech{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:4px;border:1px solid}
 
+/* education */
 
 
+/* ─────── EXECUTIVE ─────── */
+.cv-executive{display:flex;flex-direction:column;min-height:1123px;background:#fff}
+ 
+/* Header */
+.ex-hd{padding:30px 40px;display:flex;align-items:center;gap:22px}
+.ex-photo{width:82px;height:82px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.3);flex-shrink:0}
+.ex-photo-wrap{flex-shrink:0}
+.ex-hd-text{}
+.ex-name{font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase;line-height:1.1;margin:0 0 6px}
+.ex-name-first{font-weight:900}
+.ex-name-last{color:#fff;font-weight:300}
+.ex-title{font-size:10.5px;letter-spacing:4px;color:#a0b4c6;text-transform:uppercase;font-weight:500;margin:0 0 4px}
+.ex-dob{font-size:10.5px;color:#7a96aa;margin-top:4px}
+ 
+/* Barre accent */
+.ex-accent-bar{height:4px;width:100%}
+ 
+/* Body */
+.ex-body{display:grid;grid-template-columns:240px 1fr;flex:1}
+.ex-left{padding:26px 20px;background:#fff;border-right:1px solid #e8e8e8}
+.ex-right{padding:26px 30px;background:#fff}
+ 
+/* Sections */
+.ex-sec{margin-bottom:22px}
+.ex-sec-t{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+.ex-sec-line{height:1.5px;margin-bottom:13px;opacity:.6}
+ 
+/* Contact */
+.ex-contact-item{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:11.5px;color:#444;word-break:break-all}
+.ex-ci-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+ 
+/* Skills */
+.ex-skill-item{display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:12px;color:#374151}
+.ex-skill-bullet{width:6px;height:6px;transform:rotate(45deg);flex-shrink:0}
+ 
+/* Langues */
+.ex-lang{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:11.5px;color:#333}
+.ex-lang-lvl{color:#9ca3af;font-size:10.5px}
+ 
+/* Intérêts */
+.ex-interests{display:flex;flex-wrap:wrap;gap:5px}
+.ex-interest-tag{padding:2px 9px;border:1.5px solid;border-radius:99px;font-size:10.5px;font-weight:600}
+ 
+/* Références */
+.ex-ref-block{margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed #e5e7eb}
+.ex-ref-block:last-child{border-bottom:none}
+.ex-ref-name{font-size:12.5px;font-weight:700;color:#111;margin-bottom:3px}
+.ex-ref-meta{font-size:11px;color:#6b7280;margin-bottom:1px}
+ 
+/* Profil */
+.ex-profile-txt{font-size:12px;color:#444;line-height:1.8;margin:0}
+ 
+/* Entrées (expériences / formation / projets) */
+.ex-entry{display:grid;grid-template-columns:130px 1fr;gap:14px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #f3f3f3}
+.ex-entry:last-child{border-bottom:none}
+.ex-entry-left{padding-top:2px}
+.ex-entry-company{font-size:12px;font-weight:700;margin-bottom:2px}
+.ex-entry-date{font-size:10.5px;color:#9ca3af;margin-top:1px}
+.ex-entry-right{}
+.ex-entry-pos{font-size:12.5px;font-weight:800;text-transform:uppercase;color:#111;margin-bottom:5px;letter-spacing:.3px}
+.ex-desc{font-size:11.5px;color:#555;line-height:1.65;margin:0}
+ 
+/* Bullets */
+.ex-bullets{display:flex;flex-direction:column;gap:3px;margin-top:3px}
+.ex-bullet-line{display:flex;align-items:flex-start;gap:7px}
+.ex-bullet-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ex-bullet-text{font-size:11.5px;color:#555;line-height:1.55}
+
+/* fin ececute */
+
+/* debut vladirmir */
+/* ─────── VLADIMIR ─────── */
+.cv-vlad{width:794px;min-height:1123px;background:#fff;font-family:'DM Sans','Segoe UI',Arial,sans-serif;font-size:13px;color:#1a1a1a}
+ 
+.vl-layout{display:grid;grid-template-columns:268px 1fr;min-height:1123px}
+ 
+/* ── SIDEBAR ── */
+.vl-sidebar{background:#3a3a3a;display:flex;flex-direction:column;color:#e0e0e0}
+ 
+.vl-sidebar-top{background:#2b2b2b;padding:28px 18px 22px;text-align:center}
+ 
+.vl-photo-ring-wrap{display:flex;justify-content:center;margin-bottom:14px}
+.vl-photo-ring{width:110px;height:110px;border-radius:50%;border:4px solid;padding:3px;background:#2b2b2b;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vl-photo{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.vl-photo-init{width:100%;height:100%;border-radius:50%;background:#444;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900}
+ 
+.vl-name{font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;line-height:1.2;margin:0 0 6px;color:#fff}
+.vl-name-first{color:#fff}
+.vl-title-line{display:flex;flex-direction:column;gap:2px;align-items:center}
+.vl-job-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#ccc}
+.vl-years-exp{font-size:10.5px;color:#aaa;letter-spacing:.5px}
+ 
+.vl-sidebar-body{padding:16px 16px 24px;display:flex;flex-direction:column;gap:0}
+ 
+/* Infos personnelles */
+.vl-info-block{margin-bottom:18px;border-bottom:1px solid #555;padding-bottom:14px}
+.vl-info-item{display:flex;align-items:flex-start;gap:9px;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.4}
+.vl-info-icon{flex-shrink:0;margin-top:1px}
+ 
+/* Sections sidebar */
+.vl-sec{margin-bottom:18px}
+.vl-sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.vl-sec-t{font-size:15px;font-weight:700;color:#fff;letter-spacing:.3px}
+.vl-sec-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+ 
+/* Skills list */
+.vl-skills-list{display:flex;flex-direction:column;gap:4px;background:#444;border-radius:6px;padding:10px 12px}
+.vl-skill-line{font-size:11.5px;color:#ddd;line-height:1.6}
+ 
+/* Aptitudes title */
+.vl-aptitudes-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#fff;margin-bottom:8px}
+ 
+/* Langues */
+.vl-lang-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.vl-lang-name{font-size:11.5px;color:#ddd;min-width:60px}
+.vl-lang-bar-wrap{flex:1}
+.vl-lang-bar-bg{height:8px;background:#555;border-radius:99px;overflow:hidden}
+.vl-lang-bar-fill{height:100%;border-radius:99px}
+ 
+/* Hobbies */
+.vl-hobbies-grid{display:flex;flex-wrap:wrap;gap:5px}
+.vl-hobby-tag{font-size:10.5px;color:#ddd;background:#555;padding:3px 9px;border-radius:4px}
+ 
+/* ── MAIN ── */
+.vl-main{padding:26px 28px;background:#fff}
+.vl-msec{margin-bottom:22px}
+.vl-msec-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.vl-msec-line{height:1.5px;margin-bottom:12px;opacity:.7}
+ 
+/* Summary */
+.vl-summary-txt{font-size:12px;color:#333;line-height:1.8;font-style:italic;text-align:center;margin:0}
+ 
+/* Expériences */
+.vl-exp-entry{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
+.vl-exp-entry:last-child{border-bottom:none}
+.vl-exp-date{font-size:11px;color:#666;font-style:italic;margin-bottom:3px}
+.vl-exp-pos{font-size:12.5px;font-weight:800;text-transform:uppercase;color:#111;margin-bottom:2px;letter-spacing:.3px}
+.vl-exp-company{font-size:12px;font-weight:700;margin-bottom:6px}
+.vl-exp-bullets{display:flex;flex-direction:column;gap:3px}
+.vl-exp-bullet-line{font-size:11.5px;color:#333;line-height:1.6}
+.vl-exp-desc{font-size:11.5px;color:#333;line-height:1.6;margin:0}
+ 
+/* Formation */
+.vl-edu-entry{margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
+.vl-edu-entry:last-child{border-bottom:none}
+.vl-edu-date{font-size:11px;font-weight:700;color:#333;margin-bottom:2px}
+.vl-edu-mention{font-weight:700;text-transform:uppercase}
+.vl-edu-degree{font-size:12.5px;font-weight:800;color:#111;margin-bottom:2px;text-transform:uppercase;letter-spacing:.2px}
+.vl-edu-school{font-size:11.5px;color:#555;font-style:italic}
+ 
+/* Projets / Informatique */
+.vl-proj-line{font-size:12px;color:#333;line-height:1.75;padding:1px 0}
+ 
+/* fin vladimir */
 
 </style>

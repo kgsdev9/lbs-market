@@ -60,3 +60,8 @@ npm install vuedraggable@next
 
 
 
+ajouter iconis 
+
+npm install @ionic/vue @ionic/vue-router
+npm install @capacitor/core @capacitor/cli
+npm install @capacitor/android @capacitor/ios

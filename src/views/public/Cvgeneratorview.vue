@@ -120,7 +120,7 @@
             </div>
           </div>
 
-          <!-- ETAPE 2 : EXPERIENCES avec editeur puces -->
+          <!-- ETAPE 2 : EXPERIENCES -->
           <div v-show="currentStep===1" class="pane">
             <div class="pane-add-bar">
               <span class="pane-count">{{ cv.experiences.filter(e=>e.position).length }} expérience(s)</span>
@@ -161,8 +161,6 @@
                 <div class="f"><label>Début</label><input v-model="e.startDate" class="inp" placeholder="Jan 2022"/></div>
                 <div class="f"><label>Fin</label><input v-model="e.endDate" class="inp" placeholder="Présent"/></div>
               </div>
-
-              <!-- EDITEUR DESCRIPTION -->
               <div class="f">
                 <div class="desc-label-row">
                   <label>Description</label>
@@ -171,8 +169,6 @@
                     <button class="desc-tab" :class="{active:e.descMode==='text'}" @click="e.descMode='text'">¶ Texte libre</button>
                   </div>
                 </div>
-
-                <!-- Mode puces -->
                 <div v-if="(e.descMode||'bullets')==='bullets'" class="bullets-editor">
                   <div class="bullets-hint">
                     Appuyez sur <kbd>Entrée</kbd> pour ajouter une puce · <kbd>Backspace</kbd> sur une puce vide pour supprimer
@@ -190,8 +186,6 @@
                   </div>
                   <button class="btn-add-bullet" @click="addBullet(e, e.bullets.length-1)">+ Ajouter une puce</button>
                 </div>
-
-                <!-- Mode texte libre -->
                 <div v-else>
                   <textarea v-model="e.description" class="inp ta-sm" rows="4" placeholder="Décrivez vos missions...&#10;Commencez par - ou • pour créer des puces."></textarea>
                   <div class="desc-tip">💡 Commencez une ligne par <code>-</code> ou <code>•</code> pour créer des puces dans l'aperçu.</div>
@@ -422,6 +416,7 @@ export default {
         { id:'classic',   name:'Classique',    defaultAccent:'#2563eb' },
         { id:'minimal',   name:'Minimaliste',  defaultAccent:'#111827' },
         { id:'modern',    name:'Moderne',      defaultAccent:'#7c3aed' },
+        { id:'executive', name:'Executive',    defaultAccent:'#c5982a' },
         { id:'corporate', name:'Corporate',    defaultAccent:'#0f766e' },
         { id:'elegant',   name:'Élégant',      defaultAccent:'#b45309' },
         { id:'dark',      name:'Dark',         defaultAccent:'#6366f1' },
@@ -433,7 +428,8 @@ export default {
         { id:'luxury',    name:'Luxe',         defaultAccent:'#92400e' },
         { id:'gradient',  name:'Gradient',     defaultAccent:'#4f46e5' },
         { id:'compact',   name:'Compact Pro',  defaultAccent:'#0e7490' },
-        { id: 'neondark', name: 'Neon Dark', defaultAccent: '#22d3ee' }
+        { id:'vladimir',  name:'Vladimir',     defaultAccent:'#e8950a' },
+        { id:'neondark',  name:'Neon Dark',    defaultAccent:'#22d3ee' },
       ],
       colorPresets: [
         {name:'Bleu',value:'#2563eb'},{name:'Indigo',value:'#4f46e5'},{name:'Violet',value:'#7c3aed'},{name:'Rose',value:'#db2777'},
@@ -451,18 +447,27 @@ export default {
       dragState: { list: null, from: null, over: null },
     }
   },
+
   computed: {
+    // cvForTemplate : UNIQUEMENT pour l'aperçu visuel
+    // Il filtre les bullets vides pour l'affichage, mais NE SERT PAS à la sauvegarde
     cvForTemplate() {
       return {
         ...this.cv,
-        experiences: this.cv.experiences.map(e => ({
-          ...e,
-          bullets: e.bullets || [],
-          description: e.descMode === 'text' ? (e.description || '') : '',
-        })),
+        experiences: this.cv.experiences.map(e => {
+          const isBullets = (e.descMode || 'bullets') === 'bullets'
+          return {
+            ...e,
+            bullets: isBullets
+              ? (e.bullets || []).filter(b => b && b.trim())
+              : [],
+            description: isBullets ? '' : (e.description || ''),
+          }
+        }),
       }
     },
   },
+
   watch: {
     cv:          { deep:true, handler() { this.scheduleSave() } },
     selectedTpl() { this.scheduleSave() },
@@ -470,13 +475,18 @@ export default {
   },
   async created() { await this.loadProfile() },
   mounted()       { this.$nextTick(() => this.fitZoom()) },
+
   methods: {
     nextStep()  { if (this.currentStep < this.steps.length-1) this.currentStep++ },
     prevStep()  { if (this.currentStep > 0) this.currentStep-- },
     goToStep(i) { this.currentStep = i },
     aod(t) { return this.selectedTpl===t.id ? this.accentColor : t.defaultAccent },
+
     addExp() {
-      this.cv.experiences.push({ position:'', company:'', startDate:'', endDate:'', description:'', bullets:[''], descMode:'bullets' })
+      this.cv.experiences.push({
+        position:'', company:'', startDate:'', endDate:'',
+        description:'', bullets:[''], descMode:'bullets'
+      })
     },
     addBullet(exp, index) {
       exp.bullets.splice(index + 1, 0, '')
@@ -547,18 +557,29 @@ export default {
       this.selectedTpl = data.template    || 'classic'
       this.accentColor = data.accentColor || '#2563eb'
       this.cv = {
-        firstName: data.firstName||''  , lastName: data.lastName||'', dateNaissance: data.dateNaissance||'',
+        firstName: data.firstName||'', lastName: data.lastName||'', dateNaissance: data.dateNaissance||'',
         title: data.title||'', email: data.email||'', phone: data.phone||'',
         city: data.city||'', country: data.country||'', website: data.website||'',
         summary: data.summary||'', photo: data.photo||'', photoUrl: data.photo||'',
         experiences: (data.experiences||[]).map(e => ({
-          position: e.position||'', company: e.company||'', startDate: e.startDate||'', endDate: e.endDate||'',
-          description: e.description||'', descMode: e.descMode||'bullets',
-          bullets: e.bullets && e.bullets.length ? e.bullets
-            : e.description ? e.description.split('\n').filter(l=>l.trim()).map(l=>l.replace(/^[-•*]\s*/,''))
+          position:    e.position    || '',
+          company:     e.company     || '',
+          startDate:   e.startDate   || '',
+          endDate:     e.endDate     || '',
+          description: e.description || '',
+          descMode:    e.descMode    || 'bullets',
+          // Le backend retourne déjà [''] si vide, on l'utilise directement
+          bullets: Array.isArray(e.bullets) && e.bullets.length > 0
+            ? e.bullets
             : [''],
         })),
-        education: (data.education||[]).map(e=>({ degree:e.degree||'', school:e.school||'', year:e.year||'', anneeDebut:e.anneeDebut||'', anneeFin:e.anneeFin||'' })),
+        education:      (data.education||[]).map(e=>({
+          degree:     e.degree     || '',
+          school:     e.school     || '',
+          year:       e.year       || '',
+          anneeDebut: e.anneeDebut || '',
+          anneeFin:   e.anneeFin   || '',
+        })),
         skills:         (data.skills||[]).map(s=>({ name:s.name||'', level:s.level||3 })),
         languages:      (data.languages||[]).map(l=>({ name:l.name||'', level:l.level||'Courant' })),
         projects:       (data.projects||[]).map(p=>({ name:p.name||'', tech:p.tech||'', description:p.description||'', url:p.url||'' })),
@@ -575,59 +596,157 @@ export default {
       if (!this.cvProfileId) return
       this.saving = true
       try {
-        await API.put(`/cv-profiles/${this.cvProfileId}/full`, { ...this.cv, photo: this.cv.photo, template: this.selectedTpl, accentColor: this.accentColor })
+        // ── IMPORTANT : on envoie this.cv (données brutes) et NON cvForTemplate ──
+        // cvForTemplate filtre les bullets vides → les expériences semblent vides
+        // this.cv contient les vraies données avec bullets brutes
+        await API.put(`/cv-profiles/${this.cvProfileId}/full`, {
+          ...this.cv,
+          photo:       this.cv.photo,
+          template:    this.selectedTpl,
+          accentColor: this.accentColor,
+        })
         const n = new Date()
         this.lastSaved = `à ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`
       } catch (e) { console.error('Erreur save:', e) }
       finally { this.saving = false }
     },
+
     async downloadPDF() {
-      this.exporting = true
-      const prevZoom = this.zoom
-      try {
-        if (!window.html2canvas) {
-          await new Promise((ok,ko) => { const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload=ok; s.onerror=ko; document.head.appendChild(s) })
+  this.exporting = true
+  const prevZoom = this.zoom
+  try {
+    if (!window.html2canvas) {
+      await new Promise((ok,ko) => { const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload=ok; s.onerror=ko; document.head.appendChild(s) })
+    }
+    if (!window.jspdf) {
+      await new Promise((ok,ko) => { const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload=ok; s.onerror=ko; document.head.appendChild(s) })
+    }
+
+    let photoBackup = null
+    if (this.cv.photo && this.cv.photo.startsWith('http')) {
+      photoBackup = this.cv.photo
+      try { this.cv.photo = await this.toBase64(this.cv.photo); await this.$nextTick() } catch(e) { console.warn(e) }
+    }
+
+    this.zoom = 1; await this.$nextTick(); await new Promise(r => setTimeout(r, 600))
+
+    const el = document.getElementById('cv-render')
+    const orig = { width: el.style.width, minHeight: el.style.minHeight, fontSize: el.style.fontSize, position: el.style.position }
+
+    el.style.width     = '794px'
+    el.style.minHeight = '1123px'
+    el.style.fontSize  = '13px'
+    el.style.position  = 'relative'
+
+    await new Promise(r => setTimeout(r, 300))
+
+    // ── Capture EXACTEMENT comme l'ancien (height fixe 1123px) ──
+    const canvas = await window.html2canvas(el, {
+      scale: 3, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
+      width: 794, height: 1123,
+      windowWidth: 794, windowHeight: 1123,
+      scrollX: 0, scrollY: 0, x: 0, y: 0,
+      logging: false, imageTimeout: 15000, removeContainer: true,
+      onclone: (doc) => {
+        const cel = doc.getElementById('cv-render')
+        if (cel) {
+          cel.style.webkitFontSmoothing = 'antialiased'
+          cel.style.textRendering = 'optimizeLegibility'
+          cel.style.transform = 'none'
+          cel.style.willChange = 'auto'
+          cel.style.filter = 'none'
         }
-        if (!window.jspdf) {
-          await new Promise((ok,ko) => { const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload=ok; s.onerror=ko; document.head.appendChild(s) })
-        }
-        let photoBackup = null
-        if (this.cv.photo && this.cv.photo.startsWith('http')) {
-          photoBackup = this.cv.photo
-          try { this.cv.photo = await this.toBase64(this.cv.photo); await this.$nextTick() } catch(e) { console.warn(e) }
-        }
-        this.zoom = 1; await this.$nextTick(); await new Promise(r=>setTimeout(r,600))
-        const el = document.getElementById('cv-render')
-        const orig = { width:el.style.width, minHeight:el.style.minHeight, fontSize:el.style.fontSize, position:el.style.position }
-        el.style.width='794px'; el.style.minHeight='1123px'; el.style.fontSize='13px'; el.style.position='relative'
-        await new Promise(r=>setTimeout(r,300))
-        const canvas = await window.html2canvas(el, {
-          scale:3, useCORS:true, allowTaint:true, backgroundColor:'#ffffff',
-          width:794, height:1123, windowWidth:794, windowHeight:1123,
-          scrollX:0, scrollY:0, x:0, y:0, logging:false, imageTimeout:15000, removeContainer:true,
-          onclone:(doc) => {
-            const cel=doc.getElementById('cv-render')
-            if(cel){cel.style.webkitFontSmoothing='antialiased';cel.style.textRendering='optimizeLegibility';cel.style.transform='none';cel.style.willChange='auto';cel.style.filter='none'}
+      }
+    })
+
+    // ── Capture la suite si le contenu dépasse 1123px ──
+    // On mesure la vraie hauteur totale
+    const totalHeight = el.scrollHeight
+    let canvas2 = null
+
+    if (totalHeight > 1123) {
+      // Capture le reste à partir de 1123px avec une marge haute de 20px
+      const MARGE = 20  // px de marge en haut de la page 2
+      const reste  = totalHeight - 1123
+
+      canvas2 = await window.html2canvas(el, {
+        scale: 3, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
+        width: 794, height: reste + MARGE,
+        windowWidth: 794, windowHeight: totalHeight,
+        scrollX: 0, scrollY: 0,
+        x: 0, y: 1123 - MARGE,  // commence MARGE px avant la coupure
+        logging: false, imageTimeout: 15000, removeContainer: true,
+        onclone: (doc) => {
+          const cel = doc.getElementById('cv-render')
+          if (cel) {
+            cel.style.webkitFontSmoothing = 'antialiased'
+            cel.style.textRendering = 'optimizeLegibility'
+            cel.style.transform = 'none'
+            cel.style.willChange = 'auto'
+            cel.style.filter = 'none'
+            // Hauteur totale pour que html2canvas voie tout le contenu
+            cel.style.height = totalHeight + 'px'
           }
-        })
-        const imgData = canvas.toDataURL('image/jpeg', 0.95)
-        const { jsPDF } = window.jspdf
-        const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4', compress:true })
-        pdf.addImage(imgData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), undefined, 'FAST')
-        pdf.save(`CV_${this.cv.firstName||'CV'}_${this.cv.lastName||''}.pdf`)
-        el.style.width=orig.width; el.style.minHeight=orig.minHeight; el.style.fontSize=orig.fontSize; el.style.position=orig.position
-        if (photoBackup) { this.cv.photo=photoBackup; this.cv.photoUrl=photoBackup }
-      } catch(e) { console.error('PDF error:',e); alert('Erreur lors de la génération du PDF.') }
-      finally { this.zoom=prevZoom; this.exporting=false }
-    },
+        }
+      })
+    }
+
+    const { jsPDF } = window.jspdf
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
+    const pageW = pdf.internal.pageSize.getWidth()   // 210mm
+    const pageH = pdf.internal.pageSize.getHeight()  // 297mm
+
+    // ── Page 1 : exactement comme l'ancien ──
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, pageH, undefined, 'FAST')
+
+    // ── Page 2 si contenu déborde ──
+    if (canvas2) {
+      pdf.addPage()
+
+      // Calcule la hauteur mm du canvas2
+      // canvas2.height = (reste + MARGE) * 3 (scale=3)
+      const MARGE    = 20
+      const pxToMm   = pageW / 794
+      const heightMm = ((canvas2.height / 3)) * pxToMm
+
+      pdf.addImage(canvas2.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, heightMm, undefined, 'FAST')
+    }
+
+    pdf.save(`CV_${this.cv.firstName || 'CV'}_${this.cv.lastName || ''}.pdf`)
+
+    el.style.width     = orig.width
+    el.style.minHeight = orig.minHeight
+    el.style.fontSize  = orig.fontSize
+    el.style.position  = orig.position
+
+    if (photoBackup) { this.cv.photo = photoBackup; this.cv.photoUrl = photoBackup }
+
+  } catch(e) {
+    console.error('PDF error:', e)
+    alert('Erreur lors de la génération du PDF.')
+  } finally {
+    this.zoom = prevZoom
+    this.exporting = false
+  }
+},
     toBase64(url) {
-      return new Promise((resolve,reject) => {
+      return new Promise((resolve, reject) => {
         API.get('/proxy-image', { params:{url}, responseType:'arraybuffer' })
-          .then(r => { const b=new Uint8Array(r.data); let s=''; b.forEach(x=>s+=String.fromCharCode(x)); resolve(`data:${r.headers['content-type']||'image/jpeg'};base64,${window.btoa(s)}`) })
+          .then(r => {
+            const b = new Uint8Array(r.data); let s = ''
+            b.forEach(x => s += String.fromCharCode(x))
+            resolve(`data:${r.headers['content-type']||'image/jpeg'};base64,${window.btoa(s)}`)
+          })
           .catch(() => {
-            const img=new Image(); img.crossOrigin='anonymous'
-            img.onload=()=>{ const c=document.createElement('canvas'); c.width=img.naturalWidth||300; c.height=img.naturalHeight||300; c.getContext('2d').drawImage(img,0,0); resolve(c.toDataURL('image/jpeg',0.92)) }
-            img.onerror=reject; img.src=url+(url.includes('?')? '&':'?')+'_t='+Date.now()
+            const img = new Image(); img.crossOrigin = 'anonymous'
+            img.onload = () => {
+              const c = document.createElement('canvas')
+              c.width = img.naturalWidth||300; c.height = img.naturalHeight||300
+              c.getContext('2d').drawImage(img, 0, 0)
+              resolve(c.toDataURL('image/jpeg', 0.92))
+            }
+            img.onerror = reject
+            img.src = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now()
           })
       })
     },
@@ -827,5 +946,4 @@ export default {
 @media(max-width:1200px){.workspace{grid-template-columns:340px 1fr}}
 @media(max-width:900px){.workspace{grid-template-columns:1fr;grid-template-rows:55vh 1fr;overflow:auto;height:auto}.cvgen{height:auto}.cvgen-topbar{flex-wrap:wrap;height:auto;padding:10px 16px;gap:8px}.stepper-pills{flex-wrap:wrap}.step-pill-label{display:none}.tpl-grid{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:600px){.tpl-grid{grid-template-columns:repeat(4,1fr)}}
-
 </style>
