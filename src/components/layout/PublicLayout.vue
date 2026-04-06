@@ -232,7 +232,8 @@
                 CV, compétences et opportunités — tout pour faire évoluer votre carrière.
               </span>
             </div>
-            <RouterLink to="/communaute" class="footer-link">Qui sommes-nous →</RouterLink>
+            <RouterLink to="/privacy" class="footer-link">Politique de confidentialité →</RouterLink>
+              <RouterLink to="/communaute" class="footer-link">Communauté →</RouterLink>
           </div>
           <div class="footer-row footer-bottom">
             <span>© 2026 LBS MARKET</span>

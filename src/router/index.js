@@ -28,6 +28,8 @@ const routes = [
       { path: 'preinscription/:slug', name: 'preinscription', component: () => import('@/views/public/formations/PreinscriptionView.vue'), meta: { title: 'Préinscription' } },
 
       { path: 'projets', name: 'projets', component: () => import('@/views/public/projets/ProjetsView.vue'), meta: { title: 'Projets' } },
+
+       { path: 'privacy', name: 'privacy', component: () => import('@/views/public/PrivacyView.vue'), meta: { title: 'Politique de confidentialité' } },
       { path: 'projets/:slug', name: 'projet-detail', component: () => import('@/views/public/projets/ProjetDetailView.vue'), meta: { title: 'Projet' } },
 
       { path: 'forum', name: 'forum', component: () => import('@/views/public/forum/ForumView.vue'), meta: { title: 'Forum' } },
@@ -41,11 +43,12 @@ const routes = [
       },
 
       {
-        path: '/cv-mobile',
-        name: 'cv-mobile',
-        component: () => import('@/views/public/Cvmobileview.vue') ,
-        meta: { layout: 'blank' } 
-      },
+  path: 'cv-credits/recharge',
+  name: 'cv-credits-recharge',
+  component: () => import('@/views/public/RechargeCvCredits.vue'),
+  meta: { requiresAuth: true, title: 'Recharger mes crédits CV' }
+},
+   
 
 
       // ── Dashboard (protégé) ──

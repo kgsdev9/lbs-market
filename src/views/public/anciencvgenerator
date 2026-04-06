@@ -963,20 +963,20 @@ export default {
     // },
 
     async loadProfile() {
-      this.loadingProfile = true
-      try {
-        const { data } = await API.get('/cv-profiles/mine')
-        this.applyProfile(data)
+  this.loadingProfile = true
+  try {
+    const { data } = await API.get('/cv-profiles/mine')
+    this.applyProfile(data)
 
-        // Solde crédits
-        const res = await API.get('/cv-credits/balance')
-        this.cvCredits = res.data.data.balance
-      } catch (e) {
-        console.error('Erreur chargement:', e)
-      } finally {
-        this.loadingProfile = false
-      }
-    },
+    // Solde crédits
+    const res = await API.get('/cv-credits/balance')
+    this.cvCredits = res.data.data.balance
+  } catch (e) {
+    console.error('Erreur chargement:', e)
+  } finally {
+    this.loadingProfile = false
+  }
+},
     applyProfile(data) {
       this.cvProfileId = data.id
       this.selectedTpl = data.template || 'classic'
@@ -1037,38 +1037,7 @@ export default {
     },
 
     async downloadPDF() {
-
-        this.exporting = true;
-      // ── 1. Vérifier et consommer 1 crédit AVANT de générer ──
-      try {
-        const { data } = await API.post('/cv-credits/use', {
-          cv_profile_id: this.cvProfileId
-        })
-
-        if (!data.success) {
-          alert(' Crédit insuffisant. Veuillez recharger votre compte.')
-         
-           this.$router.push({ name: 'cv-credits-recharge' })
-          return
-        }
-
-        this.cvCredits = data.balance
-
-      } catch (e) {
-        if (e.response?.status === 402) {
-          alert(' Crédit insuffisant. Veuillez recharger votre compte.')
-             this.$router.push({ name: 'cv-credits-recharge' })
-            return;
-           this.exporting = false;
-        } else {
-          alert('Erreur lors de la vérification du crédit.')
-           this.exporting = false;
-        }
-        return
-      }
-
-      // ── 2. Crédit OK → génère le PDF ──
-    
+      this.exporting = true
       const prevZoom = this.zoom
       try {
         if (!window.html2canvas) {
@@ -1102,6 +1071,7 @@ export default {
         const pageH = 297
         const pxToMm = pageW / 794
 
+        // ── Page 1 : capture fixe 1123px comme l'ancien ──
         const canvas1 = await window.html2canvas(el, {
           scale: 3, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
           width: 794, height: 1123,
@@ -1123,17 +1093,25 @@ export default {
         const { jsPDF } = window.jspdf
         const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
 
+        // Page 1 pleine
         pdf.addImage(canvas1.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, pageH, undefined, 'FAST')
 
+        // ── Page 2 si débordement ──
         if (totalHeight > 1123) {
-          const MARGE_TOP_PX = 30
+          const MARGE_TOP_PX = 30  // px de marge blanche en haut de la page 2
+
+          // Capture tout le contenu restant après 1123px
           const resteH = totalHeight - 1123
 
           const canvas2 = await window.html2canvas(el, {
             scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
-            width: 794, height: resteH,
-            windowWidth: 794, windowHeight: totalHeight,
-            scrollX: 0, scrollY: 0, x: 0, y: 1123,
+            width: 794,
+            height: resteH,
+            windowWidth: 794,
+            windowHeight: totalHeight,
+            scrollX: 0, scrollY: 0,
+            x: 0,
+            y: 1123,  // commence exactement après la page 1
             logging: false, imageTimeout: 15000, removeContainer: true,
             onclone: (doc) => {
               const cel = doc.getElementById('cv-render')
@@ -1147,15 +1125,22 @@ export default {
 
           pdf.addPage()
 
+          // Crée un canvas final avec marge blanche en haut
           const finalCanvas = document.createElement('canvas')
           finalCanvas.width = canvas2.width
           finalCanvas.height = canvas2.height + (MARGE_TOP_PX * SCALE)
           const ctx = finalCanvas.getContext('2d')
+
+          // Fond blanc total
           ctx.fillStyle = '#ffffff'
           ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height)
+
+          // Colle le contenu après la marge
           ctx.drawImage(canvas2, 0, MARGE_TOP_PX * SCALE)
 
+          // Hauteur mm de cette page
           const heightMm = (finalCanvas.height / SCALE) * pxToMm
+
           pdf.addImage(finalCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, heightMm, undefined, 'FAST')
         }
 
@@ -1171,17 +1156,11 @@ export default {
       } catch (e) {
         console.error('PDF error:', e)
         alert('Erreur lors de la génération du PDF.')
-        // ── Rembourse le crédit si le PDF a échoué ──
-        try {
-          await API.post('/cv-credits/refund', { cv_profile_id: this.cvProfileId })
-          this.cvCredits++
-        } catch (_) { }
       } finally {
         this.zoom = prevZoom
         this.exporting = false
       }
     },
-   
     toBase64(url) {
       return new Promise((resolve, reject) => {
         API.get('/proxy-image', { params: { url }, responseType: 'arraybuffer' })

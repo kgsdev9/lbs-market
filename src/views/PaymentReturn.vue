@@ -8,9 +8,9 @@
       <div class="return-sub">Merci de patienter quelques secondes.</div>
     </div>
 
-    <!-- ✅ Succès — responsecode = "0" -->
+    <!--  Succès — responsecode = "0" -->
     <div v-else-if="isPaid" class="return-card">
-      <div class="status-icon">✅</div>
+      <div class="status-icon"></div>
       <div class="return-title">Paiement confirmé !</div>
       <div class="return-sub">Votre commande a été enregistrée avec succès.</div>
       <div class="order-recap">
@@ -29,9 +29,9 @@
       </div>
     </div>
 
-    <!-- ❌ Échec — responsecode = "-1" -->
+    <!-- Échec — responsecode = "-1" -->
     <div v-else-if="isFailed" class="return-card">
-      <div class="status-icon">❌</div>
+      <div class="status-icon"></div>
       <div class="return-title">Paiement échoué</div>
       <div class="return-sub">La transaction a été annulée ou refusée.</div>
       <div class="order-recap">
@@ -45,14 +45,14 @@
         </div>
       </div>
       <div class="return-actions">
-        <RouterLink to="/" class="btn btn-primary">Réessayer</RouterLink>
+        <RouterLink to="/cv-credits/recharge" class="btn btn-primary">Réessayer</RouterLink>
         <RouterLink to="/" class="btn btn-ghost">Retour à l'accueil</RouterLink>
       </div>
     </div>
 
-    <!-- ⚠️ Référence manquante -->
+    <!-- Référence manquante -->
     <div v-else class="return-card">
-      <div class="status-icon">⚠️</div>
+      <div class="status-icon"></div>
       <div class="return-title">Paramètres manquants</div>
       <div class="return-sub">Impossible de déterminer le statut du paiement.</div>
       <RouterLink to="/" class="btn btn-ghost">Retour à l'accueil</RouterLink>
