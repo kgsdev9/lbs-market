@@ -793,12 +793,15 @@ export default {
 
     const fullCanvas = await window.html2canvas(el, {
       scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
-      width: PAGE_W_PX, height: totalHeight, windowWidth: PAGE_W_PX, windowHeight: totalHeight,
+      width: PAGE_W_PX, height: totalHeight, windowWidth: 1200, windowHeight: totalHeight,
       scrollX: 0, scrollY: 0, x: 0, y: 0,
       logging: false, imageTimeout: 15000, removeContainer: true,
       onclone: (doc) => {
         const cel = doc.getElementById('cv-render')
         if (cel) {
+          cel.style.width = PAGE_W_PX + 'px'
+          cel.style.minWidth = PAGE_W_PX + 'px'
+          cel.style.maxWidth = PAGE_W_PX + 'px'
           cel.style.height = totalHeight + 'px'
           cel.style.overflow = 'visible'
           cel.style.transform = 'none'
@@ -807,6 +810,10 @@ export default {
           cel.style.willChange = 'auto'
           cel.style.filter = 'none'
         }
+        // Disable mobile media queries in cloned doc
+        const style = doc.createElement('style')
+        style.textContent = '@media(max-width:1200px){.workspace{grid-template-columns:380px 1fr !important}} @media(max-width:900px){.workspace{grid-template-columns:380px 1fr !important}} #cv-render, #cv-render *{max-width:none !important}'
+        doc.head.appendChild(style)
       }
     })
 
