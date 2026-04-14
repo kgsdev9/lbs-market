@@ -517,88 +517,188 @@ export default {
       this.applySmartPageBreaks()
     },
 
+    /* ═══════════════════════════════════════════════════════════
+       FIX 1+2 : applySmartPageBreaks — multi-pass algorithm
+       - Pass 1 : titres de section orphelins (derniers 120px)
+       - Pass 2 : entrées qui chevauchent une limite de page
+       Chaque pass fait break+restart après insertion d'un spacer
+       pour recalculer les positions correctement.
+    ═══════════════════════════════════════════════════════════ */
     applySmartPageBreaks() {
-  this.$nextTick(() => {
-    setTimeout(() => {
-      const el = document.getElementById('cv-render')
-      if (!el) return
+      this.$nextTick(() => {
+        setTimeout(() => {
+          const el = document.getElementById('cv-render')
+          if (!el) return
 
-      const PAGE_H = 1123
-      
-      // Reset tous les page-breaks précédents
-      el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
-      el.querySelectorAll('[data-pb-padding]').forEach(node => {
-        node.style.paddingTop = ''
-        node.removeAttribute('data-pb-padding')
-      })
+          const PAGE_H = 1123
 
-      // Sélecteurs des éléments "insécables" — ne jamais couper au milieu
-      const breakableSelectors = [
-        // Sections headers
-        '.cc-sec-t, .cm-sec-t, .cmod-sec-t, .corp-sec-t, .eleg-sec-t, .dk-sec-t',
-        '.tl-sec-t, .sw-sec-t, .cr-sec-t, .tk-sec-t, .acad-sec-t, .lux-sec-t',
-        '.grad-sec-t, .cp-sec-t, .ex-sec-t, .vl-msec-title, .nd-sec-t',
-        '.fd-sec-t, .pr-sec-t, .sb-sec-t-r, .g2-sec-t, .nv-sec-t, .cr2-sec-t',
-        // Entries (expériences, formations, projets)
-        '.cc-entry, .cm-entry, .cmod-entry, .corp-entry, .eleg-entry, .dk-entry',
-        '.tl-item, .sw-exp, .cr-exp, .tk-exp, .acad-entry, .lux-entry',
-        '.grad-entry, .cp-entry, .ex-entry, .vl-exp-entry, .vl-edu-entry',
-        '.nd-entry, .fd-entry, .pr-entry, .sb-entry, .g2-exp, .g2-edu-item',
-        '.nv-card, .cr2-entry',
-        // Projets
-        '.cmod-proj, .dk-proj, .cr-proj, .tk-proj, .lux-proj, .grad-proj',
-        '.cp-proj, .nd-proj, .fd-proj, .pr-proj, .g2-proj, .acad-pub',
-        // Skills blocks
-        '.cc-skill, .corp-skill, .dk-skill, .tl-skill, .sw-skill',
-        '.grad-skill, .cp-skill, .nd-skill, .fd-skill, .pr-skill',
-      ].join(', ')
+          // Nettoyage complet des spacers précédents
+          el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
 
-      const nodes = el.querySelectorAll(breakableSelectors)
-      
-      let totalOffset = 0
+          // Sélecteurs
+          const entrySelectors = [
+            '.cc-entry, .cm-entry, .cmod-entry, .corp-entry, .eleg-entry, .dk-entry',
+            '.tl-item, .sw-exp, .cr-exp, .tk-exp, .acad-entry, .lux-entry',
+            '.grad-entry, .cp-entry, .ex-entry, .vl-exp-entry, .vl-edu-entry',
+            '.nd-entry, .fd-entry, .pr-entry, .sb-entry, .g2-exp, .g2-edu-item',
+            '.nv-card, .cr2-entry',
+            '.cmod-proj, .dk-proj, .cr-proj, .tk-proj, .lux-proj, .grad-proj',
+            '.cp-proj, .nd-proj, .fd-proj, .pr-proj, .g2-proj, .acad-pub',
+            '.cc-skill, .corp-skill, .dk-skill, .tl-skill, .sw-skill',
+            '.grad-skill, .cp-skill, .nd-skill, .fd-skill, .pr-skill',
+          ].join(', ')
 
-      nodes.forEach(node => {
-        const rect = node.getBoundingClientRect()
-        const elRect = el.getBoundingClientRect()
-        const nodeTop = rect.top - elRect.top
-        const nodeBottom = rect.bottom - elRect.top
-        const nodeHeight = rect.height
+          const sectionTitleSelectors = [
+            '.cc-sec-t, .cm-sec-t, .cmod-sec-t, .corp-sec-t, .eleg-sec-t, .dk-sec-t',
+            '.tl-sec-t, .sw-sec-t, .cr-sec-t, .tk-sec-t, .acad-sec-t, .lux-sec-t',
+            '.grad-sec-t, .cp-sec-t, .ex-sec-t, .vl-msec-title, .nd-sec-t',
+            '.fd-sec-t, .pr-sec-t, .sb-sec-t-r, .g2-sec-t, .nv-sec-t, .cr2-sec-t',
+          ].join(', ')
 
-        // Sur quelle page commence cet élément ?
-        const pageStart = Math.floor(nodeTop / PAGE_H)
-        // Où est la limite de page la plus proche en dessous ?
-        const pageBoundary = (pageStart + 1) * PAGE_H
+          const sectionContainerSelectors =
+            '.cc-sec, .cm-sec, .cmod-sec, .corp-sec, .eleg-sec, .dk-sec, ' +
+            '.tl-sec, .sw-sec, .cr-sec, .tk-sec, .acad-sec, .lux-sec, ' +
+            '.grad-sec, .cp-sec, .ex-sec, .vl-msec, .nd-sec, ' +
+            '.fd-sec, .pr-sec, .sb-sec-r, .g2-sec, .nv-sec, .cr2-sec'
 
-        // Si l'élément chevauche une limite de page
-        if (nodeTop < pageBoundary && nodeBottom > pageBoundary) {
-          // Combien dépasse-t-il ?
-          const overflow = nodeBottom - pageBoundary
-          const spaceBeforeBoundary = pageBoundary - nodeTop
+          // ══ PASS 1 : Titres de section orphelins ══
+          let maxPasses = 15
+          let changed = true
 
-          // Si l'élément est petit (< 60% de la page), on le pousse à la page suivante
-          // Si l'élément est gros, on le laisse se couper (pas le choix)
-          if (nodeHeight < PAGE_H * 0.6) {
-            const spacerHeight = spaceBeforeBoundary + 16 // 16px de marge
-            
-            // Créer un spacer avant l'élément
-            const spacer = document.createElement('div')
-            spacer.className = 'cv-page-break-spacer'
-            spacer.style.height = spacerHeight + 'px'
-            spacer.style.width = '100%'
-            spacer.style.flexShrink = '0'
-            
-            node.parentNode.insertBefore(spacer, node)
-            totalOffset += spacerHeight
+          while (changed && maxPasses-- > 0) {
+            changed = false
+            const titles = el.querySelectorAll(sectionTitleSelectors)
+            const elRect = el.getBoundingClientRect()
+
+            for (const title of titles) {
+              const titleRect = title.getBoundingClientRect()
+              const titleTop = titleRect.top - elRect.top
+              const titleBottom = titleRect.bottom - elRect.top
+
+              if (titleTop < 1) continue
+
+              const pageStart = Math.floor(titleTop / PAGE_H)
+              const pageBoundary = (pageStart + 1) * PAGE_H
+              const distanceToBoundary = pageBoundary - titleTop
+
+              // Titre dans les derniers 120px de la page → pousser la section
+              if (distanceToBoundary > 0 && distanceToBoundary < 120 && titleTop > PAGE_H * 0.3) {
+                const spacerHeight = distanceToBoundary + 12
+                const spacer = document.createElement('div')
+                spacer.className = 'cv-page-break-spacer'
+                spacer.style.height = spacerHeight + 'px'
+                spacer.style.width = '100%'
+                spacer.style.flexShrink = '0'
+
+                const parentSec = title.closest(sectionContainerSelectors)
+                const target = parentSec || title
+                target.parentNode.insertBefore(spacer, target)
+                changed = true
+                break // restart — positions ont changé
+              }
+
+              // Titre qui chevauche directement une limite
+              if (titleTop < pageBoundary && titleBottom > pageBoundary) {
+                const spacerHeight = (pageBoundary - titleTop) + 12
+                const spacer = document.createElement('div')
+                spacer.className = 'cv-page-break-spacer'
+                spacer.style.height = spacerHeight + 'px'
+                spacer.style.width = '100%'
+                spacer.style.flexShrink = '0'
+
+                const parentSec = title.closest(sectionContainerSelectors)
+                const target = parentSec || title
+                target.parentNode.insertBefore(spacer, target)
+                changed = true
+                break
+              }
+            }
           }
-        }
-      })
 
-      // Recalculer le nombre de pages après ajustement
-      const finalHeight = el.scrollHeight
-      this.calculatedPageCount = Math.max(1, Math.ceil(finalHeight / PAGE_H))
-    }, 200)
-  })
-},
+          // ══ PASS 1.5 : Sections complètes qui chevauchent une limite ══
+          // Si une section (titre + entrées) est coupée entre 2 pages
+          // ET qu'elle est assez petite pour tenir sur 1 page → pousser toute la section
+          maxPasses = 10
+          changed = true
+
+          while (changed && maxPasses-- > 0) {
+            changed = false
+            const sections = el.querySelectorAll(sectionContainerSelectors)
+            const elRect = el.getBoundingClientRect()
+
+            for (const sec of sections) {
+              const rect = sec.getBoundingClientRect()
+              const secTop = rect.top - elRect.top
+              const secBottom = rect.bottom - elRect.top
+              const secHeight = rect.height
+
+              if (secHeight < 2 || secTop < 1) continue
+
+              const pageStart = Math.floor(secTop / PAGE_H)
+              const pageBoundary = (pageStart + 1) * PAGE_H
+
+              // La section chevauche-t-elle une limite de page ?
+              if (secTop < pageBoundary && secBottom > pageBoundary) {
+                // La section est-elle assez petite pour tenir sur 1 page ? (< 55%)
+                if (secHeight < PAGE_H * 0.55) {
+                  const spacerHeight = (pageBoundary - secTop) + 10
+                  const spacer = document.createElement('div')
+                  spacer.className = 'cv-page-break-spacer'
+                  spacer.style.height = spacerHeight + 'px'
+                  spacer.style.width = '100%'
+                  spacer.style.flexShrink = '0'
+                  sec.parentNode.insertBefore(spacer, sec)
+                  changed = true
+                  break // restart
+                }
+              }
+            }
+          }
+
+          // ══ PASS 2 : Entrées / blocs qui chevauchent une limite ══
+          maxPasses = 20
+          changed = true
+
+          while (changed && maxPasses-- > 0) {
+            changed = false
+            const nodes = el.querySelectorAll(entrySelectors)
+            const elRect = el.getBoundingClientRect()
+
+            for (const node of nodes) {
+              if (node.classList.contains('cv-page-break-spacer')) continue
+
+              const rect = node.getBoundingClientRect()
+              const nodeTop = rect.top - elRect.top
+              const nodeBottom = rect.bottom - elRect.top
+              const nodeHeight = rect.height
+
+              if (nodeHeight < 2) continue
+
+              const pageStart = Math.floor(nodeTop / PAGE_H)
+              const pageBoundary = (pageStart + 1) * PAGE_H
+
+              if (nodeTop < pageBoundary && nodeBottom > pageBoundary) {
+                if (nodeHeight < PAGE_H * 0.7) {
+                  const spacerHeight = (pageBoundary - nodeTop) + 10
+                  const spacer = document.createElement('div')
+                  spacer.className = 'cv-page-break-spacer'
+                  spacer.style.height = spacerHeight + 'px'
+                  spacer.style.width = '100%'
+                  spacer.style.flexShrink = '0'
+                  node.parentNode.insertBefore(spacer, node)
+                  changed = true
+                  break // restart — positions ont changé
+                }
+              }
+            }
+          }
+
+          // Nombre de pages
+          const finalHeight = el.scrollHeight
+          this.calculatedPageCount = Math.max(1, Math.ceil(finalHeight / PAGE_H))
+        }, 200)
+      })
+    },
 
     addExp() {
       this.cv.experiences.push({
@@ -721,145 +821,170 @@ export default {
       finally { this.saving = false }
     },
 
+    /* ═══════════════════════════════════════════════════════════
+       FIX 3 : downloadPDF — photo backup systématique
+       - Backup TOUJOURS cv.photo + cv.photoUrl avant export
+       - Nettoyage spacers après export (try + catch + finally)
+       - Restore garanti même en cas d'erreur
+    ═══════════════════════════════════════════════════════════ */
     async downloadPDF() {
-  this.exporting = true;
-  try {
-    const { data } = await API.post('/cv-credits/use', { cv_profile_id: this.cvProfileId })
-    if (!data.success) {
-      alert('Crédit insuffisant. Veuillez recharger votre compte.')
-      this.$router.push({ name: 'cv-credits-recharge' })
-      this.exporting = false
-      return
-    }
-    this.cvCredits = data.balance
-  } catch (e) {
-    if (e.response?.status === 402) {
-      alert('Crédit insuffisant. Veuillez recharger votre compte.')
-      this.$router.push({ name: 'cv-credits-recharge' })
-    } else {
-      alert('Erreur lors de la vérification du crédit.')
-    }
-    this.exporting = false
-    return
-  }
-
-  const prevZoom = this.zoom
-  try {
-    if (!window.html2canvas) {
-      await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
-    }
-    if (!window.jspdf) {
-      await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
-    }
-
-    let photoBackup = null
-    if (this.cv.photo && this.cv.photo.startsWith('http')) {
-      photoBackup = this.cv.photo
-      try { this.cv.photo = await this.toBase64(this.cv.photo); await this.$nextTick() } catch (e) { console.warn(e) }
-    }
-
-    this.zoom = 1
-    await this.$nextTick()
-    await new Promise(r => setTimeout(r, 600))
-
-    const el = document.getElementById('cv-render')
-    const orig = {
-      width: el.style.width, minHeight: el.style.minHeight, fontSize: el.style.fontSize,
-      position: el.style.position, height: el.style.height, overflow: el.style.overflow
-    }
-
-    el.style.width = '794px'
-    el.style.minHeight = '1123px'
-    el.style.fontSize = '13px'
-    el.style.position = 'relative'
-    el.style.height = 'auto'
-    el.style.overflow = 'visible'
-
-    await new Promise(r => setTimeout(r, 400))
-
-    // Smart page breaks
-    this.applySmartPageBreaks()
-    await new Promise(r => setTimeout(r, 400))
-
-    const SCALE = 3
-    const PAGE_W_PX = 794
-    const PAGE_H_PX = 1123
-    const PAGE_W_MM = 210
-    const PAGE_H_MM = 297
-    const totalHeight = el.scrollHeight
-
-    el.style.height = totalHeight + 'px'
-    await new Promise(r => setTimeout(r, 200))
-
-    const fullCanvas = await window.html2canvas(el, {
-      scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
-      width: PAGE_W_PX, height: totalHeight, windowWidth: 1200, windowHeight: totalHeight,
-      scrollX: 0, scrollY: 0, x: 0, y: 0,
-      logging: false, imageTimeout: 15000, removeContainer: true,
-      onclone: (doc) => {
-        const cel = doc.getElementById('cv-render')
-        if (cel) {
-          cel.style.width = PAGE_W_PX + 'px'
-          cel.style.minWidth = PAGE_W_PX + 'px'
-          cel.style.maxWidth = PAGE_W_PX + 'px'
-          cel.style.height = totalHeight + 'px'
-          cel.style.overflow = 'visible'
-          cel.style.transform = 'none'
-          cel.style.webkitFontSmoothing = 'antialiased'
-          cel.style.textRendering = 'optimizeLegibility'
-          cel.style.willChange = 'auto'
-          cel.style.filter = 'none'
+      this.exporting = true;
+      try {
+        const { data } = await API.post('/cv-credits/use', { cv_profile_id: this.cvProfileId })
+        if (!data.success) {
+          alert('Crédit insuffisant. Veuillez recharger votre compte.')
+          this.$router.push({ name: 'cv-credits-recharge' })
+          this.exporting = false
+          return
         }
-        // Disable mobile media queries in cloned doc
-        const style = doc.createElement('style')
-        style.textContent = '@media(max-width:1200px){.workspace{grid-template-columns:380px 1fr !important}} @media(max-width:900px){.workspace{grid-template-columns:380px 1fr !important}} #cv-render, #cv-render *{max-width:none !important}'
-        doc.head.appendChild(style)
+        this.cvCredits = data.balance
+      } catch (e) {
+        if (e.response?.status === 402) {
+          alert('Crédit insuffisant. Veuillez recharger votre compte.')
+          this.$router.push({ name: 'cv-credits-recharge' })
+        } else {
+          alert('Erreur lors de la vérification du crédit.')
+        }
+        this.exporting = false
+        return
       }
-    })
 
-    const { jsPDF } = window.jspdf
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
-    const scaledPageW = PAGE_W_PX * SCALE
-    const scaledPageH = PAGE_H_PX * SCALE
-    const totalPages = Math.max(1, Math.ceil(fullCanvas.height / scaledPageH))
+      const prevZoom = this.zoom
 
-    for (let page = 0; page < totalPages; page++) {
-      const srcY = page * scaledPageH
-      const srcH = Math.min(scaledPageH, fullCanvas.height - srcY)
-      if (page > 0 && srcH < scaledPageH * 0.08) break
-      if (page > 0) pdf.addPage()
+      // ══ BACKUP COMPLET de la photo (data URL ou HTTP) ══
+      const photoBackup = this.cv.photo || ''
+      const photoUrlBackup = this.cv.photoUrl || ''
 
-      const pageCanvas = document.createElement('canvas')
-      pageCanvas.width = scaledPageW
-      pageCanvas.height = scaledPageH
-      const ctx = pageCanvas.getContext('2d')
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(0, 0, scaledPageW, scaledPageH)
-      ctx.drawImage(fullCanvas, 0, srcY, scaledPageW, srcH, 0, 0, scaledPageW, srcH)
-      pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, PAGE_W_MM, PAGE_H_MM, undefined, 'FAST')
-    }
+      try {
+        if (!window.html2canvas) {
+          await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
+        }
+        if (!window.jspdf) {
+          await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
+        }
 
-    pdf.save(`CV_${this.cv.firstName || 'CV'}_${this.cv.lastName || ''}.pdf`)
+        // Convertir photo HTTP → base64 pour html2canvas
+        if (this.cv.photo && this.cv.photo.startsWith('http')) {
+          try {
+            this.cv.photo = await this.toBase64(this.cv.photo)
+            await this.$nextTick()
+          } catch (e) { console.warn('Conversion photo échouée:', e) }
+        }
 
-    // Restaurer
-    el.style.width = orig.width
-    el.style.minHeight = orig.minHeight
-    el.style.fontSize = orig.fontSize
-    el.style.position = orig.position
-    el.style.height = orig.height
-    el.style.overflow = orig.overflow
+        this.zoom = 1
+        await this.$nextTick()
+        await new Promise(r => setTimeout(r, 600))
 
-    if (photoBackup) { this.cv.photo = photoBackup; this.cv.photoUrl = photoBackup }
+        const el = document.getElementById('cv-render')
+        const orig = {
+          width: el.style.width, minHeight: el.style.minHeight, fontSize: el.style.fontSize,
+          position: el.style.position, height: el.style.height, overflow: el.style.overflow
+        }
 
-  } catch (e) {
-    console.error('PDF error:', e)
-    alert('Erreur lors de la génération du PDF.')
-    try { await API.post('/cv-credits/refund', { cv_profile_id: this.cvProfileId }); this.cvCredits++ } catch (_) { }
-  } finally {
-    this.zoom = prevZoom
-    this.exporting = false
-  }
-},
+        el.style.width = '794px'
+        el.style.minHeight = '1123px'
+        el.style.fontSize = '13px'
+        el.style.position = 'relative'
+        el.style.height = 'auto'
+        el.style.overflow = 'visible'
+
+        await new Promise(r => setTimeout(r, 400))
+
+        // Smart page breaks pour l'export
+        this.applySmartPageBreaks()
+        await new Promise(r => setTimeout(r, 500))
+
+        const SCALE = 3
+        const PAGE_W_PX = 794
+        const PAGE_H_PX = 1123
+        const PAGE_W_MM = 210
+        const PAGE_H_MM = 297
+        const totalHeight = el.scrollHeight
+
+        el.style.height = totalHeight + 'px'
+        await new Promise(r => setTimeout(r, 200))
+
+        const fullCanvas = await window.html2canvas(el, {
+          scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
+          width: PAGE_W_PX, height: totalHeight, windowWidth: 1200, windowHeight: totalHeight,
+          scrollX: 0, scrollY: 0, x: 0, y: 0,
+          logging: false, imageTimeout: 15000, removeContainer: true,
+          onclone: (doc) => {
+            const cel = doc.getElementById('cv-render')
+            if (cel) {
+              cel.style.width = PAGE_W_PX + 'px'
+              cel.style.minWidth = PAGE_W_PX + 'px'
+              cel.style.maxWidth = PAGE_W_PX + 'px'
+              cel.style.height = totalHeight + 'px'
+              cel.style.overflow = 'visible'
+              cel.style.transform = 'none'
+              cel.style.webkitFontSmoothing = 'antialiased'
+              cel.style.textRendering = 'optimizeLegibility'
+              cel.style.willChange = 'auto'
+              cel.style.filter = 'none'
+            }
+            const style = doc.createElement('style')
+            style.textContent = '@media(max-width:1200px){.workspace{grid-template-columns:380px 1fr !important}} @media(max-width:900px){.workspace{grid-template-columns:380px 1fr !important}} #cv-render, #cv-render *{max-width:none !important}'
+            doc.head.appendChild(style)
+          }
+        })
+
+        const { jsPDF } = window.jspdf
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
+        const scaledPageW = PAGE_W_PX * SCALE
+        const scaledPageH = PAGE_H_PX * SCALE
+        const totalPages = Math.max(1, Math.ceil(fullCanvas.height / scaledPageH))
+
+        for (let page = 0; page < totalPages; page++) {
+          const srcY = page * scaledPageH
+          const srcH = Math.min(scaledPageH, fullCanvas.height - srcY)
+          if (page > 0 && srcH < scaledPageH * 0.08) break
+          if (page > 0) pdf.addPage()
+
+          const pageCanvas = document.createElement('canvas')
+          pageCanvas.width = scaledPageW
+          pageCanvas.height = scaledPageH
+          const ctx = pageCanvas.getContext('2d')
+          ctx.fillStyle = '#ffffff'
+          ctx.fillRect(0, 0, scaledPageW, scaledPageH)
+          ctx.drawImage(fullCanvas, 0, srcY, scaledPageW, srcH, 0, 0, scaledPageW, srcH)
+          pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, PAGE_W_MM, PAGE_H_MM, undefined, 'FAST')
+        }
+
+        pdf.save(`CV_${this.cv.firstName || 'CV'}_${this.cv.lastName || ''}.pdf`)
+
+        // ══ RESTAURATION ══
+        el.style.width = orig.width
+        el.style.minHeight = orig.minHeight
+        el.style.fontSize = orig.fontSize
+        el.style.position = orig.position
+        el.style.height = orig.height
+        el.style.overflow = orig.overflow
+
+        // Nettoyage spacers d'export
+        el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
+
+        // Restauration photo (TOUJOURS — pas seulement si HTTP)
+        this.cv.photo = photoBackup
+        this.cv.photoUrl = photoUrlBackup
+
+      } catch (e) {
+        console.error('PDF error:', e)
+        alert('Erreur lors de la génération du PDF.')
+        try { await API.post('/cv-credits/refund', { cv_profile_id: this.cvProfileId }); this.cvCredits++ } catch (_) { }
+
+        // Restauration aussi en cas d'erreur
+        const el = document.getElementById('cv-render')
+        if (el) el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
+        this.cv.photo = photoBackup
+        this.cv.photoUrl = photoUrlBackup
+      } finally {
+        this.zoom = prevZoom
+        this.exporting = false
+        // Recalculer les page breaks pour l'aperçu
+        this.$nextTick(() => this.updatePageCount())
+      }
+    },
 
     toBase64(url) {
       return new Promise((resolve, reject) => {
