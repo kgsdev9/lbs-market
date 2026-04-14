@@ -42,3 +42,19 @@ Problème 4
 Lors de l’export du CV, la photo de profil disparaît temporairement.
 Je suis obligé de recharger manuellement la page pour qu’elle réapparaisse.
 Merci de corriger ce bug d’affichage lors de l’export.
+
+
+Le design est propre. Cependant, concernant le modèle, il y a une sidebar colorée. Le problème est que lorsque le contenu passe sur la deuxième page, la sidebar continue également sur cette page.
+Or, je ne souhaite pas que la longueur de la sidebar s’étende sur la deuxième page. Seul le contenu doit passer à la page suivante, tandis que la sidebar doit rester limitée à la première page.
+
+mtn j'aiemrais etteindee les models ou il au un sidebar sur l'ensemble de la premiere page comme la deuxieme
+
+.cmod-aside,
+.vl-sidebar,
+.pr-sidebar,
+.sb-left,
+.grad-aside,
+.cr2-sidebar {
+  max-height: 1123px;
+  overflow: hidden;
+}

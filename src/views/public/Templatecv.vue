@@ -2933,4 +2933,5 @@ export default {
 .cr2-bullet-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px;background:#9b1c31}
 .cr2-bullet-text{font-size:12.5px;color:#555;line-height:1.55}
 
+
 </style>
