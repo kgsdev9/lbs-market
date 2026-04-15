@@ -827,164 +827,158 @@ export default {
        - Nettoyage spacers après export (try + catch + finally)
        - Restore garanti même en cas d'erreur
     ═══════════════════════════════════════════════════════════ */
-    async downloadPDF() {
-      this.exporting = true;
-      try {
-        const { data } = await API.post('/cv-credits/use', { cv_profile_id: this.cvProfileId })
-        if (!data.success) {
-          alert('Crédit insuffisant. Veuillez recharger votre compte.')
-          this.$router.push({ name: 'cv-credits-recharge' })
-          this.exporting = false
-          return
-        }
-        this.cvCredits = data.balance
-      } catch (e) {
-        if (e.response?.status === 402) {
-          alert('Crédit insuffisant. Veuillez recharger votre compte.')
-          this.$router.push({ name: 'cv-credits-recharge' })
-        } else {
-          alert('Erreur lors de la vérification du crédit.')
-        }
-        this.exporting = false
-        return
-      }
+   async downloadPDF() {
+  this.exporting = true;
+  try {
+    const { data } = await API.post('/cv-credits/use', { cv_profile_id: this.cvProfileId })
+    if (!data.success) {
+      alert('Crédit insuffisant. Veuillez recharger votre compte.')
+      this.$router.push({ name: 'cv-credits-recharge' })
+      this.exporting = false
+      return
+    }
+    this.cvCredits = data.balance
+  } catch (e) {
+    if (e.response?.status === 402) {
+      alert('Crédit insuffisant. Veuillez recharger votre compte.')
+      this.$router.push({ name: 'cv-credits-recharge' })
+    } else {
+      alert('Erreur lors de la vérification du crédit.')
+    }
+    this.exporting = false
+    return
+  }
 
-      const prevZoom = this.zoom
+  const prevZoom = this.zoom
 
-      // ══ BACKUP COMPLET de la photo (data URL ou HTTP) ══
-      const photoBackup = this.cv.photo || ''
-      const photoUrlBackup = this.cv.photoUrl || ''
+  try {
+    if (!window.html2canvas) {
+      await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
+    }
+    if (!window.jspdf) {
+      await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
+    }
 
-      try {
-        if (!window.html2canvas) {
-          await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
-        }
-        if (!window.jspdf) {
-          await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
-        }
+    this.zoom = 1
+    await this.$nextTick()
+    await new Promise(r => setTimeout(r, 600))
 
-        // Convertir photo HTTP → base64 pour html2canvas
-        if (this.cv.photo && this.cv.photo.startsWith('http')) {
-          try {
-            this.cv.photo = await this.toBase64(this.cv.photo)
-            await this.$nextTick()
-          } catch (e) { console.warn('Conversion photo échouée:', e) }
-        }
+    const el = document.getElementById('cv-render')
+    const orig = {
+      width: el.style.width, minHeight: el.style.minHeight, fontSize: el.style.fontSize,
+      position: el.style.position, height: el.style.height, overflow: el.style.overflow
+    }
 
-        this.zoom = 1
-        await this.$nextTick()
-        await new Promise(r => setTimeout(r, 600))
+    el.style.width = '794px'
+    el.style.minHeight = '1123px'
+    el.style.fontSize = '13px'
+    el.style.position = 'relative'
+    el.style.height = 'auto'
+    el.style.overflow = 'visible'
 
-        const el = document.getElementById('cv-render')
-        const orig = {
-          width: el.style.width, minHeight: el.style.minHeight, fontSize: el.style.fontSize,
-          position: el.style.position, height: el.style.height, overflow: el.style.overflow
-        }
+    await new Promise(r => setTimeout(r, 400))
 
-        el.style.width = '794px'
-        el.style.minHeight = '1123px'
-        el.style.fontSize = '13px'
-        el.style.position = 'relative'
-        el.style.height = 'auto'
-        el.style.overflow = 'visible'
+    // Smart page breaks pour l'export
+    this.applySmartPageBreaks()
+    await new Promise(r => setTimeout(r, 500))
 
-        await new Promise(r => setTimeout(r, 400))
+    const SCALE = 3
+    const PAGE_W_PX = 794
+    const PAGE_H_PX = 1123
+    const PAGE_W_MM = 210
+    const PAGE_H_MM = 297
+    const totalHeight = el.scrollHeight
 
-        // Smart page breaks pour l'export
-        this.applySmartPageBreaks()
-        await new Promise(r => setTimeout(r, 500))
+    el.style.height = totalHeight + 'px'
+    await new Promise(r => setTimeout(r, 200))
 
-        const SCALE = 3
-        const PAGE_W_PX = 794
-        const PAGE_H_PX = 1123
-        const PAGE_W_MM = 210
-        const PAGE_H_MM = 297
-        const totalHeight = el.scrollHeight
+    // Référence à toBase64 pour utilisation dans onclone
+    const toBase64Fn = this.toBase64.bind(this)
 
-        el.style.height = totalHeight + 'px'
-        await new Promise(r => setTimeout(r, 200))
+    const fullCanvas = await window.html2canvas(el, {
+      scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
+      width: PAGE_W_PX, height: totalHeight, windowWidth: 1200, windowHeight: totalHeight,
+      scrollX: 0, scrollY: 0, x: 0, y: 0,
+      logging: false, imageTimeout: 15000, removeContainer: true,
+      onclone: async (doc) => {
+        const cel = doc.getElementById('cv-render')
+        if (cel) {
+          cel.style.width = PAGE_W_PX + 'px'
+          cel.style.minWidth = PAGE_W_PX + 'px'
+          cel.style.maxWidth = PAGE_W_PX + 'px'
+          cel.style.height = totalHeight + 'px'
+          cel.style.overflow = 'visible'
+          cel.style.transform = 'none'
+          cel.style.webkitFontSmoothing = 'antialiased'
+          cel.style.textRendering = 'optimizeLegibility'
+          cel.style.willChange = 'auto'
+          cel.style.filter = 'none'
 
-        const fullCanvas = await window.html2canvas(el, {
-          scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
-          width: PAGE_W_PX, height: totalHeight, windowWidth: 1200, windowHeight: totalHeight,
-          scrollX: 0, scrollY: 0, x: 0, y: 0,
-          logging: false, imageTimeout: 15000, removeContainer: true,
-          onclone: (doc) => {
-            const cel = doc.getElementById('cv-render')
-            if (cel) {
-              cel.style.width = PAGE_W_PX + 'px'
-              cel.style.minWidth = PAGE_W_PX + 'px'
-              cel.style.maxWidth = PAGE_W_PX + 'px'
-              cel.style.height = totalHeight + 'px'
-              cel.style.overflow = 'visible'
-              cel.style.transform = 'none'
-              cel.style.webkitFontSmoothing = 'antialiased'
-              cel.style.textRendering = 'optimizeLegibility'
-              cel.style.willChange = 'auto'
-              cel.style.filter = 'none'
+          // Convertir les images HTTP → base64 DANS LE CLONE uniquement
+          const imgs = cel.querySelectorAll('img')
+          for (const img of imgs) {
+            if (img.src && img.src.startsWith('http')) {
+              try {
+                img.src = await toBase64Fn(img.src)
+              } catch (e) { console.warn('Clone img conversion failed:', e) }
             }
-            const style = doc.createElement('style')
-            style.textContent = '@media(max-width:1200px){.workspace{grid-template-columns:380px 1fr !important}} @media(max-width:900px){.workspace{grid-template-columns:380px 1fr !important}} #cv-render, #cv-render *{max-width:none !important}'
-            doc.head.appendChild(style)
           }
-        })
-
-        const { jsPDF } = window.jspdf
-        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
-        const scaledPageW = PAGE_W_PX * SCALE
-        const scaledPageH = PAGE_H_PX * SCALE
-        const totalPages = Math.max(1, Math.ceil(fullCanvas.height / scaledPageH))
-
-        for (let page = 0; page < totalPages; page++) {
-          const srcY = page * scaledPageH
-          const srcH = Math.min(scaledPageH, fullCanvas.height - srcY)
-          if (page > 0 && srcH < scaledPageH * 0.08) break
-          if (page > 0) pdf.addPage()
-
-          const pageCanvas = document.createElement('canvas')
-          pageCanvas.width = scaledPageW
-          pageCanvas.height = scaledPageH
-          const ctx = pageCanvas.getContext('2d')
-          ctx.fillStyle = '#ffffff'
-          ctx.fillRect(0, 0, scaledPageW, scaledPageH)
-          ctx.drawImage(fullCanvas, 0, srcY, scaledPageW, srcH, 0, 0, scaledPageW, srcH)
-          pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, PAGE_W_MM, PAGE_H_MM, undefined, 'FAST')
         }
-
-        pdf.save(`CV_${this.cv.firstName || 'CV'}_${this.cv.lastName || ''}.pdf`)
-
-        // ══ RESTAURATION ══
-        el.style.width = orig.width
-        el.style.minHeight = orig.minHeight
-        el.style.fontSize = orig.fontSize
-        el.style.position = orig.position
-        el.style.height = orig.height
-        el.style.overflow = orig.overflow
-
-        // Nettoyage spacers d'export
-        el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
-
-        // Restauration photo (TOUJOURS — pas seulement si HTTP)
-        this.cv.photo = photoBackup
-        this.cv.photoUrl = photoUrlBackup
-
-      } catch (e) {
-        console.error('PDF error:', e)
-        alert('Erreur lors de la génération du PDF.')
-        try { await API.post('/cv-credits/refund', { cv_profile_id: this.cvProfileId }); this.cvCredits++ } catch (_) { }
-
-        // Restauration aussi en cas d'erreur
-        const el = document.getElementById('cv-render')
-        if (el) el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
-        this.cv.photo = photoBackup
-        this.cv.photoUrl = photoUrlBackup
-      } finally {
-        this.zoom = prevZoom
-        this.exporting = false
-        // Recalculer les page breaks pour l'aperçu
-        this.$nextTick(() => this.updatePageCount())
+        const style = doc.createElement('style')
+        style.textContent = '@media(max-width:1200px){.workspace{grid-template-columns:380px 1fr !important}} @media(max-width:900px){.workspace{grid-template-columns:380px 1fr !important}} #cv-render, #cv-render *{max-width:none !important}'
+        doc.head.appendChild(style)
       }
-    },
+    })
+
+    const { jsPDF } = window.jspdf
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
+    const scaledPageW = PAGE_W_PX * SCALE
+    const scaledPageH = PAGE_H_PX * SCALE
+    const totalPages = Math.max(1, Math.ceil(fullCanvas.height / scaledPageH))
+
+    for (let page = 0; page < totalPages; page++) {
+      const srcY = page * scaledPageH
+      const srcH = Math.min(scaledPageH, fullCanvas.height - srcY)
+      if (page > 0 && srcH < scaledPageH * 0.08) break
+      if (page > 0) pdf.addPage()
+
+      const pageCanvas = document.createElement('canvas')
+      pageCanvas.width = scaledPageW
+      pageCanvas.height = scaledPageH
+      const ctx = pageCanvas.getContext('2d')
+      ctx.fillStyle = '#ffffff'
+      ctx.fillRect(0, 0, scaledPageW, scaledPageH)
+      ctx.drawImage(fullCanvas, 0, srcY, scaledPageW, srcH, 0, 0, scaledPageW, srcH)
+      pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, PAGE_W_MM, PAGE_H_MM, undefined, 'FAST')
+    }
+
+    pdf.save(`CV_${this.cv.firstName || 'CV'}_${this.cv.lastName || ''}.pdf`)
+
+    // ══ RESTAURATION STYLES ══
+    el.style.width = orig.width
+    el.style.minHeight = orig.minHeight
+    el.style.fontSize = orig.fontSize
+    el.style.position = orig.position
+    el.style.height = orig.height
+    el.style.overflow = orig.overflow
+
+    // Nettoyage spacers d'export
+    el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
+
+  } catch (e) {
+    console.error('PDF error:', e)
+    alert('Erreur lors de la génération du PDF.')
+    try { await API.post('/cv-credits/refund', { cv_profile_id: this.cvProfileId }); this.cvCredits++ } catch (_) { }
+
+    // Nettoyage en cas d'erreur
+    const el = document.getElementById('cv-render')
+    if (el) el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
+  } finally {
+    this.zoom = prevZoom
+    this.exporting = false
+    this.$nextTick(() => this.updatePageCount())
+  }
+},
 
     toBase64(url) {
       return new Promise((resolve, reject) => {
