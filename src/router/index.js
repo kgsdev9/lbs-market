@@ -16,6 +16,8 @@ const routes = [
       // ── Pages publiques ──
       { path: '', name: 'home', component: () => import('@/views/public/HomeView.vue'), meta: { title: 'Accueil' } },
       { path: 'product', name: 'product-digital', component: () => import('@/views/public/products/ProductListView.vue'), meta: { title: 'Produits digitaux' } },
+        { path: 'pricing', name: 'pricing-view', component: () => import('@/views/public/Pricing.vue'), meta: { title: 'Pricing' } },
+          { path: 'emploi', name: 'emploi', component: () => import('@/views/public/EmploiView.vue'), meta: { title: 'Emploi' } },
       { path: 'product/:slug', name: 'product-detail', component: () => import('@/views/public/products/ProductDetailView.vue'), meta: { title: 'Détail produit' } },
 
       { path: 'articles', name: 'articles', component: () => import('@/views/public/articles/ArticlesView.vue'), meta: { title: 'Articles' } },

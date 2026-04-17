@@ -1,242 +1,266 @@
 <template>
-  <div class="home">
+  <main class="home">
 
     <!-- ══════════════════════════════
-         HERO
+         HERO — EMPLOYMENT & CV FOCUS
     ══════════════════════════════ -->
-    <section class="hero">
-      <div class="container">
+    <section class="hero-coming">
+      <div class="container hero-inner">
 
-        <div class="hero-pill">
-          <span class="pill-dot" />
-          Créez un CV pro, développez vos compétences, avancez plus vite
-        </div>
+        <!-- Left side — Content -->
+        <div class="hero-left">
+          <div class="section-tag">100+ entreprises partenaires</div>
 
-        <h1 class="hero-title">
-          Crée ton CV.<br>
-          Apprends.<br>
-          <span class="hero-em">Progresse vite.</span>
-        </h1>
+          <h1 class="hero-title">
+            Décrochez l'emploi<br>
+            qu'il vous faut.
+          </h1>
 
-        <p class="hero-desc">
-          LBS réunit tout ce qu'il te faut pour évoluer professionnellement —
-          un générateur de CV, des formations pratiques et des ressources digitales prêtes à l'emploi.
-        </p>
+          <p class="hero-desc">
+            Un CV professionnel en quelques minutes. Des offres d'emploi exclusives avec nos partenaires. 
+            Tout ce qu'il faut pour trouver votre prochain défi.
+          </p>
 
-        <div class="hero-actions">
-          <RouterLink to="/register" class="btn-primary">
-            Commencer gratuitement
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <!-- CTA Button -->
+          <RouterLink to="/cv-builder" class="btn-primary-hero">
+            Je débute mon CV
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </RouterLink>
-          <RouterLink to="/formations" class="btn-ghost">
-            Voir les formations
-          </RouterLink>
+
+          <!-- Social proof -->
+          <div class="proof">
+            <div class="proof-icon">✓</div>
+            <p class="proof-text"><strong>100+ offres d'emploi</strong> disponibles maintenant dans la région</p>
+          </div>
         </div>
 
-        <div class="hero-trust">
-          <div class="trust-avatars">
-            <div v-for="m in trustMembers" :key="m.i" class="trust-av" :style="{ background: m.c }">{{ m.i }}</div>
+        <!-- Right side — Woman in circle + floating status cards -->
+        <div class="hero-right">
+          <div class="illustration">
+            <!-- Circular woman image -->
+          <div class="hero-circle">
+             <img src="@/assets/images/banner.png" alt="Carrière Pro Plus" />
+            </div>
+
+
+            <!-- Floating status cards -->
+            <div class="status-card status-1">
+              <div class="status-icon">📧</div>
+              <div class="status-label">Candidature</div>
+            </div>
+
+            <div class="status-card status-2">
+              <div class="status-icon">🤝</div>
+              <div class="status-label">Entretien</div>
+            </div>
+
+            <div class="status-card status-3">
+              <div class="status-icon">✓</div>
+              <div class="status-label">Recruté</div>
+            </div>
+
+            <!-- Background overlay -->
+            <div class="ill-bg" />
           </div>
-          <span class="trust-text"><strong>+2 000 membres</strong> actifs sur LBS</span>
         </div>
 
       </div>
     </section>
 
+
+
     <!-- ══════════════════════════════
-         3 PILIERS
+         SERVICES SECTION — 4 PILLARS FOR PROFESSIONALS
     ══════════════════════════════ -->
-    <section class="pillars">
+    <section class="services-section">
       <div class="container">
-        <div class="pillars-grid">
+        <div class="services-header">
+          <h2>Tout ce qu'il faut pour réussir</h2>
+          <p class="services-tagline">Le succès avec Carrière Pro Plus</p>
+        </div>
 
-          <RouterLink to="/cv-builder" class="pillar">
-            <div class="pillar-num">01</div>
-            <div class="pillar-icon">📝</div>
-            <h3 class="pillar-title">Crée ton CV</h3>
-            <p class="pillar-desc">
-              Notre générateur produit un CV professionnel optimisé — prêt en quelques minutes, sans effort.
-            </p>
-            <span class="pillar-link">
-              Générer mon CV
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </span>
+        <div class="services-grid">
+          <RouterLink to="/emploi" class="service-card">
+            <div class="service-num">01</div>
+            <div class="service-icon">💼</div>
+            <h3>Offres d'emploi</h3>
+            <p>Accédez à des postes exclusifs en CDI, CDD, stages et missions. 100+ entreprises partenaires vous attendent.</p>
+            <span class="service-link">Voir les offres →</span>
           </RouterLink>
 
-          <RouterLink to="/formations" class="pillar">
-            <div class="pillar-num">02</div>
-            <div class="pillar-icon">🎓</div>
-            <h3 class="pillar-title">Apprends</h3>
-            <p class="pillar-desc">
-              Des formations pratiques en dev, comptabilité, bureautique, design et marketing — créées par des pros du
-              terrain.
-            </p>
-            <span class="pillar-link">
-              Voir les formations
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </span>
+          <RouterLink to="/cv-builder" class="service-card">
+            <div class="service-num">02</div>
+            <div class="service-icon">📝</div>
+            <h3>CV Pro optimisé</h3>
+            <p>Générez un CV professionnel en quelques minutes. Optimisé ATS et prêt à impressionner les recruteurs.</p>
+            <span class="service-link">Créer mon CV →</span>
           </RouterLink>
 
-          <RouterLink to="/product" class="pillar">
-            <div class="pillar-num">03</div>
-            <div class="pillar-icon">📦</div>
-            <h3 class="pillar-title">Accède aux ressources</h3>
-            <p class="pillar-desc">
-              Templates, fichiers Excel, guides PDF, outils bureautiques — des ressources digitales prêtes à l'emploi
-              pour aller plus vite.
-            </p>
-            <span class="pillar-link">
-              Voir les ressources
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </span>
+          <RouterLink to="/formations" class="service-card">
+            <div class="service-num">03</div>
+            <div class="service-icon">🎓</div>
+            <h3>Formations pratiques</h3>
+            <p>Montez en compétences avec nos formations en leadership, tech, finance et management. Animées par des experts.</p>
+            <span class="service-link">Voir les formations →</span>
           </RouterLink>
 
+          <RouterLink to="/product" class="service-card">
+            <div class="service-num">04</div>
+            <div class="service-icon">📦</div>
+            <h3>Ressources professionnelles</h3>
+            <p>Templates, guides, fichiers prêts à l'emploi. Tous les outils pour progresser rapidement dans votre carrière.</p>
+            <span class="service-link">Accéder aux ressources →</span>
+          </RouterLink>
         </div>
       </div>
     </section>
 
     <!-- ══════════════════════════════
-         AVIS — carousel auto-scroll
+         TRUST & BRANDING SECTION
     ══════════════════════════════ -->
-    <section class="reviews">
-      <div class="reviews-header container">
-        <p class="eyebrow">Ce qu'ils disent</p>
-        <h2 class="section-title">Ils évoluent déjà sur LBS</h2>
-      </div>
-
-      <div class="carousel-wrap">
-        <div class="carousel-track" ref="track">
-          <div v-for="(r, i) in reviewsLoop" :key="i" class="review">
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">"{{ r.text }}"</p>
-            <div class="review-author">
-              <div class="review-av" :style="{ background: r.color }">{{ r.initials }}</div>
-              <div>
-                <div class="review-name">{{ r.name }}</div>
-                <div class="review-role">{{ r.role }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════
-         CTA — BILAN
-    ══════════════════════════════ -->
-    <section class="cta">
+    <section class="trust-section">
       <div class="container">
-        <div class="cta-inner">
+        <h2>Carrière Pro Plus en chiffres</h2>
+        <p class="trust-intro">Partenaires locaux et startups tech en Côte d'Ivoire</p>
 
-          <div class="cta-badge">Notre engagement</div>
-
-          <div class="cta-content">
-            <div class="cta-left">
-              <h2 class="cta-title">
-                Nous vous aidons à<br>
-                <span class="cta-em">progresser vite.</span>
-              </h2>
-              <p class="cta-desc">
-                Ressources, formations, outils — tout est pensé pour vous faire avancer concrètement,
-                là où vous en êtes, avec ce dont vous avez besoin.
-              </p>
-              <RouterLink to="/bilan" class="cta-btn">
-                Faire mon bilan
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </RouterLink>
-            </div>
-
-            <div class="cta-stats">
-              <div class="cta-stat">
-                <span class="stat-value">+2 000</span>
-                <span class="stat-label">Membres actifs</span>
-              </div>
-              <div class="cta-stat">
-                <span class="stat-value">50+</span>
-                <span class="stat-label">Formations disponibles</span>
-              </div>
-              <div class="cta-stat">
-                <span class="stat-value">100+</span>
-                <span class="stat-label">Ressources & templates</span>
-              </div>
-              <div class="cta-stat">
-                <span class="stat-value">1 min</span>
-                <span class="stat-label">Pour générer un CV</span>
-              </div>
-            </div>
+        <div class="trust-grid">
+          <div class="trust-stat">
+            <div class="trust-n">100+</div>
+            <div class="trust-l">Entreprises partenaires</div>
+            <p>KGS Informatique SARL, MOYO CI, TechHub CI, Digital Studios, Startups Abidjan, Consulting Local, IT Solutions...</p>
           </div>
-
+          <div class="trust-stat">
+            <div class="trust-n">+2 000</div>
+            <div class="trust-l">Candidats accompagnés</div>
+            <p>Développeurs, designers, managers et professionnels placés en CDI/CDD/missions</p>
+          </div>
+          <div class="trust-stat">
+            <div class="trust-n">96%</div>
+            <div class="trust-l">Taux de satisfaction</div>
+            <p>Nos candidats recommandent Carrière Pro Plus à leurs pairs</p>
+          </div>
         </div>
       </div>
     </section>
 
-  </div>
+    <!-- ══════════════════════════════
+         TESTIMONIALS CAROUSEL
+    ══════════════════════════════ -->
+    <section class="testimonials-section">
+      <div class="container">
+        <h2>Témoignages de nos candidats</h2>
+        
+        <div class="carousel-wrap">
+          <div class="carousel-track" ref="track">
+            <div v-for="(r, i) in reviewsLoop" :key="i" class="testimonial-card">
+              <div class="testimonial-stars">★★★★★</div>
+              <p class="testimonial-text">"{{ r.text }}"</p>
+              <div class="testimonial-author">
+                <div class="testimonial-av" :style="{ background: r.color }">{{ r.initials }}</div>
+                <div>
+                  <div class="testimonial-name">{{ r.name }}</div>
+                  <div class="testimonial-role">{{ r.role }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+         STATS BAND
+    ══════════════════════════════ -->
+    <section class="stats-band">
+      <div class="container stats-inner">
+        <div class="stat-item">
+          <span class="stat-n">+100</span>
+          <span class="stat-l">Entreprises partenaires</span>
+        </div>
+        <div class="stat-divider" />
+        <div class="stat-item">
+          <span class="stat-n">+2 000</span>
+          <span class="stat-l">Candidats accompagnés</span>
+        </div>
+        <div class="stat-divider" />
+        <div class="stat-item">
+          <span class="stat-n">50+</span>
+          <span class="stat-l">Formations</span>
+        </div>
+        <div class="stat-divider" />
+        <div class="stat-item">
+          <span class="stat-n">96%</span>
+          <span class="stat-l">Satisfaction</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </template>
 
 <script setup>
 import { RouterLink } from 'vue-router'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const trustMembers = [
-  { i: 'KS', c: '#6366f1' }, { i: 'MN', c: '#ec4899' },
-  { i: 'AF', c: '#f59e0b' }, { i: 'JB', c: '#06b6d4' },
-  { i: 'CM', c: '#10b981' },
-]
+const email = ref('')
+const subscribeMessage = ref('')
+const subscribeStatus = ref('')
+
+// Removed email subscription - using CTA button instead
 
 const reviews = [
-  { name: 'Kouamé Serge', initials: 'KS', color: '#6366f1', role: 'Dev web — Abidjan', text: 'Mon CV était prêt en moins d\'une minute. Bluffant. J\'ai eu un entretien dès la semaine suivante.' },
-  { name: 'Adjoua Bénédicte', initials: 'AB', color: '#ec4899', role: 'Assistante RH — Abidjan', text: 'Le générateur de CV est vraiment simple. J\'ai téléchargé le mien en 1 minute chrono, propre et pro.' },
-  { name: 'Yao Koffi', initials: 'YK', color: '#0891b2', role: 'Comptable — Abidjan', text: 'La formation OHADA est super bien structurée. Enfin du contenu fait pour nous, les comptables ivoiriens.' },
-  { name: 'Aya Traoré', initials: 'AT', color: '#10b981', role: 'Étudiante — Abidjan', text: 'J\'avais peur que ce soit compliqué, mais en 1 minute j\'avais un CV que mes amis m\'ont envié.' },
-  { name: 'Konan Brice', initials: 'KB', color: '#f59e0b', role: 'Ingénieur réseau — Abidjan', text: 'Les ressources disponibles sont d\'un niveau pro. Le guide Cisco m\'a économisé beaucoup de temps.' },
-  { name: 'N\'Guessan Prisca', initials: 'NP', color: '#8b5cf6', role: 'Juriste — Abidjan', text: 'CV généré en 1 minute, sobre et bien présenté. Exactement ce que je cherchais avant un entretien.' },
-  { name: 'Amara Diallo', initials: 'AD', color: '#dc2626', role: 'Dev mobile — Dakar', text: 'Plateforme claire, contenu utile. La formation Vue.js est vraiment bien faite pour les débutants.' },
-  { name: 'Fatou Ndiaye', initials: 'FN', color: '#ec4899', role: 'Comptable — Dakar', text: 'Le template plan comptable OHADA m\'a sauvé. Téléchargé, ouvert, utilisé — en 2 minutes.' },
-  { name: 'Moussa Sow', initials: 'MS', color: '#6366f1', role: 'Chargé RH — Dakar', text: 'Mon CV était vieux et mal présenté. LBS m\'a permis d\'en avoir un nouveau en à peine 1 minute.' },
-  { name: 'Aïssatou Baldé', initials: 'AB', color: '#059669', role: 'Marketing digital — Dakar', text: 'La formation SEO est pratique et directe. Pas de blabla, juste du concret applicable immédiatement.' },
-  { name: 'Ibrahima Niang', initials: 'IN', color: '#0891b2', role: 'Développeur — Dakar', text: 'J\'ai trouvé sur LBS des ressources que je cherchais depuis longtemps. Tout est bien organisé.' },
-  { name: 'Mariama Diallo', initials: 'MD', color: '#f59e0b', role: 'Étudiante en gestion — Dakar', text: 'Le CV généré en 1 minute était plus beau que celui que j\'avais mis des heures à faire sur Word.' },
-  { name: 'Ousmane Mbaye', initials: 'OM', color: '#7c3aed', role: 'Administrateur sys — Dakar', text: 'Les ressources réseaux sont top. Du contenu solide, adapté au marché africain. Bravo à l\'équipe.' },
-  { name: 'Rokhaya Fall', initials: 'RF', color: '#db2777', role: 'Assistante comptable — Dakar', text: 'Formation Sage X3 claire et bien expliquée. J\'ai enfin compris des points qui me bloquaient depuis des mois.' },
-  { name: 'Binta Camara', initials: 'BC', color: '#10b981', role: 'Office manager — Dakar', text: 'Le template tableau de bord RH est exactement ce qu\'il me fallait. Prêt à l\'emploi, efficace.' },
-  { name: 'Jean-Marc Yao', initials: 'JY', color: '#6366f1', role: 'Gestionnaire de projet — Abidjan', text: 'LBS centralise tout. CV, formations, ressources. Plus besoin de chercher ailleurs.' },
-  { name: 'Clarisse Kouassi', initials: 'CK', color: '#ec4899', role: 'Designer — Abidjan', text: 'Mon CV généré en 1 minute était propre, structuré. J\'ai juste changé deux lignes et c\'était parfait.' },
-  { name: 'Thierno Barry', initials: 'TB', color: '#0891b2', role: 'Étudiant en IT — Dakar', text: 'Des formations en français, accessibles et bien expliquées. Rare pour un contenu tech de cette qualité.' },
-  { name: 'Inès Aka', initials: 'IA', color: '#d97706', role: 'Chargée de comm — Abidjan', text: 'La formation marketing digital est très complète. J\'ai appris plus en 2h qu\'en 3 semaines de recherche.' },
-  { name: 'Cheikh Diouf', initials: 'CD', color: '#059669', role: 'Dev full-stack — Dakar', text: 'Le générateur de CV fait vraiment du bon travail. Résultat pro en moins d\'une minute, sans effort.' },
-  { name: 'Patricia Gnagne', initials: 'PG', color: '#8b5cf6', role: 'Comptable — Abidjan', text: 'J\'utilise les templates Excel chaque semaine. Ils me font gagner un temps fou sur mes reportings.' },
-  { name: 'Lamine Touré', initials: 'LT', color: '#dc2626', role: 'Formateur — Dakar', text: 'Les ressources pédagogiques sont solides. On voit que c\'est fait par des gens qui connaissent le terrain.' },
-  { name: 'Sandrine Assomou', initials: 'SA', color: '#6366f1', role: 'Juriste d\'entreprise — Abidjan', text: 'CV en 1 minute avec un rendu vraiment professionnel. Je recommande à tous mes collègues.' },
-  { name: 'Modou Sarr', initials: 'MS', color: '#ec4899', role: 'Analyste financier — Dakar', text: 'Le guide fiscalité sénégalaise est une vraie pépite. Clair, à jour, et directement applicable.' },
-  { name: 'Estelle Brou', initials: 'EB', color: '#0891b2', role: 'RH — Abidjan', text: 'Interface simple, CV généré rapidement. Pas besoin de tutoriel, tout est intuitif.' },
-  { name: 'Pape Diop', initials: 'PD', color: '#10b981', role: 'Technicien réseau — Dakar', text: 'Les ressources Cisco et Linux sont vraiment bien faites. Niveau pro, explications claires.' },
-  { name: 'Nadège Kouakou', initials: 'NK', color: '#f59e0b', role: 'Assistante de direction — Abidjan', text: 'En 1 minute j\'avais un CV que j\'aurais mis des heures à faire. LBS m\'a vraiment rendu service.' },
-  { name: 'Assane Gaye', initials: 'AG', color: '#7c3aed', role: 'Développeur Python — Dakar', text: 'La formation Python est structurée, progressive. Exactement ce qu\'il faut pour bien démarrer.' },
-  { name: 'Carine Yapi', initials: 'CY', color: '#db2777', role: 'Étudiante — Abidjan', text: 'Génial. Mon CV en 1 minute, beau et professionnel. J\'ai montré ça à toute ma promo.' },
-  { name: 'Boubacar Diallo', initials: 'BD', color: '#059669', role: 'Comptable — Conakry', text: 'Contenu de qualité, adapté à la réalité africaine. Pas du contenu copié-collé de l\'Occident.' },
-  { name: 'Adjoua Sika', initials: 'AS', color: '#6366f1', role: 'Office manager — Abidjan', text: 'Les modèles Word et Excel sont propres et directement utilisables. Gain de temps énorme.' },
-  { name: 'Mamadou Lamine Ba', initials: 'MB', color: '#0891b2', role: 'Dev web — Dakar', text: 'LBS c\'est la référence pour les pros africains. Formations sérieuses, ressources pratiques.' },
-  { name: 'Virginie Koné', initials: 'VK', color: '#ec4899', role: 'Chargée de formation — Abidjan', text: 'Interface claire, contenu de qualité. Le CV généré en 1 min était vraiment à la hauteur.' },
-  { name: 'Serigne Mbaye', initials: 'SM', color: '#d97706', role: 'Entrepreneur — Dakar', text: 'Les ressources de gestion sont très utiles pour mon activité. Du pratique, pas du théorique.' },
-  { name: 'Élise Assoumou', initials: 'EA', color: '#10b981', role: 'Responsable admin — Abidjan', text: 'Formation Excel très bien détaillée. Mes collègues me demandent maintenant de leur enseigner.' },
-  { name: 'Ibou Faye', initials: 'IF', color: '#8b5cf6', role: 'Ingénieur — Dakar', text: 'Bonne qualité de contenu, interface propre. On sent que c\'est fait avec sérieux.' },
-  { name: 'Christiane Ble', initials: 'CB', color: '#dc2626', role: 'Secrétaire — Abidjan', text: 'Mon CV en 1 minute était tellement beau que j\'ai failli ne pas le reconnaître. Merci LBS !' },
-  { name: 'Alioune Diagne', initials: 'AD', color: '#6366f1', role: 'IT manager — Dakar', text: 'Les ressources techniques sont solides. Je les partage systématiquement à mon équipe.' },
-  { name: 'Madeleine Kouamé', initials: 'MK', color: '#059669', role: 'Assistante — Abidjan', text: 'Plateforme sérieuse, contenu utile. Le CV généré en 1 min est de qualité professionnelle.' },
-  { name: 'Daouda Ndiaye', initials: 'DN', color: '#0891b2', role: 'Analyste — Dakar', text: 'Tout ce qu\'il faut pour progresser en un seul endroit. LBS répond à un vrai besoin africain.' },
+  // Tech/Startup success stories
+  { name: 'Adjoua Kouassi', initials: 'AK', color: '#1A56DB', role: 'Développeuse Full-Stack · KGS Informatique',
+    text: 'KGS m\'a contactée directement via CPP. Un CDI en informatique au bout de 2 semaines. Parfait !' },
+  { name: 'Moussa Sanogo', initials: 'MS', color: '#0A7C52', role: 'Product Manager · MOYO CI',
+    text: 'MOYO a besoin de talents. CPP m\'a aidé à préparer mon entretien et j\'ai eu le poste !' },
+  { name: 'Bintou Traoré', initials: 'BT', color: '#C07000', role: 'Data Analyst · Startup Abidjan',
+    text: 'Plateforme sérieuse avec des offres tech vraies. Mon rêve de data scientist réalisé en 1 mois.' },
+  { name: 'Konan Brice', initials: 'KB', color: '#7C3AED', role: 'DevOps Engineer · TechHub CI',
+    text: 'CPP connait les vrais besoins du marché tech ivoirien. Les offres correspondent vraiment.' },
+  { name: 'Aya N\'Guessan', initials: 'AN', color: '#C8291A', role: 'Designer UX · Digital Agency',
+    text: 'Accompagnement de qualité pour préparer mon portefeuille. Maintenant je bosse en télétravail.' },
+  { name: 'Ibrahim Koné', initials: 'IK', color: '#0891b2', role: 'Business Analyst · Consulting Local',
+    text: 'CPP m\'a aidé à valoriser mes 5 ans d\'expérience. Nouvel emploi plus senior, meilleur salaire.' },
+  { name: 'Clarisse Beugré', initials: 'CB', color: '#ec4899', role: 'Marketing Manager · E-Commerce CI',
+    text: 'Les offres d\'emploi sont réelles et pas de scam. Très différent d\'autres plateformes.' },
+  { name: 'Yao Kouamé', initials: 'YK', color: '#059669', role: 'Backend Developer · KGS Informatique',
+    text: 'KGS recrute régulièrement via CPP. Excellente équipe, très bon environnement de travail.' },
+  { name: 'Mariam Touré', initials: 'MT', color: '#f59e0b', role: 'HR Manager · Startup Tech',
+    text: 'Je recommande CPP à tous les candidats. Les offres sont sérieuses et bien rémunérées.' },
+  { name: 'Patrick Assi', initials: 'PA', color: '#8b5cf6', role: 'Frontend Developer · Digital Studio',
+    text: 'CV optimisé + formations = résultats. J\'ai eu 3 offres en 1 mois, choisi la meilleure.' },
+  
+  // More local success stories
+  { name: 'Fatou Diallo', initials: 'FD', color: '#dc2626', role: 'Project Manager · MOYO CI',
+    text: 'MOYO se développe vite. CPP nous aide à trouver les bons talents. Partenariat gagnant.' },
+  { name: 'Serge Konaté', initials: 'SK', color: '#6366f1', role: 'QA Engineer · TechStart Abidjan',
+    text: 'Formations + CV optimisé = combo gagnant. Maintenant senior QA dans une bonne boîte.' },
+  { name: 'Estelle Kouadio', initials: 'EK', color: '#db2777', role: 'Content Manager · Digital Agency',
+    text: 'Plateforme locale qui comprend le marché CI. Pas de bullshit, du sérieux.' },
+  { name: 'Daouda Bamba', initials: 'DB', color: '#0891b2', role: 'Systems Admin · IT Solutions',
+    text: 'CPP m\'a permis de rester en Côte d\'Ivoire avec un bon salaire. Vraiment utile.' },
+  { name: 'Nadège Ahouré', initials: 'NA', color: '#10b981', role: 'Business Developer · Startup',
+    text: 'Les offres d\'emploi sont pas du vent. Vraies boîtes, vrais postes, vrais salaires.' },
+  { name: 'Victor Mensah', initials: 'VM', color: '#f97316', role: 'CTO · KGS Informatique',
+    text: 'Nous recrutons via CPP. Qualité des candidats excellente. À recommander.' },
+  { name: 'Pauline Mensah', initials: 'PM', color: '#ec4899', role: 'Product Designer · Digital Studio',
+    text: 'Design thinking + bonne plateforme = succès. Je bosse sur des projets sympas maintenant.' },
+  { name: 'Jean-Marie Gogo', initials: 'JG', color: '#3b82f6', role: 'Sales Manager · Tech Company',
+    text: 'CPP connait bien le marché ivoirien. Les offres sont ciblées et sérieuses.' },
+  { name: 'Aissatou Traore', initials: 'AT', color: '#f59e0b', role: 'Formateur Tech · Bootcamp Local',
+    text: 'Je conseille CPP à mes étudiants. Excellente plateforme pour débuter sa carrière tech.' },
+  { name: 'Kouassi Alphonse', initials: 'KA', color: '#06b6d4', role: 'CTO · MOYO CI',
+    text: 'MOYO recrute via CPP. Effectivement des candidats motivés et compétents. Très satisfait.' },
 ]
 
 const reviewsLoop = computed(() => [...reviews, ...reviews])
+
+function dummy() {
+  // No longer needed
+}
 
 const track = ref(null)
 let animFrame = null
@@ -256,270 +280,454 @@ onUnmounted(() => { if (animFrame) cancelAnimationFrame(animFrame) })
 </script>
 
 <style scoped>
-.home {
-  background: #fff;
-  color: #0a0a0a;
+:root {
+  --navy: #1c2b4a;
+  --gold: #d4a634;
+  --navy-light: #243558;
+  --navy-bg: #edf0f5;
 }
 
-/* ══ CONTAINER ══ */
+.home {
+  background: #fff;
+  color: var(--navy);
+}
+
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 40px;
 }
 
-/* ══ HERO ══ */
-.hero {
-  padding: 110px 0 90px;
-  background: #fff;
-  border-bottom: 1px solid #ebebeb;
+/* ══ HERO COMING SOON ══ */
+.hero-coming {
+  padding: 100px 0 80px;
+  background: linear-gradient(135deg, var(--navy-bg) 0%, #fff 100%);
+  border-bottom: 1px solid #e5e5e5;
 }
 
-.hero-pill {
-  display: inline-flex;
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
   align-items: center;
-  gap: 8px;
-  padding: 5px 14px;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--navy);
+  background: rgba(212, 166, 52, .1);
+  padding: 4px 12px;
   border-radius: 99px;
-  background: #f3f3f3;
-  border: 1px solid #e5e5e5;
-  font-size: 12px;
-  font-weight: 600;
-  color: #888;
-  letter-spacing: .3px;
-  margin-bottom: 40px;
-  font-family: var(--font-mono, monospace);
-}
-
-.pill-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: blink 2s ease-in-out infinite;
-}
-
-@keyframes blink {
-
-  0%,
-  100% {
-    opacity: 1
-  }
-
-  50% {
-    opacity: .3
-  }
+  margin-bottom: 24px;
 }
 
 .hero-title {
-  font-size: clamp(46px, 6.5vw, 82px);
+  font-size: clamp(40px, 5vw, 62px);
   font-weight: 800;
-  letter-spacing: -3.5px;
-  line-height: 1.0;
-  color: #0a0a0a;
-  margin-bottom: 28px;
-  font-family: var(--font-alt, sans-serif);
-}
-
-.hero-em {
-  color: #bbb;
+  letter-spacing: -2.5px;
+  line-height: 1.08;
+  color: var(--navy);
+  margin-bottom: 20px;
 }
 
 .hero-desc {
   font-size: 17px;
-  color: #777;
-  line-height: 1.8;
-  max-width: 520px;
-  margin-bottom: 44px;
+  color: #666;
+  line-height: 1.75;
+  max-width: 500px;
+  margin-bottom: 40px;
 }
 
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 52px;
+.newsletter-form {
+  margin-bottom: 36px;
 }
 
-.btn-primary {
+.btn-primary-hero {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #0a0a0a;
+  background: #243558;
   color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  margin-bottom: 36px;
+}
+
+.btn-primary-hero:hover {
+  background: #1c2b4a;
+  transform: translateY(-2px);
+}
+
+.form-group {
+  display: flex;
+  gap: 8px;
+}
+
+.form-input {
+  flex: 1;
+  padding: 13px 18px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fff;
+  transition: all .2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(28, 43, 74, .08);
+}
+
+.form-input::placeholder {
+  color: #bbb;
+}
+
+.btn-notify {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 13px 28px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
-  padding: 13px 22px;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: all .15s;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
 }
 
-.btn-primary:hover {
-  background: #222;
-  transform: translateY(-1px);
+.btn-notify:hover {
+  background: var(--navy-light);
+  transform: translateY(-2px);
 }
 
-.btn-ghost {
-  display: inline-flex;
+.form-message {
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.form-message.success {
+  color: #059669;
+  background: rgba(5, 150, 105, .1);
+}
+
+.form-message.error {
+  color: #dc2626;
+  background: rgba(220, 38, 38, .1);
+}
+
+.proof {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  background: transparent;
+  gap: 12px;
+  padding: 14px 18px;
+  background: rgba(212, 166, 52, .08);
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.proof-icon {
+  font-size: 20px;
+}
+
+.proof-text {
+  font-size: 13px;
   color: #666;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 13px 22px;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  text-decoration: none;
-  transition: all .15s;
 }
 
-.btn-ghost:hover {
-  color: #0a0a0a;
-  border-color: #aaa;
+.proof-text strong {
+  color: var(--navy);
+  font-weight: 700;
 }
 
-.hero-trust {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.trust-avatars {
-  display: flex;
-}
-
-.trust-av {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid #fff;
+/* ══ ILLUSTRATION ══ */
+.hero-right {
+  position: relative;
+  height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
-  font-weight: 700;
-  color: #fff;
-  margin-left: -7px;
 }
 
-.trust-av:first-child {
-  margin-left: 0;
+.illustration {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.trust-text {
-  font-size: 13px;
-  color: #aaa;
+/* Circular woman image */
+.hero-circle {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  box-shadow: 0 30px 80px rgba(28, 43, 74, .2);
 }
 
-.trust-text strong {
-  color: #444;
+.hero-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* ══ PILLARS ══ */
-.pillars {
-  padding: 96px 0;
+/* Background overlay */
+.ill-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212, 166, 52, .06) 0%, rgba(28, 43, 74, .02) 100%);
+  border-radius: 20px;
+  z-index: 0;
+}
+
+/* Floating status cards */
+.status-card {
+  position: absolute;
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .1);
+  z-index: 3;
+  transition: all .3s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .15);
+  border-color: var(--gold);
+}
+
+.status-icon {
+  font-size: 20px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.status-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+/* Card positions */
+.status-1 {
+  top: 30px;
+  left: 20px;
+  animation: float1 3s ease-in-out infinite;
+}
+
+.status-2 {
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  animation: float2 3.5s ease-in-out infinite;
+}
+
+.status-3 {
+  bottom: 40px;
+  right: 50px;
+  animation: float3 4s ease-in-out infinite;
+}
+
+/* Floating animations */
+@keyframes float1 {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-15px) }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translateY(-50%) }
+  50% { transform: translateY(calc(-50% - 15px)) }
+}
+
+@keyframes float3 {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-15px) }
+}
+
+/* ══ SERVICES ══ */
+.services-section {
+  padding: 80px 0;
   background: #fff;
 }
 
-.pillars-grid {
+.services-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.services-header h2 {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.services-tagline {
+  font-size: 16px;
+  color: #666;
+}
+
+.services-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.service-card {
+  padding: 32px 24px;
   border: 1px solid #e5e5e5;
   border-radius: 16px;
-  overflow: hidden;
-}
-
-.pillar {
-  padding: 44px 36px;
-  background: #fff;
+  text-align: center;
+  transition: all .2s;
   text-decoration: none;
+  color: inherit;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #e5e5e5;
-  transition: background .15s;
 }
 
-.pillar:last-child {
-  border-right: none;
+.service-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 8px 24px rgba(212, 166, 52, .15);
+  transform: translateY(-4px);
 }
 
-.pillar:hover {
-  background: #fafafa;
-}
-
-.pillar-num {
-  font-size: 10.5px;
+.service-num {
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.5px;
   color: #d0d0d0;
-  font-family: var(--font-mono, monospace);
-  margin-bottom: 28px;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
 }
 
-.pillar-icon {
-  font-size: 30px;
-  margin-bottom: 20px;
+.service-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
 }
 
-.pillar-title {
-  font-size: 21px;
-  font-weight: 800;
-  letter-spacing: -.5px;
-  color: #0a0a0a;
-  margin-bottom: 12px;
-  font-family: var(--font-alt, sans-serif);
+.service-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
 }
 
-.pillar-desc {
-  font-size: 14px;
-  color: #777;
-  line-height: 1.8;
+.service-card p {
+  font-size: 13.5px;
+  color: #666;
+  line-height: 1.6;
   flex: 1;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 }
 
-.pillar-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.service-link {
   font-size: 13px;
   font-weight: 700;
-  color: #0a0a0a;
+  color: var(--navy);
   transition: gap .15s;
 }
 
-.pillar:hover .pillar-link {
-  gap: 9px;
+.service-card:hover .service-link {
+  color: var(--gold);
 }
 
-/* ══ REVIEWS CAROUSEL ══ */
-.reviews {
-  padding: 96px 0;
-  background: #f5f5f5;
-  overflow: hidden;
+/* ══ TRUST ══ */
+.trust-section {
+  padding: 80px 0;
+  background: var(--navy-bg);
 }
 
-.reviews-header {
-  margin-bottom: 52px;
-}
-
-.eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #aaa;
-  margin-bottom: 10px;
-  font-family: var(--font-mono, monospace);
-}
-
-.section-title {
-  font-size: clamp(28px, 3.5vw, 44px);
+.trust-section h2 {
+  font-size: 36px;
   font-weight: 800;
-  color: #0a0a0a;
-  letter-spacing: -1.5px;
-  font-family: var(--font-alt, sans-serif);
+  text-align: center;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.trust-intro {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+
+.trust-stat {
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e5e5;
+}
+
+.trust-n {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.trust-l {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.trust-stat p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* ══ TESTIMONIALS ══ */
+.testimonials-section {
+  padding: 80px 0;
+  background: #fff;
+}
+
+.testimonials-section h2 {
+  font-size: 36px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--navy);
+  margin-bottom: 48px;
 }
 
 .carousel-wrap {
@@ -535,8 +743,9 @@ onUnmounted(() => { if (animFrame) cancelAnimationFrame(animFrame) })
   will-change: transform;
 }
 
-.review {
-  background: #fff;
+.testimonial-card {
+  background: var(--navy-bg);
+  border: 1px solid #e5e5e5;
   border-radius: 14px;
   padding: 24px 22px;
   width: 300px;
@@ -544,29 +753,28 @@ onUnmounted(() => { if (animFrame) cancelAnimationFrame(animFrame) })
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: 1px solid #ebebeb;
 }
 
-.review-stars {
-  color: #f59e0b;
+.testimonial-stars {
+  color: var(--gold);
   font-size: 12px;
   letter-spacing: 2px;
 }
 
-.review-text {
+.testimonial-text {
   font-size: 13.5px;
-  color: #555;
+  color: var(--navy);
   line-height: 1.75;
   flex: 1;
 }
 
-.review-author {
+.testimonial-author {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.review-av {
+.testimonial-av {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -579,198 +787,193 @@ onUnmounted(() => { if (animFrame) cancelAnimationFrame(animFrame) })
   flex-shrink: 0;
 }
 
-.review-name {
+.testimonial-name {
   font-size: 13px;
   font-weight: 700;
-  color: #0a0a0a;
+  color: var(--navy);
 }
 
-.review-role {
+.testimonial-role {
   font-size: 11px;
-  color: #aaa;
+  color: #999;
 }
 
-/* ══ CTA BILAN ══ */
-.cta {
-  padding: 96px 0;
+/* ══ STATS BAND ══ */
+.stats-band {
+  padding: 56px 0;
   background: #fff;
-  border-top: 1px solid #ebebeb;
+  border-top: 1px solid #e5e5e5;
 }
 
-.cta-inner {
-  background: #0a0a0a;
-  border-radius: 20px;
-  padding: 56px 60px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Grain décoratif */
-.cta-inner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, .04) 0%, transparent 60%),
-    radial-gradient(circle at 10% 80%, rgba(255, 255, 255, .03) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.cta-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, .08);
-  border: 1px solid rgba(255, 255, 255, .12);
-  font-size: 11px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, .45);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-family: var(--font-mono, monospace);
-  margin-bottom: 36px;
-}
-
-.cta-content {
+.stats-inner {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 48px;
-}
-
-.cta-left {
-  flex: 1;
-  max-width: 460px;
-}
-
-.cta-title {
-  font-size: clamp(30px, 3.5vw, 46px);
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -2px;
-  line-height: 1.1;
-  margin-bottom: 18px;
-  font-family: var(--font-alt, sans-serif);
-}
-
-.cta-em {
-  color: rgba(255, 255, 255, .35);
-}
-
-.cta-desc {
-  font-size: 15px;
-  color: rgba(255, 255, 255, .5);
-  line-height: 1.8;
-  margin-bottom: 36px;
-}
-
-.cta-btn {
-  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: #fff;
-  color: #0a0a0a;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 13px 24px;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: all .15s;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
 }
 
-.cta-btn:hover {
-  background: #f0f0f0;
-  transform: translateY(-1px);
-}
-
-.cta-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  flex-shrink: 0;
-  width: 280px;
-}
-
-.cta-stat {
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .07);
-  border-radius: 12px;
-  padding: 20px 22px;
+.stat-item {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  min-width: 130px;
 }
 
-.stat-value {
-  font-size: 22px;
+.stat-n {
+  font-size: 38px;
   font-weight: 800;
-  color: #fff;
-  letter-spacing: -1px;
-  font-family: var(--font-alt, sans-serif);
+  letter-spacing: -2px;
+  color: var(--navy);
+  line-height: 1;
 }
 
-.stat-label {
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, .35);
-  line-height: 1.4;
+.stat-l {
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: #e5e5e5;
 }
 
 /* ══ RESPONSIVE ══ */
-@media (max-width: 900px) {
-  .pillars-grid {
+@media (max-width: 1024px) {
+  .hero-inner {
     grid-template-columns: 1fr;
+    gap: 48px;
   }
 
-  .pillar {
-    border-right: none;
-    border-bottom: 1px solid #e5e5e5;
+  .hero-right {
+    height: 300px;
   }
 
-  .pillar:last-child {
-    border-bottom: none;
-  }
-
-  .cta-inner {
-    padding: 40px 32px;
-  }
-
-  .cta-content {
-    flex-direction: column;
-    gap: 36px;
-  }
-
-  .cta-stats {
-    width: 100%;
+  .features-grid,
+  .services-grid,
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .container {
     padding: 0 20px;
   }
 
-  .hero {
-    padding: 72px 0 60px;
+  .hero-coming {
+    padding: 60px 0 40px;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .hero-right {
+    display: none;
   }
 
   .hero-title {
-    font-size: 38px;
-    letter-spacing: -2px;
+    font-size: 36px;
+    letter-spacing: -1.5px;
   }
 
-  .pillars,
-  .reviews,
-  .cta {
-    padding: 64px 0;
+  .form-group {
+    flex-direction: column;
   }
 
-  .cta-inner {
-    padding: 32px 24px;
+  .btn-notify {
+    width: 100%;
+    justify-content: center;
   }
 
-  .cta-stats {
-    grid-template-columns: 1fr 1fr;
+  /* SERVICES MOBILE — Full width stacked */
+  .services-section {
+    padding: 60px 0;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .service-card {
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+
+  .service-num {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+
+  .service-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .service-card h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .service-card p {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .service-link {
+    font-size: 12px;
+  }
+
+  /* TRUST MOBILE */
+  .trust-section {
+    padding: 60px 0;
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-stat {
+    padding: 24px;
+  }
+
+  /* TESTIMONIALS MOBILE */
+  .testimonials-section {
+    padding: 60px 0;
+  }
+
+  .testimonials-section h2 {
+    font-size: 28px;
+    margin-bottom: 36px;
+  }
+
+  .testimonial-card {
+    width: 280px;
+    padding: 20px 18px;
+  }
+
+  /* STATS MOBILE */
+  .stats-inner {
+    gap: 24px;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stat-n {
+    font-size: 32px;
+  }
+
+  .stat-l {
+    font-size: 12px;
   }
 }
 </style>

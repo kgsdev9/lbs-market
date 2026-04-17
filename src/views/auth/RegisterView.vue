@@ -9,15 +9,15 @@
             <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
           </svg>
         </div>
-        <span class="logo-text">LBS <strong>MARKET</strong></span>
+        <span class="logo-text">Carrière <strong>Pro Plus</strong></span>
       </RouterLink>
 
       <div class="auth-hero">
         <!-- Étape 1 -->
         <template v-if="step === 1">
-          <div class="ah-tag">Rejoindre LBS Market</div>
-          <h1 class="ah-title">Un nouveau sur LBS Market Ravi. 🚀</h1>
-          <p class="ah-desc">Notre communauté s'agrandit et tu es le bienvenu !</p>
+          <div class="ah-tag">Commençons 🚀</div>
+          <h1 class="ah-title">Construis<br>ta carrière.</h1>
+          <p class="ah-desc">Crée un compte gratuit. CV pro, offres d'emploi, formations — tout t'attend.</p>
         </template>
         <!-- Étape 2 -->
         <template v-else-if="step === 2">
@@ -28,8 +28,8 @@
         <!-- Étape 3 -->
         <template v-else>
           <div class="ah-tag">Dernière étape</div>
-          <h1 class="ah-title">Plus qu'un pas<br>et tu es dans la place. ✅</h1>
-          <p class="ah-desc">Choisis ton nom d'utilisateur et ton mot de passe pour finaliser ton compte.</p>
+          <h1 class="ah-title">Plus qu'un pas<br>et tu es prêt. ✅</h1>
+          <p class="ah-desc">Crée un mot de passe pour finaliser ton compte Carrière Pro Plus.</p>
         </template>
 
         <!-- ── Piliers de la plateforme ── -->
@@ -37,24 +37,24 @@
           <div class="pillar-item">
             <span class="pillar-icon">📝</span>
             <div class="pillar-body">
-              <div class="pillar-title">Crée ton CV</div>
-              <div class="pillar-desc">Un CV pro généré en quelques minutes, sans effort.</div>
+              <div class="pillar-title">CV Pro en minutes</div>
+              <div class="pillar-desc">Généré automatiquement, optimisé ATS.</div>
+            </div>
+          </div>
+
+          <div class="pillar-item">
+            <span class="pillar-icon">💼</span>
+            <div class="pillar-body">
+              <div class="pillar-title">100+ offres d'emploi</div>
+              <div class="pillar-desc">Exclusives avec partenaires tech CI.</div>
             </div>
           </div>
 
           <div class="pillar-item">
             <span class="pillar-icon">🎓</span>
             <div class="pillar-body">
-              <div class="pillar-title">Apprends</div>
-              <div class="pillar-desc">Dev, comptabilité, design, marketing — par des pros du terrain.</div>
-            </div>
-          </div>
-
-          <div class="pillar-item">
-            <span class="pillar-icon">📦</span>
-            <div class="pillar-body">
-              <div class="pillar-title">Accède aux ressources</div>
-              <div class="pillar-desc">Templates, Excel, PDF, outils bureautiques — prêts à l'emploi.</div>
+              <div class="pillar-title">Formations gratuites</div>
+              <div class="pillar-desc">Leadership, tech, finance, management.</div>
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
             <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
           </svg>
         </div>
-        <span class="logo-text-sm">LBS <strong>MARKET</strong></span>
+        <span class="logo-text-sm">Carrière <strong>Pro Plus</strong></span>
       </RouterLink>
 
       <div class="auth-form-wrap">
@@ -172,21 +172,25 @@
         <!-- ══ ÉTAPE 3 : Nom + Password ══ -->
         <div v-else>
           <h2 class="auth-title">Finalise ton compte</h2>
-          <p class="auth-sub">Email vérifié ✅ — plus qu'un mot de passe !</p>
+          <p class="auth-sub">Email vérifié ✅ — crée ton mot de passe !</p>
 
           <div v-if="errors.global" class="auth-error">{{ errors.global }}</div>
 
           <div class="form-group">
-            <label class="form-label">Nom d'utilisateur</label>
-            <div class="input-prefix-wrap">
-              <span class="input-prefix">@</span>
+            <label class="form-label">Prénom et Nom</label>
+            <div class="input-icon-wrap">
+              <span class="ii-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
               <input
                 v-model="form.name"
                 type="text"
-                class="form-input"
-                style="padding-left:36px"
+                class="form-input ii-input"
                 :class="{ 'input-error': errors.name }"
-                placeholder="ton_nom"
+                placeholder="Jean Dupont"
               />
             </div>
             <div v-if="errors.name" class="field-error">{{ errors.name }}</div>
@@ -194,11 +198,17 @@
 
           <div class="form-group">
             <label class="form-label">Mot de passe</label>
-            <div class="input-prefix-wrap">
+            <div class="input-icon-wrap">
+              <span class="ii-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+              </span>
               <input
                 v-model="form.password"
                 :type="showPassword ? 'text' : 'password'"
-                class="form-input"
+                class="form-input ii-input"
                 style="padding-right:44px"
                 :class="{ 'input-error': errors.password }"
                 placeholder="Min. 8 caractères"
@@ -230,9 +240,9 @@
 
           <p class="auth-switch" style="margin-top:16px;font-size:12px;color:var(--text5)">
             En créant un compte, tu acceptes les
-            <RouterLink to="/cgu" style="color:var(--text3)">CGU</RouterLink>
+            <RouterLink to="/terms" style="color:var(--text3)">Conditions</RouterLink>
             et la
-            <RouterLink to="/confidentialite" style="color:var(--text3)">Politique de confidentialité</RouterLink>.
+            <RouterLink to="/privacy" style="color:var(--text3)">Politique de confidentialité</RouterLink>.
           </p>
         </div>
 

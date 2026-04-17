@@ -4,19 +4,17 @@
     <div class="auth-left">
       <RouterLink to="/" class="auth-logo">
         <div class="logo-mark">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-          </svg>
+          CPP
         </div>
-        <span class="logo-text">LBS <strong>MARKET</strong></span>
+        <span class="logo-text">Carrière <strong>Pro Plus</strong></span>
       </RouterLink>
 
       <div class="auth-hero">
         <div class="ah-tag">Bon retour 👋</div>
-        <h1 class="ah-title">Ton savoir<br>t'attend.</h1>
+        <h1 class="ah-title">Décrochez<br>l'emploi.</h1>
         <p class="ah-desc">
-          Reprends où tu t'es arrêté. Formations, Produits, projets —
-          tout ce que tu as créé et appris est là.
+          Reprends où tu t'es arrêté. CV, formations, offres d'emploi —
+          tout ce que tu as créé est là.
         </p>
 
         <!-- ── Piliers de la plateforme ── -->
@@ -24,8 +22,16 @@
           <div class="pillar-item">
             <span class="pillar-icon">📝</span>
             <div class="pillar-body">
-              <div class="pillar-title">Crée ton CV</div>
-              <div class="pillar-desc">Un CV pro généré en quelques minutes, sans effort.</div>
+              <div class="pillar-title">Crée ton CV Pro</div>
+              <div class="pillar-desc">Un CV pro généré en quelques minutes, optimisé ATS.</div>
+            </div>
+          </div>
+
+          <div class="pillar-item">
+            <span class="pillar-icon">💼</span>
+            <div class="pillar-body">
+              <div class="pillar-title">Trouve l'emploi</div>
+              <div class="pillar-desc">100+ offres exclusives en CDI, CDD, stages et missions.</div>
             </div>
           </div>
 
@@ -33,15 +39,7 @@
             <span class="pillar-icon">🎓</span>
             <div class="pillar-body">
               <div class="pillar-title">Apprends</div>
-              <div class="pillar-desc">Dev, comptabilité, design, marketing — par des pros du terrain.</div>
-            </div>
-          </div>
-
-          <div class="pillar-item">
-            <span class="pillar-icon">📦</span>
-            <div class="pillar-body">
-              <div class="pillar-title">Accède aux ressources</div>
-              <div class="pillar-desc">Templates, Excel, PDF, outils bureautiques — prêts à l'emploi.</div>
+              <div class="pillar-desc">Leadership, tech, finance, management — par des experts.</div>
             </div>
           </div>
         </div>
@@ -53,16 +51,14 @@
       <!-- Logo visible uniquement en mobile -->
       <RouterLink to="/" class="auth-logo-mobile">
         <div class="logo-mark-sm">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-          </svg>
+          CPP
         </div>
-        <span class="logo-text-sm">LBS <strong>MARKET</strong></span>
+        <span class="logo-text-sm">Carrière <strong>Pro Plus</strong></span>
       </RouterLink>
 
       <div class="auth-form-wrap">
         <h2 class="auth-title">Connexion</h2>
-        <p class="auth-sub">Heureux de te revoir sur LBS Market.</p>
+        <p class="auth-sub">Heureux de te revoir sur Carrière Pro Plus.</p>
 
         <div v-if="globalErr" class="auth-error">{{ globalErr }}</div>
 
@@ -210,7 +206,7 @@ async function submit() {
 .auth-left {
   width: 420px;
   flex-shrink: 0;
-  background: #0f172a;
+  background: linear-gradient(135deg, #1c2b4a 0%, #243558 100%);
   display: flex;
   flex-direction: column;
   padding: 36px 40px;
@@ -227,7 +223,7 @@ async function submit() {
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: rgba(255,255,255,.03);
+  background: rgba(212, 166, 52, .05);
   pointer-events: none;
 }
 
@@ -240,7 +236,7 @@ async function submit() {
   text-decoration: none;
 }
 .logo-mark {
-  background: rgba(255,255,255,.1);
+  background: rgba(212, 166, 52, .15);
   color: #fff;
   width: 34px;
   height: 34px;
@@ -248,9 +244,12 @@ async function submit() {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono);
 }
 .logo-text {
-  color: rgba(255,255,255,.7);
+  color: rgba(255, 255, 255, .6);
   font-size: 15px;
   font-weight: 400;
   letter-spacing: .5px;
@@ -268,11 +267,11 @@ async function submit() {
 .ah-tag {
   display: inline-block;
   padding: 3px 12px;
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(212, 166, 52, .3);
   border-radius: 20px;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,.4);
+  color: rgba(212, 166, 52, .8);
   text-transform: uppercase;
   font-family: var(--font-mono);
   letter-spacing: .8px;
@@ -289,7 +288,7 @@ async function submit() {
 }
 .ah-desc {
   font-size: 14px;
-  color: rgba(255,255,255,.4);
+  color: rgba(255, 255, 255, .5);
   line-height: 1.75;
   margin-bottom: 28px;
 }
@@ -304,8 +303,8 @@ async function submit() {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(212, 166, 52, .08);
+  border: 1px solid rgba(212, 166, 52, .15);
   border-radius: 12px;
   padding: 14px 16px;
 }
@@ -328,7 +327,7 @@ async function submit() {
 }
 .pillar-desc {
   font-size: 12px;
-  color: rgba(255,255,255,.4);
+  color: rgba(255, 255, 255, .5);
   line-height: 1.5;
   white-space: nowrap;
   overflow: hidden;
@@ -359,7 +358,7 @@ async function submit() {
   margin-bottom: 32px;
 }
 .logo-mark-sm {
-  background: #0f172a;
+  background: #1c2b4a;
   color: #fff;
   width: 34px;
   height: 34px;
@@ -367,6 +366,9 @@ async function submit() {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono);
 }
 .logo-text-sm {
   color: var(--text);
@@ -489,7 +491,7 @@ async function submit() {
 .spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255,255,255,.3);
+  border: 2px solid rgba(255, 255, 255, .3);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin .65s linear infinite;

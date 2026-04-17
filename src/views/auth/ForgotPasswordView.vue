@@ -4,8 +4,8 @@
     <!-- ── Gauche ── -->
     <div class="auth-left">
       <RouterLink to="/" class="auth-logo">
-        <div class="logo-mark">LBS</div>
-        <span class="logo-text">MARKET</span>
+        <div class="logo-mark">CPP</div>
+        <span class="logo-text">Carrière Pro Plus</span>
       </RouterLink>
 
       <div class="auth-hero">
@@ -38,7 +38,7 @@
         <!-- ══ ÉTAPE 1 : Email ══ -->
         <div v-if="step === 1">
           <h2 class="auth-title">Réinitialiser le mot de passe</h2>
-          <p class="auth-sub">Entre l'email associé à ton compte.</p>
+          <p class="auth-sub">Entre l'email associé à ton compte Carrière Pro Plus.</p>
 
           <div v-if="errors.global" class="auth-error">{{ errors.global }}</div>
 
@@ -168,7 +168,7 @@
         <div v-if="success" class="auth-success">
           <div class="success-icon">✅</div>
           <h3>Mot de passe réinitialisé !</h3>
-          <p>Tu peux maintenant te connecter avec ton nouveau mot de passe.</p>
+          <p>Tu peux maintenant te connecter avec ton nouveau mot de passe sur Carrière Pro Plus.</p>
           <RouterLink to="/login" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px">
             Se connecter →
           </RouterLink>
@@ -306,17 +306,17 @@ async function submitReset() {
 
 <style scoped>
 .auth-shell { display: flex; height: 100vh; overflow: hidden; }
-.auth-left { width: 380px; flex-shrink: 0; background: #0f172a; display: flex; flex-direction: column; padding: 36px 40px; overflow: hidden; }
+.auth-left { width: 380px; flex-shrink: 0; background: linear-gradient(135deg, #1c2b4a 0%, #243558 100%); display: flex; flex-direction: column; padding: 36px 40px; overflow: hidden; }
 .auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: auto; text-decoration: none; }
-.logo-mark { background: rgba(255,255,255,.1); color: #fff; font-family: var(--font-mono); width: 34px; height: 34px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
-.logo-text { color: #fff; font-size: 15px; font-weight: 700; }
+.logo-mark { background: rgba(212, 166, 52, .15); color: #fff; font-family: var(--font-mono); width: 34px; height: 34px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+.logo-text { color: rgba(255, 255, 255, .6); font-size: 15px; font-weight: 400; }
 .auth-hero { margin: auto 0; padding: 32px 0; }
-.ah-tag { display: inline-block; padding: 3px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 20px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,.4); text-transform: uppercase; font-family: var(--font-mono); margin-bottom: 20px; }
+.ah-tag { display: inline-block; padding: 3px 12px; border: 1px solid rgba(212, 166, 52, .3); border-radius: 20px; font-size: 11px; font-weight: 600; color: rgba(212, 166, 52, .8); text-transform: uppercase; font-family: var(--font-mono); margin-bottom: 20px; }
 .ah-title { font-family: var(--font-alt); font-size: 30px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1.18; margin-bottom: 14px; }
-.ah-desc  { font-size: 13.5px; color: rgba(255,255,255,.45); line-height: 1.7; margin-bottom: 32px; }
+.ah-desc  { font-size: 13.5px; color: rgba(255, 255, 255, .5); line-height: 1.7; margin-bottom: 32px; }
 .steps-indicator { display: flex; gap: 8px; align-items: center; }
-.step-dot { width: 8px; height: 8px; border-radius: 99px; background: rgba(255,255,255,.15); transition: all .3s; }
-.step-dot.active  { background: rgba(255,255,255,.4); }
+.step-dot { width: 8px; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, .15); transition: all .3s; }
+.step-dot.active  { background: rgba(255, 255, 255, .4); }
 .step-dot.current { width: 24px; background: #fff; }
 
 .auth-right { flex: 1; background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 40px 24px; overflow-y: auto; }
@@ -333,12 +333,12 @@ async function submitReset() {
 
 .otp-wrap { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
 .otp-input { width: 52px; height: 60px; text-align: center; font-size: 22px; font-weight: 700; font-family: var(--font-mono); border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); outline: none; transition: all .15s; }
-.otp-input:focus  { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,.12); }
+.otp-input:focus  { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(28, 43, 74, .12); }
 .otp-input.filled { border-color: var(--accent); background: var(--surface2); }
 .otp-input.input-error { border-color: #fca5a5; }
 
 .resend-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 13px; }
-.btn-link { background: none; border: none; color: var(--accent); font-weight: 600; cursor: pointer; font-size: 13px; padding: 0; }
+.btn-link { background: none; border: none; color: #1c2b4a; font-weight: 600; cursor: pointer; font-size: 13px; padding: 0; }
 .btn-link:hover { text-decoration: underline; }
 .btn-link:disabled { opacity: .5; pointer-events: none; }
 
@@ -362,7 +362,7 @@ async function submitReset() {
 .auth-success h3 { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
 .auth-success p  { font-size: 14px; color: var(--text3); line-height: 1.6; }
 
-.spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .65s linear infinite; }
+.spinner { width: 18px; height: 18px; border: 2px solid rgba(255, 255, 255, .3); border-top-color: #fff; border-radius: 50%; animation: spin .65s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 700px) {

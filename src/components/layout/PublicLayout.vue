@@ -6,15 +6,16 @@
       <div class="container nav-inner">
 
         <RouterLink to="/" class="nav-logo">
-          <div class="logo-mark">LBS</div>
-          <span class="logo-text">MARKET</span>
+          <div class="logo-mark">CPP</div>
+          <span class="logo-text">Carrière Pro Plus</span>
         </RouterLink>
 
         <nav class="nav-links">
-          <RouterLink to="/cv-builder" active-class="active">Créer mon cv</RouterLink>
+          <RouterLink to="/cv-builder" active-class="active">Créer mon CV</RouterLink>
           <RouterLink to="/formations" active-class="active">Formations</RouterLink>
-          <RouterLink to="/product" active-class="active">Marketplace</RouterLink>
-          <RouterLink to="/articles" active-class="active">Articles</RouterLink>
+          <RouterLink to="/emploi" active-class="active">Offres d'emploi</RouterLink>
+          <RouterLink to="/pricing" active-class="active">Pricing</RouterLink>
+          <RouterLink to="/product" active-class="active">Ressources</RouterLink>
         </nav>
 
         <div class="nav-right">
@@ -88,10 +89,14 @@
       <!-- Menu mobile public -->
       <div v-if="!isDashboard" class="mobile-menu" :class="{ open: mobileOpen }">
         <nav class="mobile-links">
-          <RouterLink to="/cv-builder" @click="mobileOpen = false">Créer mon cv</RouterLink>
-          <RouterLink to="/formations" @click="mobileOpen = false">Formations</RouterLink>
-          <RouterLink to="/product" @click="mobileOpen = false">Marketplace</RouterLink>
-          <RouterLink to="/articles" @click="mobileOpen = false">Articles</RouterLink>
+
+
+
+          <RouterLink to="/cv-builder" @click="mobileOpen = false" active-class="active">Créer mon CV</RouterLink>
+          <RouterLink to="/formations" @click="mobileOpen = false" active-class="active">Formations</RouterLink>
+          <RouterLink to="/emploi" @click="mobileOpen = false" active-class="active">Offres d'emploi</RouterLink>
+          <RouterLink to="/pricing" @click="mobileOpen = false" active-class="active">Pricing</RouterLink>
+          <RouterLink to="/product" @click="mobileOpen = false" active-class="active">Ressources</RouterLink>
           <div class="mobile-auth">
             <template v-if="auth.isLoggedIn">
               <RouterLink to="/dashboard" class="btn btn-secondary">Dashboard</RouterLink>
@@ -113,10 +118,10 @@
         <aside class="sidebar">
           <div class="sb-logo">
             <RouterLink to="/" class="sb-logo-link">
-              <div class="logo-mark sm">LBS</div>
+              <div class="logo-mark sm">CPP</div>
               <div>
-                <div class="sb-logo-text">MARKET</div>
-                <div class="sb-logo-sub">LBS</div>
+                <div class="sb-logo-text">Carrière Pro Plus</div>
+                <div class="sb-logo-sub">CPP</div>
               </div>
             </RouterLink>
           </div>
@@ -158,7 +163,7 @@
           <div class="sb-user">
             <div class="avatar avatar-md" style="background:var(--accent);color:var(--accent-fg)">{{ auth.user?.initials
               || 'KS'
-              }}</div>
+            }}</div>
             <div class="sb-user-info">
               <div class="sb-uname">{{ auth.user?.name || 'Digi' }}</div>
               <div class="sb-urole">{{ auth.user?.role || 'Admin' }}</div>
@@ -219,26 +224,113 @@
         </RouterView>
       </main>
 
+      <!-- FOOTER RICHE — Multi-sections + App Stores -->
       <footer class="pub-footer">
-        <div class="container">
-          <div class="footer-row footer-top">
-            <div class="footer-left">
+        <div class="container footer-content">
+
+          <!-- FOOTER GRID — 4 colonnes -->
+          <div class="footer-grid">
+
+            <!-- Col 1 : Branding + socials -->
+            <div class="footer-col">
               <div class="footer-logo">
-                <div class="logo-mark">LBS</div>
-                <span class="logo-text">MARKET</span>
+                <div class="logo-mark">CPP</div>
+                <div>
+                  <div class="logo-text">Carrière Pro Plus</div>
+                  <div class="logo-sub">Côte d'Ivoire</div>
+                </div>
               </div>
-              <span class="footer-sep">—</span>
-              <span class="footer-tagline">
-                CV, compétences et opportunités — tout pour faire évoluer votre carrière.
-              </span>
+              <p class="footer-desc">
+                La plateforme N°1 des professionnels ivoiriens. CV, formations, offres d'emploi et ressources — tout
+                pour faire évoluer votre carrière.
+              </p>
+              <div class="footer-socials">
+                <a href="https://linkedin.com" class="social-link" title="LinkedIn" target="_blank">in</a>
+                <a href="https://facebook.com" class="social-link" title="Facebook" target="_blank">f</a>
+                <a href="https://twitter.com" class="social-link" title="Twitter" target="_blank">𝕏</a>
+                <a href="https://instagram.com" class="social-link" title="Instagram" target="_blank">📷</a>
+              </div>
             </div>
-            <RouterLink to="/privacy" class="footer-link">Politique de confidentialité →</RouterLink>
-              <RouterLink to="/communaute" class="footer-link">Communauté →</RouterLink>
+
+            <!-- Col 2 : Produits -->
+            <div class="footer-col">
+              <h4 class="footer-title">Produits</h4>
+              <nav class="footer-links">
+                <RouterLink to="/cv-builder">Générateur de CV</RouterLink>
+                <RouterLink to="/formations">Formations</RouterLink>
+                <RouterLink to="/emploi">Offres d'emploi</RouterLink>
+                <RouterLink to="/ressources">Ressources</RouterLink>
+              </nav>
+            </div>
+
+            <!-- Col 3 : Pour les entreprises -->
+            <div class="footer-col">
+              <h4 class="footer-title">Entreprises</h4>
+              <nav class="footer-links">
+                <RouterLink to="/recrutement">Solutions RH</RouterLink>
+                <RouterLink to="/partners">Devenir partenaire</RouterLink>
+                <RouterLink to="/pricing">Tarification</RouterLink>
+                <RouterLink to="/contact">Nous contacter</RouterLink>
+              </nav>
+            </div>
+
+            <!-- Col 4 : Légal + À propos -->
+            <div class="footer-col">
+              <h4 class="footer-title">À propos</h4>
+              <nav class="footer-links">
+                <RouterLink to="/about">Qui sommes-nous</RouterLink>
+                <RouterLink to="/privacy">Politique de confidentialité</RouterLink>
+                <RouterLink to="/terms">Conditions d'utilisation</RouterLink>
+                <RouterLink to="/blog">Blog</RouterLink>
+              </nav>
+            </div>
+
           </div>
-          <div class="footer-row footer-bottom">
-            <span>© 2026 LBS MARKET</span>
-            <span>Développé par <strong>KGS Informatique</strong> 🇨🇮</span>
+
+          <!-- APPS STORES SECTION -->
+          <div class="footer-apps">
+            <div class="apps-header">
+              <h4 class="footer-title">Téléchargez notre app mobile</h4>
+              <p class="apps-desc">Accédez à votre CV, vos cours et vos offres d'emploi partout, à tout moment.</p>
+            </div>
+            <div class="apps-links">
+              <a href="https://apps.apple.com/app/carriere-pro-plus" class="app-link app-apple" target="_blank"
+                rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M17.05 13.5c-.91 2.92.37 5.65 2.85 5.65 2.54 0 4.23-1.74 4.23-4.38 0-.77-.22-1.49-.56-2.1h-5.55v1.83zm5.42-4.05h.02c.52-1.45 1.41-2.78 2.49-3.94C24.6 3.02 23.95 1.5 22.36 1.5c-1.24 0-2.46.66-3.08 1.77-.31.5-.59 1.03-.83 1.6h.02c-.24-.57-.52-1.1-.83-1.6C16.82 2.16 15.6 1.5 14.36 1.5c-1.59 0-2.24 1.52-1.66 3.01 1.08 1.16 1.97 2.49 2.49 3.94M8.62 20c3.06 0 5.5-1.98 5.5-4.5 0-1.78-1.2-3.3-2.97-3.96.47-1.29.75-2.7.75-4.17 0-5.18-4.01-9.37-9-9.37C4.01 0 0 4.18 0 9.37c0 1.47.27 2.88.75 4.17C-.78 14.21-2 15.72-2 17.5 0 19 2.5 20 5.62 20" />
+                </svg>
+                <div>
+                  <span class="app-label">App Store</span>
+                  <span class="app-cta">Télécharger</span>
+                </div>
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=com.carrierproplus" class="app-link app-android"
+                target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M3.5 8.5h17v11c0 1.1-.9 2-2 2h-13c-1.1 0-2-.9-2-2v-11zm8-6C7.9 2.5 6 4.4 6 6.5S7.9 10.5 10 10.5s4-1.9 4-4-1.9-4-4-4zm8 0c-2.1 0-4 1.9-4 4s1.9 4 4 4 4-1.9 4-4-1.9-4-4-4z" />
+                </svg>
+                <div>
+                  <span class="app-label">Google Play</span>
+                  <span class="app-cta">Installer</span>
+                </div>
+              </a>
+            </div>
           </div>
+
+          <!-- FOOTER BOTTOM — Copyright + credits -->
+          <div class="footer-bottom">
+            <div class="footer-left">
+              <span>© 2026 Carrière Pro Plus</span>
+              <span class="separator">•</span>
+              <span>Créé en Côte d'Ivoire 🇨🇮</span>
+            </div>
+            <div class="footer-right">
+              <span>Développé par <strong>KGS Informatique</strong></span>
+            </div>
+          </div>
+
         </div>
       </footer>
     </template>
@@ -750,83 +842,217 @@ const vClickOutside = {
 }
 
 /* ═══════════════════════════════════════
-   FOOTER
+   FOOTER RICHE
 ═══════════════════════════════════════ */
 .pub-footer {
   background: var(--text);
-  color: rgba(255, 255, 255, .5);
-  padding: 20px 0;
+  color: rgba(255, 255, 255, .6);
+  padding: 60px 0 20px;
 }
 
-.footer-row {
+.footer-content {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* Grid 4 colonnes */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-}
-
-.footer-top {
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-  margin-bottom: 14px;
-}
-
-.footer-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
 }
 
 .footer-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 12px;
 }
 
 .footer-logo .logo-mark {
   background: rgba(255, 255, 255, .12);
   color: #fff;
-  width: 28px;
-  height: 28px;
-  font-size: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 11px;
+  border-radius: 8px;
 }
 
 .footer-logo .logo-text {
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.footer-sep {
-  color: rgba(255, 255, 255, .2);
-  flex-shrink: 0;
+.footer-logo .logo-sub {
+  color: rgba(255, 255, 255, .35);
+  font-size: 11px;
 }
 
-.footer-tagline {
-  font-size: 13px;
-  color: rgba(255, 255, 255, .4);
-  font-style: italic;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.footer-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, .5);
 }
 
-.footer-link {
+.footer-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.social-link {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255, 255, 255, .65);
-  white-space: nowrap;
-  transition: color .12s;
-  flex-shrink: 0;
+  color: rgba(255, 255, 255, .6);
+  text-decoration: none;
+  transition: all .2s;
 }
 
-.footer-link:hover {
+.social-link:hover {
+  background: rgba(255, 255, 255, .15);
+  color: #fff;
+  border-color: rgba(255, 255, 255, .2);
+}
+
+.footer-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-bottom: 4px;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: rgba(255, 255, 255, .55);
+  text-decoration: none;
+  transition: color .15s;
+}
+
+.footer-links a:hover {
+  color: rgba(255, 255, 255, .85);
+}
+
+/* Apps stores section */
+.footer-apps {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.apps-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apps-desc {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, .5);
+  line-height: 1.5;
+  max-width: 400px;
+}
+
+.apps-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.app-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .04);
+  text-decoration: none;
+  transition: all .2s;
+  flex: 0 1 200px;
+}
+
+.app-link:hover {
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .2);
+}
+
+.app-link svg {
+  flex-shrink: 0;
+  opacity: .7;
+}
+
+.app-link:hover svg {
+  opacity: 1;
+}
+
+.app-link>div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.app-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, .5);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-weight: 600;
+}
+
+.app-cta {
+  font-size: 13px;
+  font-weight: 700;
   color: #fff;
 }
 
+/* Footer bottom */
 .footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
   font-size: 12.5px;
+  color: rgba(255, 255, 255, .4);
+}
+
+.separator {
+  opacity: .3;
+}
+
+.footer-right {
+  white-space: nowrap;
+}
+
+.footer-right strong {
+  color: rgba(255, 255, 255, .6);
 }
 
 /* ═══════════════════════════════════════
@@ -863,9 +1089,27 @@ const vClickOutside = {
 /* ═══════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════ */
+@media (max-width: 1200px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 960px) {
   .nav-links {
     display: none;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apps-links {
+    flex-direction: column;
+  }
+
+  .app-link {
+    flex: 1;
   }
 }
 
@@ -924,7 +1168,6 @@ const vClickOutside = {
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    /* indicateur discret qu'on peut scroller */
     padding: 0 4px;
   }
 
@@ -965,34 +1208,43 @@ const vClickOutside = {
   .bn-item.active span:first-child svg {
     opacity: 1;
   }
+
+  .pub-footer {
+    padding: 40px 0 16px;
+  }
+
+  .footer-content {
+    gap: 32px;
+  }
 }
 
 @media (max-width: 640px) {
-  .footer-top {
-    flex-direction: column;
-    align-items: flex-start;
+  .footer-col {
+    gap: 12px;
+  }
+
+  .footer-title {
+    font-size: 12px;
+  }
+
+  .footer-desc {
+    font-size: 12.5px;
+  }
+
+  .footer-socials {
     gap: 8px;
   }
 
-  .footer-left {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .footer-tagline {
-    white-space: normal;
-    overflow: visible;
-    text-overflow: unset;
-  }
-
-  .footer-sep {
-    display: none;
+  .social-link {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
   }
 
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 8px;
   }
 
   .nav-right .btn:not(.btn-icon):not(.burger) {
