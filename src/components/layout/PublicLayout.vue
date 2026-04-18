@@ -90,8 +90,6 @@
       <div v-if="!isDashboard" class="mobile-menu" :class="{ open: mobileOpen }">
         <nav class="mobile-links">
 
-
-
           <RouterLink to="/cv-builder" @click="mobileOpen = false" active-class="active">Créer mon CV</RouterLink>
           <RouterLink to="/formations" @click="mobileOpen = false" active-class="active">Formations</RouterLink>
           <RouterLink to="/emploi" @click="mobileOpen = false" active-class="active">Offres d'emploi</RouterLink>
@@ -245,10 +243,22 @@
                 pour faire évoluer votre carrière.
               </p>
               <div class="footer-socials">
-                <a href="https://linkedin.com" class="social-link" title="LinkedIn" target="_blank">in</a>
-                <a href="https://facebook.com" class="social-link" title="Facebook" target="_blank">f</a>
-                <a href="https://twitter.com" class="social-link" title="Twitter" target="_blank">𝕏</a>
-                <a href="https://instagram.com" class="social-link" title="Instagram" target="_blank">📷</a>
+             <div class="footer-socials">
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/company/carriere-pro-plus/posts/?feedView=all" class="social-link" title="LinkedIn" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.48 1s2.5 1.12 2.5 2.5zM.2 8h4.56v14H.2V8zM8.16 8h4.37v1.92h.06c.61-1.16 2.1-2.38 4.33-2.38 4.63 0 5.48 3.05 5.48 7.02V22h-4.56v-6.91c0-1.65-.03-3.78-2.3-3.78-2.3 0-2.65 1.8-2.65 3.66V22H8.16V8z"/>
+                </svg>
+            </a>
+
+            <!-- WhatsApp -->
+            <a href="https://whatsapp.com/channel/0029Vb6IlA69xVJXz4JSAt0E" class="social-link" title="WhatsApp" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.52 3.48A11.94 11.94 0 0 0 12.06 0C5.4 0 .06 5.34.06 12c0 2.12.55 4.2 1.6 6.04L0 24l6.15-1.61A11.94 11.94 0 0 0 12.06 24c6.66 0 12-5.34 12-12 0-3.2-1.25-6.22-3.54-8.52zM12.06 21.8c-1.8 0-3.56-.48-5.1-1.4l-.36-.21-3.65.96.97-3.56-.24-.37A9.76 9.76 0 0 1 2.3 12c0-5.4 4.36-9.76 9.76-9.76 2.6 0 5.05 1.01 6.88 2.84A9.7 9.7 0 0 1 21.8 12c0 5.4-4.36 9.8-9.74 9.8zm5.43-7.35c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.94 1.17-.17.2-.34.22-.63.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.8-1.67-2.1-.17-.3-.02-.46.13-.6.14-.14.3-.34.45-.5.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.66-1.6-.9-2.2-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.5.07-.76.37-.26.3-1 1-1 2.45 0 1.45 1.03 2.85 1.18 3.05.15.2 2.03 3.1 4.93 4.35.7.3 1.25.48 1.68.62.7.22 1.33.19 1.83.12.56-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.18-1.42-.07-.12-.27-.2-.57-.35z"/>
+                </svg>
+            </a>
+</div>
+
               </div>
             </div>
 
@@ -256,9 +266,9 @@
             <div class="footer-col">
               <h4 class="footer-title">Produits</h4>
               <nav class="footer-links">
+                 <RouterLink to="/emploi">Offres d'emploi</RouterLink>
                 <RouterLink to="/cv-builder">Générateur de CV</RouterLink>
                 <RouterLink to="/formations">Formations</RouterLink>
-                <RouterLink to="/emploi">Offres d'emploi</RouterLink>
                 <RouterLink to="/ressources">Ressources</RouterLink>
               </nav>
             </div>
@@ -293,30 +303,31 @@
               <h4 class="footer-title">Téléchargez notre app mobile</h4>
               <p class="apps-desc">Accédez à votre CV, vos cours et vos offres d'emploi partout, à tout moment.</p>
             </div>
-            <div class="apps-links">
-              <a href="https://apps.apple.com/app/carriere-pro-plus" class="app-link app-apple" target="_blank"
-                rel="noopener">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M17.05 13.5c-.91 2.92.37 5.65 2.85 5.65 2.54 0 4.23-1.74 4.23-4.38 0-.77-.22-1.49-.56-2.1h-5.55v1.83zm5.42-4.05h.02c.52-1.45 1.41-2.78 2.49-3.94C24.6 3.02 23.95 1.5 22.36 1.5c-1.24 0-2.46.66-3.08 1.77-.31.5-.59 1.03-.83 1.6h.02c-.24-.57-.52-1.1-.83-1.6C16.82 2.16 15.6 1.5 14.36 1.5c-1.59 0-2.24 1.52-1.66 3.01 1.08 1.16 1.97 2.49 2.49 3.94M8.62 20c3.06 0 5.5-1.98 5.5-4.5 0-1.78-1.2-3.3-2.97-3.96.47-1.29.75-2.7.75-4.17 0-5.18-4.01-9.37-9-9.37C4.01 0 0 4.18 0 9.37c0 1.47.27 2.88.75 4.17C-.78 14.21-2 15.72-2 17.5 0 19 2.5 20 5.62 20" />
-                </svg>
-                <div>
-                  <span class="app-label">App Store</span>
-                  <span class="app-cta">Télécharger</span>
-                </div>
-              </a>
-              <a href="https://play.google.com/store/apps/details?id=com.carrierproplus" class="app-link app-android"
-                target="_blank" rel="noopener">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M3.5 8.5h17v11c0 1.1-.9 2-2 2h-13c-1.1 0-2-.9-2-2v-11zm8-6C7.9 2.5 6 4.4 6 6.5S7.9 10.5 10 10.5s4-1.9 4-4-1.9-4-4-4zm8 0c-2.1 0-4 1.9-4 4s1.9 4 4 4 4-1.9 4-4-1.9-4-4-4z" />
-                </svg>
-                <div>
-                  <span class="app-label">Google Play</span>
-                  <span class="app-cta">Installer</span>
-                </div>
-              </a>
-            </div>
+          <div class="apps-links">
+
+  <!-- App Store -->
+  <a href="#" class="app-link app-apple" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16.37 1.43c0 1.14-.47 2.2-1.21 2.97-.77.8-2.03 1.42-3.13 1.33-.14-1.1.4-2.26 1.16-3.02.83-.82 2.19-1.41 3.18-1.28zM21.36 17.2c-.58 1.35-.85 1.95-1.6 3.1-1.04 1.6-2.5 3.6-4.33 3.62-1.62.02-2.04-1.06-4.25-1.05-2.2.01-2.67 1.07-4.29 1.05-1.83-.02-3.21-1.83-4.25-3.43C.61 17.94-.6 13.1 1.7 9.7c1.15-1.68 3.2-2.74 5.08-2.74 1.88 0 3.06 1.06 4.61 1.06 1.51 0 2.43-1.06 4.6-1.06 1.67 0 3.44.9 4.59 2.44-4.03 2.2-3.37 7.96.78 9.8z"/>
+    </svg>
+    <div>
+      <span class="app-label">App Store</span>
+      <span class="app-cta">Télécharger</span>
+    </div>
+  </a>
+
+  <!-- Google Play -->
+  <a href="#" class="app-link app-android" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 2l13.5 10L3 22V2zm14.5 9.2L20.5 9c.8.5.8 1.7 0 2.2l-3 2.2-2.1-2.2 2.1-2zM14.8 13.5L5.5 20l8.2-6.5 1.1 1zM13.7 10.5L5.5 4l9.3 6.5-1.1 1z"/>
+    </svg>
+    <div>
+      <span class="app-label">Google Play</span>
+      <span class="app-cta">Installer</span>
+    </div>
+  </a>
+
+</div>
           </div>
 
           <!-- FOOTER BOTTOM — Copyright + credits -->

@@ -418,43 +418,47 @@ export default {
       photoUploading: false,
       calculatedPageCount: 1,
       steps: [
-        { id: 'personal', label: 'Infos', title: '👤 Informations personnelles', sub: 'Vos coordonnées, date de naissance et profil' },
-        { id: 'experience', label: 'Expériences', title: '💼 Expériences professionnelles', sub: 'Vos postes et missions' },
-        { id: 'education', label: 'Formation', title: '🎓 Formations & Diplômes', sub: 'Votre parcours académique avec dates' },
-        { id: 'skills', label: 'Compétences', title: '⚡ Compétences, Langues & Intérêts', sub: "Skills, langues, aptitudes, centres d'intérêt" },
-        { id: 'projects', label: 'Projets', title: '🚀 Projets', sub: 'Vos réalisations notables' },
-        { id: 'template', label: 'Modèle', title: '🎨 Choisir un modèle', sub: 'Style et couleur de votre CV' },
+        { id: 'personal',   label: 'Infos',        title: '👤 Informations personnelles',          sub: 'Vos coordonnées, date de naissance et profil' },
+        { id: 'experience', label: 'Expériences',   title: '💼 Expériences professionnelles',       sub: 'Vos postes et missions' },
+        { id: 'education',  label: 'Formation',     title: '🎓 Formations & Diplômes',              sub: 'Votre parcours académique avec dates' },
+        { id: 'skills',     label: 'Compétences',   title: '⚡ Compétences, Langues & Intérêts',   sub: "Skills, langues, aptitudes, centres d'intérêt" },
+        { id: 'projects',   label: 'Projets',       title: '🚀 Projets',                            sub: 'Vos réalisations notables' },
+        { id: 'template',   label: 'Modèle',        title: '🎨 Choisir un modèle',                  sub: 'Style et couleur de votre CV' },
       ],
       templates: [
-        { id: 'classic', name: 'Classique', defaultAccent: '#2563eb' },
-        { id: 'minimal', name: 'Minimaliste', defaultAccent: '#111827' },
-        { id: 'modern', name: 'Moderne', defaultAccent: '#7c3aed' },
-        { id: 'executive', name: 'Executive', defaultAccent: '#c5982a' },
-        { id: 'corporate', name: 'Corporate', defaultAccent: '#0f766e' },
-        { id: 'elegant', name: 'Élégant', defaultAccent: '#b45309' },
-        { id: 'dark', name: 'Dark', defaultAccent: '#6366f1' },
-        { id: 'timeline', name: 'Timeline', defaultAccent: '#0891b2' },
-        { id: 'swiss', name: 'Swiss', defaultAccent: '#e11d48' },
-        { id: 'creative', name: 'Créatif', defaultAccent: '#7c3aed' },
-        { id: 'tech', name: 'Tech', defaultAccent: '#22c55e' },
-        { id: 'academic', name: 'Académique', defaultAccent: '#1d4ed8' },
-        { id: 'luxury', name: 'Luxe', defaultAccent: '#92400e' },
-        { id: 'gradient', name: 'Gradient', defaultAccent: '#4f46e5' },
-        { id: 'compact', name: 'Compact Pro', defaultAccent: '#0e7490' },
-        { id: 'vladimir', name: 'Vladimir', defaultAccent: '#e8950a' },
-        { id: 'neondark', name: 'Neon Dark', defaultAccent: '#22d3ee' },
-        { id: 'fold', name: 'Fold', defaultAccent: '#c2410c' },
-        { id: 'prism', name: 'Prism', defaultAccent: '#7c3aed' },
-        { id: 'sidebar', name: 'Sidebar Pro', defaultAccent: '#1e3a5f' },
-        { id: 'green2col', name: 'Green 2Col', defaultAccent: '#059669' },
-        { id: 'navy', name: 'Navy', defaultAccent: '#1e3a5f' },
-        { id: 'crimson', name: 'Crimson', defaultAccent: '#9b1c31' },
+        { id: 'classic',   name: 'Classique',    defaultAccent: '#2563eb' },
+        { id: 'minimal',   name: 'Minimaliste',  defaultAccent: '#111827' },
+        { id: 'modern',    name: 'Moderne',      defaultAccent: '#7c3aed' },
+        { id: 'executive', name: 'Executive',    defaultAccent: '#c5982a' },
+        { id: 'corporate', name: 'Corporate',    defaultAccent: '#0f766e' },
+        { id: 'elegant',   name: 'Élégant',      defaultAccent: '#b45309' },
+        { id: 'dark',      name: 'Dark',         defaultAccent: '#6366f1' },
+        { id: 'timeline',  name: 'Timeline',     defaultAccent: '#0891b2' },
+        { id: 'swiss',     name: 'Swiss',        defaultAccent: '#e11d48' },
+        { id: 'creative',  name: 'Créatif',      defaultAccent: '#7c3aed' },
+        { id: 'tech',      name: 'Tech',         defaultAccent: '#22c55e' },
+        { id: 'academic',  name: 'Académique',   defaultAccent: '#1d4ed8' },
+        { id: 'luxury',    name: 'Luxe',         defaultAccent: '#92400e' },
+        { id: 'gradient',  name: 'Gradient',     defaultAccent: '#4f46e5' },
+        { id: 'compact',   name: 'Compact Pro',  defaultAccent: '#0e7490' },
+        { id: 'vladimir',  name: 'Vladimir',     defaultAccent: '#e8950a' },
+        { id: 'neondark',  name: 'Neon Dark',    defaultAccent: '#22d3ee' },
+        { id: 'fold',      name: 'Fold',         defaultAccent: '#c2410c' },
+        { id: 'prism',     name: 'Prism',        defaultAccent: '#7c3aed' },
+        { id: 'sidebar',   name: 'Sidebar Pro',  defaultAccent: '#1e3a5f' },
+        { id: 'green2col', name: 'Green 2Col',   defaultAccent: '#059669' },
+        { id: 'navy',      name: 'Navy',         defaultAccent: '#1e3a5f' },
+        { id: 'crimson',   name: 'Crimson',      defaultAccent: '#9b1c31' },
       ],
       colorPresets: [
-        { name: 'Bleu', value: '#2563eb' }, { name: 'Indigo', value: '#4f46e5' }, { name: 'Violet', value: '#7c3aed' }, { name: 'Rose', value: '#db2777' },
-        { name: 'Rouge', value: '#dc2626' }, { name: 'Crimson', value: '#e11d48' }, { name: 'Orange', value: '#ea580c' }, { name: 'Ambre', value: '#b45309' },
-        { name: 'Vert', value: '#16a34a' }, { name: 'Emeraude', value: '#059669' }, { name: 'Teal', value: '#0f766e' }, { name: 'Cyan', value: '#0891b2' },
-        { name: 'Tech', value: '#22c55e' }, { name: 'Ardoise', value: '#475569' }, { name: 'Noir', value: '#111827' },
+        { name: 'Bleu',     value: '#2563eb' }, { name: 'Indigo',   value: '#4f46e5' },
+        { name: 'Violet',   value: '#7c3aed' }, { name: 'Rose',     value: '#db2777' },
+        { name: 'Rouge',    value: '#dc2626' }, { name: 'Crimson',  value: '#e11d48' },
+        { name: 'Orange',   value: '#ea580c' }, { name: 'Ambre',    value: '#b45309' },
+        { name: 'Vert',     value: '#16a34a' }, { name: 'Emeraude', value: '#059669' },
+        { name: 'Teal',     value: '#0f766e' }, { name: 'Cyan',     value: '#0891b2' },
+        { name: 'Tech',     value: '#22c55e' }, { name: 'Ardoise',  value: '#475569' },
+        { name: 'Noir',     value: '#111827' },
       ],
       cv: {
         firstName: '', lastName: '', dateNaissance: '', title: '',
@@ -491,11 +495,8 @@ export default {
         this.updatePageCount()
       }
     },
-    selectedTpl() {
-      this.scheduleSave()
-      this.updatePageCount()
-    },
-    accentColor() { this.scheduleSave() },
+    selectedTpl() { this.scheduleSave(); this.updatePageCount() },
+    accentColor()  { this.scheduleSave() },
   },
 
   async created() { await this.loadProfile() },
@@ -511,19 +512,9 @@ export default {
     nextStep() { if (this.currentStep < this.steps.length - 1) this.currentStep++ },
     prevStep() { if (this.currentStep > 0) this.currentStep-- },
     goToStep(i) { this.currentStep = i },
-    aod(t) { return this.selectedTpl === t.id ? this.accentColor : t.defaultAccent },
 
-    updatePageCount() {
-      this.applySmartPageBreaks()
-    },
+    updatePageCount() { this.applySmartPageBreaks() },
 
-    /* ═══════════════════════════════════════════════════════════
-       FIX 1+2 : applySmartPageBreaks — multi-pass algorithm
-       - Pass 1 : titres de section orphelins (derniers 120px)
-       - Pass 2 : entrées qui chevauchent une limite de page
-       Chaque pass fait break+restart après insertion d'un spacer
-       pour recalculer les positions correctement.
-    ═══════════════════════════════════════════════════════════ */
     applySmartPageBreaks() {
       this.$nextTick(() => {
         setTimeout(() => {
@@ -532,10 +523,8 @@ export default {
 
           const PAGE_H = 1123
 
-          // Nettoyage complet des spacers précédents
           el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
 
-          // Sélecteurs
           const entrySelectors = [
             '.cc-entry, .cm-entry, .cmod-entry, .corp-entry, .eleg-entry, .dk-entry',
             '.tl-item, .sw-exp, .cr-exp, .tk-exp, .acad-entry, .lux-entry',
@@ -561,141 +550,86 @@ export default {
             '.grad-sec, .cp-sec, .ex-sec, .vl-msec, .nd-sec, ' +
             '.fd-sec, .pr-sec, .sb-sec-r, .g2-sec, .nv-sec, .cr2-sec'
 
-          // ══ PASS 1 : Titres de section orphelins ══
-          let maxPasses = 15
-          let changed = true
-
+          // PASS 1 : titres orphelins
+          let maxPasses = 15, changed = true
           while (changed && maxPasses-- > 0) {
             changed = false
             const titles = el.querySelectorAll(sectionTitleSelectors)
             const elRect = el.getBoundingClientRect()
-
             for (const title of titles) {
               const titleRect = title.getBoundingClientRect()
-              const titleTop = titleRect.top - elRect.top
+              const titleTop    = titleRect.top    - elRect.top
               const titleBottom = titleRect.bottom - elRect.top
-
               if (titleTop < 1) continue
-
-              const pageStart = Math.floor(titleTop / PAGE_H)
-              const pageBoundary = (pageStart + 1) * PAGE_H
+              const pageBoundary    = (Math.floor(titleTop / PAGE_H) + 1) * PAGE_H
               const distanceToBoundary = pageBoundary - titleTop
-
-              // Titre dans les derniers 120px de la page → pousser la section
               if (distanceToBoundary > 0 && distanceToBoundary < 120 && titleTop > PAGE_H * 0.3) {
-                const spacerHeight = distanceToBoundary + 12
                 const spacer = document.createElement('div')
                 spacer.className = 'cv-page-break-spacer'
-                spacer.style.height = spacerHeight + 'px'
-                spacer.style.width = '100%'
-                spacer.style.flexShrink = '0'
-
-                const parentSec = title.closest(sectionContainerSelectors)
-                const target = parentSec || title
+                spacer.style.cssText = `height:${distanceToBoundary + 12}px;width:100%;flex-shrink:0`
+                const target = title.closest(sectionContainerSelectors) || title
                 target.parentNode.insertBefore(spacer, target)
-                changed = true
-                break // restart — positions ont changé
+                changed = true; break
               }
-
-              // Titre qui chevauche directement une limite
               if (titleTop < pageBoundary && titleBottom > pageBoundary) {
-                const spacerHeight = (pageBoundary - titleTop) + 12
                 const spacer = document.createElement('div')
                 spacer.className = 'cv-page-break-spacer'
-                spacer.style.height = spacerHeight + 'px'
-                spacer.style.width = '100%'
-                spacer.style.flexShrink = '0'
-
-                const parentSec = title.closest(sectionContainerSelectors)
-                const target = parentSec || title
+                spacer.style.cssText = `height:${(pageBoundary - titleTop) + 12}px;width:100%;flex-shrink:0`
+                const target = title.closest(sectionContainerSelectors) || title
                 target.parentNode.insertBefore(spacer, target)
-                changed = true
-                break
+                changed = true; break
               }
             }
           }
 
-          // ══ PASS 1.5 : Sections complètes qui chevauchent une limite ══
-          // Si une section (titre + entrées) est coupée entre 2 pages
-          // ET qu'elle est assez petite pour tenir sur 1 page → pousser toute la section
-          maxPasses = 10
-          changed = true
-
+          // PASS 1.5 : sections complètes
+          maxPasses = 10; changed = true
           while (changed && maxPasses-- > 0) {
             changed = false
             const sections = el.querySelectorAll(sectionContainerSelectors)
             const elRect = el.getBoundingClientRect()
-
             for (const sec of sections) {
-              const rect = sec.getBoundingClientRect()
-              const secTop = rect.top - elRect.top
+              const rect      = sec.getBoundingClientRect()
+              const secTop    = rect.top    - elRect.top
               const secBottom = rect.bottom - elRect.top
               const secHeight = rect.height
-
               if (secHeight < 2 || secTop < 1) continue
-
-              const pageStart = Math.floor(secTop / PAGE_H)
-              const pageBoundary = (pageStart + 1) * PAGE_H
-
-              // La section chevauche-t-elle une limite de page ?
-              if (secTop < pageBoundary && secBottom > pageBoundary) {
-                // La section est-elle assez petite pour tenir sur 1 page ? (< 55%)
-                if (secHeight < PAGE_H * 0.55) {
-                  const spacerHeight = (pageBoundary - secTop) + 10
-                  const spacer = document.createElement('div')
-                  spacer.className = 'cv-page-break-spacer'
-                  spacer.style.height = spacerHeight + 'px'
-                  spacer.style.width = '100%'
-                  spacer.style.flexShrink = '0'
-                  sec.parentNode.insertBefore(spacer, sec)
-                  changed = true
-                  break // restart
-                }
+              const pageBoundary = (Math.floor(secTop / PAGE_H) + 1) * PAGE_H
+              if (secTop < pageBoundary && secBottom > pageBoundary && secHeight < PAGE_H * 0.55) {
+                const spacer = document.createElement('div')
+                spacer.className = 'cv-page-break-spacer'
+                spacer.style.cssText = `height:${(pageBoundary - secTop) + 10}px;width:100%;flex-shrink:0`
+                sec.parentNode.insertBefore(spacer, sec)
+                changed = true; break
               }
             }
           }
 
-          // ══ PASS 2 : Entrées / blocs qui chevauchent une limite ══
-          maxPasses = 20
-          changed = true
-
+          // PASS 2 : entrées qui chevauchent
+          maxPasses = 20; changed = true
           while (changed && maxPasses-- > 0) {
             changed = false
-            const nodes = el.querySelectorAll(entrySelectors)
+            const nodes  = el.querySelectorAll(entrySelectors)
             const elRect = el.getBoundingClientRect()
-
             for (const node of nodes) {
               if (node.classList.contains('cv-page-break-spacer')) continue
-
-              const rect = node.getBoundingClientRect()
-              const nodeTop = rect.top - elRect.top
+              const rect       = node.getBoundingClientRect()
+              const nodeTop    = rect.top    - elRect.top
               const nodeBottom = rect.bottom - elRect.top
               const nodeHeight = rect.height
-
               if (nodeHeight < 2) continue
-
-              const pageStart = Math.floor(nodeTop / PAGE_H)
-              const pageBoundary = (pageStart + 1) * PAGE_H
-
-              if (nodeTop < pageBoundary && nodeBottom > pageBoundary) {
-                if (nodeHeight < PAGE_H * 0.7) {
-                  const spacerHeight = (pageBoundary - nodeTop) + 10
-                  const spacer = document.createElement('div')
-                  spacer.className = 'cv-page-break-spacer'
-                  spacer.style.height = spacerHeight + 'px'
-                  spacer.style.width = '100%'
-                  spacer.style.flexShrink = '0'
-                  node.parentNode.insertBefore(spacer, node)
-                  changed = true
-                  break // restart — positions ont changé
-                }
+              const pageBoundary = (Math.floor(nodeTop / PAGE_H) + 1) * PAGE_H
+              if (nodeTop < pageBoundary && nodeBottom > pageBoundary && nodeHeight < PAGE_H * 0.7) {
+                const spacer = document.createElement('div')
+                spacer.className = 'cv-page-break-spacer'
+                spacer.style.cssText = `height:${(pageBoundary - nodeTop) + 10}px;width:100%;flex-shrink:0`
+                node.parentNode.insertBefore(spacer, node)
+                changed = true; break
               }
             }
           }
 
-          // Nombre de pages
-          const finalHeight = el.scrollHeight
-          this.calculatedPageCount = Math.max(1, Math.ceil(finalHeight / PAGE_H))
+          this.calculatedPageCount = Math.max(1, Math.ceil(el.scrollHeight / PAGE_H))
         }, 200)
       })
     },
@@ -733,11 +667,11 @@ export default {
       evt.dataTransfer.setData('text/plain', index)
     },
     onDragOver(list, index) { if (this.dragState.list !== list) return; this.dragState.over = index },
-    onDragLeave() { },
+    onDragLeave() {},
     onDrop(list, toIndex) {
       const fromIndex = this.dragState.from
       if (fromIndex === null || fromIndex === toIndex || this.dragState.list !== list) return
-      const arr = this.cv[list]
+      const arr   = this.cv[list]
       const moved = arr.splice(fromIndex, 1)[0]
       arr.splice(toIndex, 0, moved)
       this.dragState = { list: null, from: null, over: null }
@@ -779,16 +713,19 @@ export default {
       }
     },
     applyProfile(data) {
-      this.cvProfileId = data.id
-      this.selectedTpl = data.template || 'classic'
-      this.accentColor = data.accentColor || '#2563eb'
+      this.cvProfileId  = data.id
+      this.selectedTpl  = data.template    || 'classic'
+      this.accentColor  = data.accentColor || '#2563eb'
       this.cv = {
-        firstName: data.firstName || '', lastName: data.lastName || '', dateNaissance: data.dateNaissance || '',
-        title: data.title || '', email: data.email || '', phone: data.phone || '',
-        city: data.city || '', country: data.country || '', website: data.website || '',
-        summary: data.summary || '', photo: data.photo || '', photoUrl: data.photo || '',
+        firstName:  data.firstName  || '', lastName:  data.lastName  || '',
+        dateNaissance: data.dateNaissance || '', title: data.title || '',
+        email: data.email || '', phone: data.phone || '',
+        city:  data.city  || '', country: data.country || '',
+        website: data.website || '', summary: data.summary || '',
+        photo: data.photo || '', photoUrl: data.photo || '',
         experiences: (data.experiences || []).map(e => ({
-          position: e.position || '', company: e.company || '', startDate: e.startDate || '', endDate: e.endDate || '',
+          position: e.position || '', company: e.company || '',
+          startDate: e.startDate || '', endDate: e.endDate || '',
           description: e.description || '', descMode: e.descMode || 'bullets',
           bullets: Array.isArray(e.bullets) && e.bullets.length > 0 ? e.bullets : [''],
         })),
@@ -796,11 +733,11 @@ export default {
           degree: e.degree || '', school: e.school || '', year: e.year || '',
           anneeDebut: e.anneeDebut || '', anneeFin: e.anneeFin || '',
         })),
-        skills: (data.skills || []).map(s => ({ name: s.name || '', level: s.level || 3 })),
-        languages: (data.languages || []).map(l => ({ name: l.name || '', level: l.level || 'Courant' })),
-        projects: (data.projects || []).map(p => ({ name: p.name || '', tech: p.tech || '', description: p.description || '', url: p.url || '' })),
-        centresInteret: (data.centresInteret || []).map(c => ({ name: c.name || '' })),
-        aptitudes: (data.aptitudes || []).map(a => ({ name: a.name || '', level: a.level || 3 })),
+        skills:        (data.skills        || []).map(s => ({ name: s.name || '', level: s.level || 3 })),
+        languages:     (data.languages     || []).map(l => ({ name: l.name || '', level: l.level || 'Courant' })),
+        projects:      (data.projects      || []).map(p => ({ name: p.name || '', tech: p.tech || '', description: p.description || '', url: p.url || '' })),
+        centresInteret:(data.centresInteret|| []).map(c => ({ name: c.name || '' })),
+        aptitudes:     (data.aptitudes     || []).map(a => ({ name: a.name || '', level: a.level || 3 })),
       }
     },
     scheduleSave() {
@@ -816,169 +753,330 @@ export default {
           ...this.cv, photo: this.cv.photo, template: this.selectedTpl, accentColor: this.accentColor,
         })
         const n = new Date()
-        this.lastSaved = `à ${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`
+        this.lastSaved = `à ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`
       } catch (e) { console.error('Erreur save:', e) }
       finally { this.saving = false }
     },
 
     /* ═══════════════════════════════════════════════════════════
-       FIX 3 : downloadPDF — photo backup systématique
-       - Backup TOUJOURS cv.photo + cv.photoUrl avant export
-       - Nettoyage spacers après export (try + catch + finally)
-       - Restore garanti même en cas d'erreur
+       downloadPDF — avec fix mobile complet :
+       1. Sauvegarde + force meta viewport à 1200px
+       2. Force el + previewStage à 794px
+       3. onclone : CSS override pour neutraliser tous les media queries
+       4. Restauration garantie dans finally
     ═══════════════════════════════════════════════════════════ */
-   async downloadPDF() {
-  this.exporting = true;
-  try {
-    const { data } = await API.post('/cv-credits/use', { cv_profile_id: this.cvProfileId })
-    if (!data.success) {
-      alert('Crédit insuffisant. Veuillez recharger votre compte.')
-      this.$router.push({ name: 'cv-credits-recharge' })
-      this.exporting = false
-      return
-    }
-    this.cvCredits = data.balance
-  } catch (e) {
-    if (e.response?.status === 402) {
-      alert('Crédit insuffisant. Veuillez recharger votre compte.')
-      this.$router.push({ name: 'cv-credits-recharge' })
-    } else {
-      alert('Erreur lors de la vérification du crédit.')
-    }
-    this.exporting = false
-    return
-  }
+    async downloadPDF() {
+      this.exporting = true
 
-  const prevZoom = this.zoom
+      // ── Vérification crédit ──
+      try {
+        const { data } = await API.post('/cv-credits/use', { cv_profile_id: this.cvProfileId })
+        if (!data.success) {
+          alert('Crédit insuffisant. Veuillez recharger votre compte.')
+          this.$router.push({ name: 'cv-credits-recharge' })
+          this.exporting = false
+          return
+        }
+        this.cvCredits = data.balance
+      } catch (e) {
+        if (e.response?.status === 402) {
+          alert('Crédit insuffisant. Veuillez recharger votre compte.')
+          this.$router.push({ name: 'cv-credits-recharge' })
+        } else {
+          alert('Erreur lors de la vérification du crédit.')
+        }
+        this.exporting = false
+        return
+      }
 
-  try {
-    if (!window.html2canvas) {
-      await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
-    }
-    if (!window.jspdf) {
-      await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s) })
-    }
+      const prevZoom      = this.zoom
+      const previewStage  = this.$refs.previewStage
 
-    this.zoom = 1
-    await this.$nextTick()
-    await new Promise(r => setTimeout(r, 600))
+      // ── Backup SYSTÉMATIQUE de la photo avant toute manipulation ──
+      const photoBackup    = this.cv.photo    || ''
+      const photoUrlBackup = this.cv.photoUrl || ''
 
-    const el = document.getElementById('cv-render')
-    const orig = {
-      width: el.style.width, minHeight: el.style.minHeight, fontSize: el.style.fontSize,
-      position: el.style.position, height: el.style.height, overflow: el.style.overflow
-    }
+      // Références pour restauration
+      let el               = null
+      let origEl           = {}
+      let origStage        = {}
+      let origViewport     = null
+      let metaViewport     = null
 
-    el.style.width = '794px'
-    el.style.minHeight = '1123px'
-    el.style.fontSize = '13px'
-    el.style.position = 'relative'
-    el.style.height = 'auto'
-    el.style.overflow = 'visible'
+      try {
+        // ── Chargement librairies ──
+        if (!window.html2canvas) {
+          await new Promise((ok, ko) => {
+            const s = document.createElement('script')
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'
+            s.onload = ok; s.onerror = ko; document.head.appendChild(s)
+          })
+        }
+        if (!window.jspdf) {
+          await new Promise((ok, ko) => {
+            const s = document.createElement('script')
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
+            s.onload = ok; s.onerror = ko; document.head.appendChild(s)
+          })
+        }
 
-    await new Promise(r => setTimeout(r, 400))
+        // ── FIX MOBILE 1 : forcer le meta viewport à 1200px ──
+        metaViewport  = document.querySelector('meta[name="viewport"]')
+        origViewport  = metaViewport ? metaViewport.getAttribute('content') : null
+        if (metaViewport) {
+          metaViewport.setAttribute('content', 'width=1200, initial-scale=1')
+          await new Promise(r => setTimeout(r, 200))
+        }
 
-    // Smart page breaks pour l'export
-    this.applySmartPageBreaks()
-    await new Promise(r => setTimeout(r, 500))
+        // ── Reset zoom + attente rendu ──
+        this.zoom = 1
+        await this.$nextTick()
+        await new Promise(r => setTimeout(r, 600))
 
-    const SCALE = 3
-    const PAGE_W_PX = 794
-    const PAGE_H_PX = 1123
-    const PAGE_W_MM = 210
-    const PAGE_H_MM = 297
-    const totalHeight = el.scrollHeight
+        el = document.getElementById('cv-render')
 
-    el.style.height = totalHeight + 'px'
-    await new Promise(r => setTimeout(r, 200))
+        // ── FIX MOBILE 2 : forcer le previewStage à 794px ──
+        if (previewStage) {
+          origStage = {
+            overflow: previewStage.style.overflow,
+            width:    previewStage.style.width,
+            minWidth: previewStage.style.minWidth,
+          }
+          previewStage.style.overflow = 'visible'
+          previewStage.style.width    = '794px'
+          previewStage.style.minWidth = '794px'
+        }
 
-    // Référence à toBase64 pour utilisation dans onclone
-    const toBase64Fn = this.toBase64.bind(this)
+        // ── FIX MOBILE 3 : forcer el à 794px et neutraliser transform ──
+        origEl = {
+          width:           el.style.width,
+          minWidth:        el.style.minWidth,
+          maxWidth:        el.style.maxWidth,
+          minHeight:       el.style.minHeight,
+          fontSize:        el.style.fontSize,
+          position:        el.style.position,
+          height:          el.style.height,
+          overflow:        el.style.overflow,
+          transform:       el.style.transform,
+          transformOrigin: el.style.transformOrigin,
+        }
 
-    const fullCanvas = await window.html2canvas(el, {
-      scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
-      width: PAGE_W_PX, height: totalHeight, windowWidth: 1200, windowHeight: totalHeight,
-      scrollX: 0, scrollY: 0, x: 0, y: 0,
-      logging: false, imageTimeout: 15000, removeContainer: true,
-      onclone: async (doc) => {
-        const cel = doc.getElementById('cv-render')
-        if (cel) {
-          cel.style.width = PAGE_W_PX + 'px'
-          cel.style.minWidth = PAGE_W_PX + 'px'
-          cel.style.maxWidth = PAGE_W_PX + 'px'
-          cel.style.height = totalHeight + 'px'
-          cel.style.overflow = 'visible'
-          cel.style.transform = 'none'
-          cel.style.webkitFontSmoothing = 'antialiased'
-          cel.style.textRendering = 'optimizeLegibility'
-          cel.style.willChange = 'auto'
-          cel.style.filter = 'none'
+        el.style.width           = '794px'
+        el.style.minWidth        = '794px'
+        el.style.maxWidth        = '794px'
+        el.style.minHeight       = '1123px'
+        el.style.fontSize        = '13px'
+        el.style.position        = 'relative'
+        el.style.height          = 'auto'
+        el.style.overflow        = 'visible'
+        el.style.transform       = 'none'
+        el.style.transformOrigin = 'top left'
 
-          // Convertir les images HTTP → base64 DANS LE CLONE uniquement
-          const imgs = cel.querySelectorAll('img')
-          for (const img of imgs) {
-            if (img.src && img.src.startsWith('http')) {
-              try {
-                img.src = await toBase64Fn(img.src)
-              } catch (e) { console.warn('Clone img conversion failed:', e) }
-            }
+        await new Promise(r => setTimeout(r, 400))
+
+        // Smart page breaks pour l'export
+        this.applySmartPageBreaks()
+        await new Promise(r => setTimeout(r, 500))
+
+        // ── FIX CORS MOBILE : pré-convertir la photo en base64 via proxy ──
+        // La photo Backblaze bloque sur mobile (pas de header CORS)
+        // On la convertit en base64 AVANT html2canvas pour éviter le blocage
+        if (this.cv.photo && this.cv.photo.startsWith('http')) {
+          try {
+            const b64 = await this.toBase64(this.cv.photo)
+            this.cv.photo = b64
+          } catch (e) {
+            console.warn('Pré-conversion photo échouée, on continue sans:', e)
           }
         }
-        const style = doc.createElement('style')
-        style.textContent = '@media(max-width:1200px){.workspace{grid-template-columns:380px 1fr !important}} @media(max-width:900px){.workspace{grid-template-columns:380px 1fr !important}} #cv-render, #cv-render *{max-width:none !important}'
-        doc.head.appendChild(style)
+
+        const SCALE      = 3
+        const PAGE_W_PX  = 794
+        const PAGE_H_PX  = 1123
+        const PAGE_W_MM  = 210
+        const PAGE_H_MM  = 297
+        const totalHeight = el.scrollHeight
+
+        el.style.height = totalHeight + 'px'
+        await new Promise(r => setTimeout(r, 200))
+
+        const toBase64Fn = this.toBase64.bind(this)
+
+        const fullCanvas = await window.html2canvas(el, {
+          scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
+          width: PAGE_W_PX, height: totalHeight,
+          windowWidth: 1200, windowHeight: totalHeight,
+          scrollX: 0, scrollY: 0, x: 0, y: 0,
+          logging: false, imageTimeout: 15000, removeContainer: true,
+          onclone: async (doc) => {
+            const cel = doc.getElementById('cv-render')
+            if (cel) {
+              cel.style.width           = PAGE_W_PX + 'px'
+              cel.style.minWidth        = PAGE_W_PX + 'px'
+              cel.style.maxWidth        = PAGE_W_PX + 'px'
+              cel.style.height          = totalHeight + 'px'
+              cel.style.overflow        = 'visible'
+              cel.style.transform       = 'none'
+              cel.style.transformOrigin = 'top left'
+              cel.style.webkitFontSmoothing = 'antialiased'
+              cel.style.textRendering   = 'optimizeLegibility'
+              cel.style.willChange      = 'auto'
+              cel.style.filter          = 'none'
+
+              // Convertir images HTTP → base64 ET s'assurer que la photo base64 est bien présente
+              const imgs = cel.querySelectorAll('img')
+              for (const img of imgs) {
+                if (!img.src) continue
+                if (img.src.startsWith('data:')) {
+                  // Déjà en base64 — rien à faire
+                  continue
+                }
+                if (img.src.startsWith('http')) {
+                  try { img.src = await toBase64Fn(img.src) }
+                  catch (e) { console.warn('Clone img conversion failed:', e) }
+                }
+              }
+              // Si la photo est en base64 dans cv.photo, forcer src sur toutes les photos CV
+              if (photoBackup && photoBackup.startsWith('data:')) {
+                cel.querySelectorAll('.cc-photo,.cm-photo,.cmod-photo,.corp-photo-img,.eleg-photo,.dk-photo,.tl-photo,.sw-photo,.cr-photo,.tk-photo,.acad-photo,.lux-photo,.grad-photo,.cp-photo,.ex-photo,.vl-photo,.nd-photo,.fd-photo,.pr-photo,.sb-photo,.g2-photo,.nv-photo,.cr2-photo').forEach(img => {
+                  if (img && (!img.src || img.src === 'about:blank')) img.src = photoBackup
+                })
+              }
+            }
+
+            // ── FIX MOBILE 4 : CSS override dans le clone ──
+            // Neutralise TOUS les media queries + grilles responsive
+            const style = doc.createElement('style')
+            style.textContent = `
+              * { box-sizing: border-box !important; }
+              #cv-render, #cv-render * { max-width: none !important; }
+              #cv-render {
+                width: 794px !important;
+                min-width: 794px !important;
+                max-width: 794px !important;
+                font-size: 13px !important;
+                transform: none !important;
+                transform-origin: top left !important;
+              }
+              .workspace                { grid-template-columns: 380px 1fr !important; }
+              .preview-stage            { overflow: visible !important; width: 794px !important; }
+
+              /* Grilles 2 colonnes — tous les templates */
+              .cv-classic .cc-body      { grid-template-columns: 270px 1fr !important; }
+              .cv-mod                   { grid-template-columns: 280px 1fr !important; }
+              .cv-corp .corp-body       { grid-template-columns: 280px 1fr !important; }
+              .cv-eleg .eleg-body       { grid-template-columns: 280px 1fr !important; }
+              .cv-dark .dk-body         { grid-template-columns: 280px 1fr !important; }
+              .cv-tl .tl-body           { grid-template-columns: 280px 1fr !important; }
+              .cv-swiss .sw-body        { grid-template-columns: 280px 1fr !important; }
+              .cv-creative .cr-body     { grid-template-columns: 280px 1fr !important; }
+              .cv-tech .tk-body         { grid-template-columns: 280px 1fr !important; }
+              .cv-academic .acad-body   { grid-template-columns: 1fr 280px !important; }
+              .cv-luxury .lux-body      { grid-template-columns: 280px 1fr !important; }
+              .cv-gradient              { grid-template-columns: 280px 1fr !important; }
+              .cv-compact .cp-body      { grid-template-columns: 1fr 280px !important; }
+              .cv-vlad .vl-layout       { grid-template-columns: 280px 1fr !important; }
+              .cv-neondark .nd-body     { grid-template-columns: 280px 1fr !important; }
+              .cv-fold .fd-body         { grid-template-columns: 280px 1fr !important; }
+              .cv-prism                 { grid-template-columns: 280px 1fr !important; }
+              .cv-sidebar               { grid-template-columns: 280px 1fr !important; }
+              .cv-green2col .g2-body    { grid-template-columns: 1fr 270px !important; }
+              .cv-navy .nv-body         { grid-template-columns: 280px 1fr !important; }
+              .cv-crimson               { grid-template-columns: 290px 1fr !important; }
+
+              /* Grilles internes (compétences, langues, etc.) */
+              .cm-lang-grid             { grid-template-columns: 1fr 1fr !important; }
+              .cm-aptitudes-grid        { grid-template-columns: 1fr 1fr !important; }
+              .grad-skills-grid         { grid-template-columns: 1fr 1fr !important; }
+              .acad-header              { display: flex !important; }
+              .row2                     { grid-template-columns: 1fr 1fr !important; }
+              .row3                     { grid-template-columns: 1fr 1fr 1fr !important; }
+              .tpl-grid                 { grid-template-columns: repeat(5, 1fr) !important; }
+            `
+            doc.head.appendChild(style)
+          }
+        })
+
+        // ── Génération PDF page par page ──
+        const { jsPDF }     = window.jspdf
+        const pdf           = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
+        const scaledPageW   = PAGE_W_PX * SCALE
+        const scaledPageH   = PAGE_H_PX * SCALE
+        const totalPages    = Math.max(1, Math.ceil(fullCanvas.height / scaledPageH))
+
+        for (let page = 0; page < totalPages; page++) {
+          const srcY  = page * scaledPageH
+          const srcH  = Math.min(scaledPageH, fullCanvas.height - srcY)
+          if (page > 0 && srcH < scaledPageH * 0.08) break
+          if (page > 0) pdf.addPage()
+
+          const pageCanvas    = document.createElement('canvas')
+          pageCanvas.width    = scaledPageW
+          pageCanvas.height   = scaledPageH
+          const ctx           = pageCanvas.getContext('2d')
+          ctx.fillStyle       = '#ffffff'
+          ctx.fillRect(0, 0, scaledPageW, scaledPageH)
+          ctx.drawImage(fullCanvas, 0, srcY, scaledPageW, srcH, 0, 0, scaledPageW, srcH)
+          pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, PAGE_W_MM, PAGE_H_MM, undefined, 'FAST')
+        }
+
+        pdf.save(`CV_${this.cv.firstName || 'CV'}_${this.cv.lastName || ''}.pdf`)
+
+      } catch (e) {
+        console.error('PDF error:', e)
+        alert('Erreur lors de la génération du PDF.')
+        try {
+          await API.post('/cv-credits/refund', { cv_profile_id: this.cvProfileId })
+          this.cvCredits++
+        } catch (_) {}
+
+      } finally {
+        // ── RESTAURATION GARANTIE ──
+
+        // 0. Restaurer la photo TOUJOURS (priorité absolue)
+        if (photoBackup) {
+          this.cv.photo    = photoBackup
+          this.cv.photoUrl = photoUrlBackup
+        }
+
+        // 1. Restaurer le meta viewport
+        if (metaViewport) {
+          if (origViewport) {
+            metaViewport.setAttribute('content', origViewport)
+          } else {
+            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1')
+          }
+        }
+
+        // 2. Restaurer le previewStage
+        if (previewStage) {
+          previewStage.style.overflow = origStage.overflow || ''
+          previewStage.style.width    = origStage.width    || ''
+          previewStage.style.minWidth = origStage.minWidth || ''
+        }
+
+        // 3. Restaurer el
+        if (el) {
+          el.style.width           = origEl.width           || ''
+          el.style.minWidth        = origEl.minWidth        || ''
+          el.style.maxWidth        = origEl.maxWidth        || ''
+          el.style.minHeight       = origEl.minHeight       || ''
+          el.style.fontSize        = origEl.fontSize        || ''
+          el.style.position        = origEl.position        || ''
+          el.style.height          = origEl.height          || ''
+          el.style.overflow        = origEl.overflow        || ''
+          el.style.transform       = origEl.transform       || ''
+          el.style.transformOrigin = origEl.transformOrigin || ''
+          // Nettoyer les spacers
+          el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
+        }
+
+        // 4. Restaurer le zoom et recalculer les pages
+        this.zoom = prevZoom
+        this.exporting = false
+        this.$nextTick(() => this.updatePageCount())
       }
-    })
-
-    const { jsPDF } = window.jspdf
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true })
-    const scaledPageW = PAGE_W_PX * SCALE
-    const scaledPageH = PAGE_H_PX * SCALE
-    const totalPages = Math.max(1, Math.ceil(fullCanvas.height / scaledPageH))
-
-    for (let page = 0; page < totalPages; page++) {
-      const srcY = page * scaledPageH
-      const srcH = Math.min(scaledPageH, fullCanvas.height - srcY)
-      if (page > 0 && srcH < scaledPageH * 0.08) break
-      if (page > 0) pdf.addPage()
-
-      const pageCanvas = document.createElement('canvas')
-      pageCanvas.width = scaledPageW
-      pageCanvas.height = scaledPageH
-      const ctx = pageCanvas.getContext('2d')
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(0, 0, scaledPageW, scaledPageH)
-      ctx.drawImage(fullCanvas, 0, srcY, scaledPageW, srcH, 0, 0, scaledPageW, srcH)
-      pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, PAGE_W_MM, PAGE_H_MM, undefined, 'FAST')
-    }
-
-    pdf.save(`CV_${this.cv.firstName || 'CV'}_${this.cv.lastName || ''}.pdf`)
-
-    // ══ RESTAURATION STYLES ══
-    el.style.width = orig.width
-    el.style.minHeight = orig.minHeight
-    el.style.fontSize = orig.fontSize
-    el.style.position = orig.position
-    el.style.height = orig.height
-    el.style.overflow = orig.overflow
-
-    // Nettoyage spacers d'export
-    el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
-
-  } catch (e) {
-    console.error('PDF error:', e)
-    alert('Erreur lors de la génération du PDF.')
-    try { await API.post('/cv-credits/refund', { cv_profile_id: this.cvProfileId }); this.cvCredits++ } catch (_) { }
-
-    // Nettoyage en cas d'erreur
-    const el = document.getElementById('cv-render')
-    if (el) el.querySelectorAll('.cv-page-break-spacer').forEach(s => s.remove())
-  } finally {
-    this.zoom = prevZoom
-    this.exporting = false
-    this.$nextTick(() => this.updatePageCount())
-  }
-},
+    },
 
     toBase64(url) {
       return new Promise((resolve, reject) => {
